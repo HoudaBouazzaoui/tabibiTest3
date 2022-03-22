@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+
+    <!---->
+    <!---->
+    <link href='../css/nouveauRDV.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#successModal").modal("show");
+
+
+            $("#email-nv-rdv").change(function () {
+                var email = $("#email-nv-rdv").val();
+                verifierIdentifiant(email);
+            });
+
+            $("#connectUtilisateur").submit(function (event) {
+
+                $("#successModal #confirmPassword-nv-rdv").val($("#successModal #password-nv-rdv").val());
+
+                var utilisateur = {
+                    email: $("#successModal #email-nv-rdv").val(),
+                    password: $("#successModal #password-nv-rdv").val(),
+                    role: "User"
+                };
+
+                var data = JSON.stringify(utilisateur);
+                // $("#successModal").modal('hide');
+                connecterUtilisateur(data);
+                return false;
+            });
+        });
+
+        function verifierIdentifiant(email) {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "http://localhost:4000/users/email/"+email,
+                cache: false,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text('creerr = ' + data.id);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    $("#successModal .modal-body p").text('error = ' + xhr.responseJSON.message);
+                    console.log(xhr.responseJSON.message);
+                    console.log("Details0: " + desc + "\nError:" + err);
+                }
+            });
+        }
+
+        function connecterUtilisateur(utilisateur) {
+            $.ajax({
+               // headers: {'x-access-token': $('meta[name="csrf-token"]').attr('content')},
+                type: "POST",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "http://localhost:4000/users/connect",
+                cache: false,
+                data: utilisateur,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text('connect = ' + iwa);
+                    console.log("success     okkkk=" + iwa);
+                },
+                error: function (data) {
+                    var iwa = JSON.stringify(data.responseJSON);
+                    $("#successModal .modal-body p").text('ERROR connect = ' + iwa);
+                    console.log("ORROR     KOOO=" + iwa);
+                }
+            });
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <p></p>
+
+                    <div class="modal-body">
+                        <form id="connectUtilisateur" name="contact" role="form">
+
+                            <div class="form-group">
+                                <label for="email-nv-rdv" class="col-form-label">Email:</label>
+                                <input type="text" class="form-control" id="email-nv-rdv" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="password-nv-rdv" class="col-form-label">Pws:</label>
+                                <input type="text" class="form-control" id="password-nv-rdv" name="password">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                <input id="buttonCreerRDV" type="submit" class="btn btn-secondary"
+                                    value="connecter">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

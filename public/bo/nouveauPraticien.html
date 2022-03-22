@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+
+    <!---->
+    <!-- <link href='../css/nouveauRDV.css' rel='stylesheet' /> -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            recupererSpecialite();
+
+
+            $("#successModal").modal("show");
+
+            $("#creerPraticien").submit(function (event) {
+
+                //$("#successModal #motpasseConfirme-nv-rdv").val($("#successModal #motpasse-nv-rdv").val());
+
+                var praticien = {
+
+                    id_speCat: $("#successModal #id_speCat-nv-rdv").val(),
+
+                    titre: $("#successModal #titre-nv-rdv").val(),
+                    nom: $("#successModal #nom-nv-rdv").val(),
+                    prenom: $("#successModal #prenom-nv-rdv").val(),
+                    dateNaissance: $("#successModal #dateNaissance-nv-rdv").val(),
+
+                    email: $("#successModal #email-nv-rdv").val(),
+
+                    telephone: $("#successModal #telephone-nv-rdv").val(),
+                    fax: $("#successModal #fax-nv-rdv").val(),
+
+                    motpasse: $("#successModal #motpasse-nv-rdv").val(),
+                    motpasseConfirme: $("#successModal #motpasseConfirme-nv-rdv").val(),
+
+                    adresse: {
+                        numero: $("#successModal #numero-nv-rdv").val(),
+                        voie: $("#successModal #voie-nv-rdv").val(),
+                        codePostale: $("#successModal #codePostale-nv-rdv").val(),
+                        ville: $("#successModal #ville-nv-rdv").val()
+                    },
+                    horairePraticien: {
+                        matinDebut: $("#successModal #matinDebut-nv-rdv").val(),
+                        matinFin: $("#successModal #matinFin-nv-rdv").val(),
+                        soirDebut: $("#successModal #soirDebut-nv-rdv").val(),
+                        soirFin: $("#successModal #soirFin-nv-rdv").val(),
+
+                        lun: $("#successModal #lun").val(),
+                        mar: $("#successModal #mar").val(),
+                        mer: $("#successModal #mer").val(),
+                        jeu: $("#successModal #jeu").val(),
+                        ven: $("#successModal #ven").val(),
+                        sam: $("#successModal #sam").val(),
+                        dim: $("#successModal #dim").val()
+                    }
+                };
+
+                var data = JSON.stringify(praticien);
+                // $("#successModal").modal('hide');
+                console.log(data);
+                creerPraticien(data);
+                return false;
+            });
+        });
+
+        function creerPraticien(praticien) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "http://localhost:4000/pra/",
+                cache: false,
+                data: praticien,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text('Praticien = ' + data.id + ' ' + data.titre + ' ' + data.nom + ' ' + data.prenom);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    $("#successModal .modal-body p").text('error = ' + xhr.responseJSON.message);
+                    console.log(xhr.responseJSON.message);
+                    console.log("Details0: " + desc + "\nError:" + err);
+                }
+            });
+        }
+
+
+        function recupererSpecialite() {
+            $.ajax({
+                type: "GET",
+                //contentType: "application/json",
+                dataType: 'json',
+                url: "http://localhost:4000/spe",
+                cache: true,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    //$("#successModal .modal-body p").text('creerr = ' + data.id);
+                    console.log("success     okkkk" + iwa);
+                    selectSpecialite(data);
+                },
+                error: function (xhr, desc, err) {
+                    $("#successModal .modal-body p").text('error = ' + xhr.responseJSON.message);
+                    console.log(xhr.responseJSON.message);
+                    console.log("Details0: " + desc + "\nError:" + err);
+                }
+            });
+        }
+
+        function selectSpecialite(jsonData) {
+            var listItems = '<option selected="selected" value="0">- Select -</option>';
+            for (var i = 0; i < jsonData.length; i++) {
+                listItems += "<option value='" + jsonData[i].id_speCat + "'>" + jsonData[i].titre + "</option>";
+            }
+            $("#id_speCat-nv-rdv").html(listItems);
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <p></p>
+
+                    <div class="modal-body">
+                        <form id="creerPraticien" name="contact" role="form">
+
+                            <div class="form-group">
+                                <label for="id_speCat-nv-rdv" class="col-form-label">Specialite:</label>
+                                <select class="form-control" id="id_speCat-nv-rdv" name="id_speCat"></select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="titre-nv-rdv" class="col-form-label">Titre:</label>
+                                <select class="form-control" id="titre-nv-rdv" name="titre">
+                                    <option value="">--Choisir Titre--</option>
+                                    <option value="MR">MR</option>
+                                    <option value="MD">MD</option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="nom-nv-rdv" class="col-form-label">Nom:</label>
+                                <input type="text" class="form-control" id="nom-nv-rdv" name="nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="prenom-nv-rdv" class="col-form-label">Prenom:</label>
+                                <input type="text" class="form-control" id="prenom-nv-rdv" name="prenom">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="telephone-nv-rdv" class="col-form-label">Telephone:</label>
+                                <input type="text" class="form-control" id="telephone-nv-rdv" name="telephone">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fax-nv-rdv" class="col-form-label">Fax:</label>
+                                <input type="text" class="form-control" id="fax-nv-rdv" name="fax">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email-nv-rdv" class="col-form-label">Email:</label>
+                                <input type="text" class="form-control" id="email-nv-rdv" name="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="motpasse-nv-rdv" class="col-form-label">Pws:</label>
+                                <input type="text" class="form-control" id="motpasse-nv-rdv" name="motpasse">
+                            </div>
+                            <div class="form-group">
+                                <label for="motpasseConfirme-nv-rdv" class="col-form-label">Pws Confirm:</label>
+                                <input type="text" class="form-control" id="motpasseConfirme-nv-rdv"
+                                    name="motpasseConfirme">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dateNaissance-nv-rdv" class="col-form-label">Date de naissance:</label>
+                                <input type="date" class="form-control" name="dateNaissance" id="dateNaissance-nv-rdv"
+                                    value="" min="1900-01-01" max="2022-12-31">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="numero-nv-rdv" class="col-form-label">Numero:</label>
+                                <input type="text" class="form-control" id="numero-nv-rdv" name="numero">
+                            </div>
+                            <div class="form-group">
+                                <label for="voie-nv-rdv" class="col-form-label">Voie:</label>
+                                <input type="text" class="form-control" id="voie-nv-rdv" name="voie">
+                            </div>
+                            <div class="form-group">
+                                <label for="codePostale-nv-rdv" class="col-form-label">CP:</label>
+                                <input type="text" class="form-control" id="codePostale-nv-rdv" name="codePostale">
+                            </div>
+                            <div class="form-group">
+                                <label for="ville-nv-rdv" class="col-form-label">Ville:</label>
+                                <input type="text" class="form-control" id="ville-nv-rdv" name="ville">
+                            </div>
+
+                            <table>
+                                <tr>
+                                    <td>
+                                        <label for="matinDebut-nv-rdv" class="col-form-label">Mat heure deb:</label>
+                                        <input type="text" class="form-control" id="matinDebut-nv-rdv"
+                                            name="matinDebut" value="08:00:00">
+                                    </td>
+                                    <td>
+                                        <label for="matinFin-nv-rdv" class="col-form-label">Mat heure fin:</label>
+                                        <input type="text" class="form-control" id="matinFin-nv-rdv"
+                                            name="matinFin" value="12:00:00">
+                                    </td>
+                                    <td rowspan="2">
+                                        <label for="lun">Lun</label>
+                                        <input type="checkbox" id="lun" name="lun" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;" >
+                                        <label for="mar">Mar</label>
+                                        <input type="checkbox" id="mar" name="mar" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <label for="mer">Mer</label>
+                                        <input type="checkbox" id="mer" name="mer" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <label for="jeu">Jeu</label>
+                                        <input type="checkbox" id="jeu" name="jeu" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <label for="ven">Ven</label>
+                                        <input type="checkbox" id="ven" name="ven" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <label for="sam">Sam</label>
+                                        <input type="checkbox" id="sam" name="sam" value="0" onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <label for="dim">Dim</label>
+                                        <input type="checkbox" id="dim" name="dim" value="0" onclick="if(this.checked)this.value=1;else this.value=0;"> 
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="soirDebut-nv-rdv" class="col-form-label">Soire heure deb:</label>
+                                        <input type="text" class="form-control" id="soirDebut-nv-rdv"
+                                            name="soirDebut" value="14:00:00">
+                                    </td>
+                                    <td>
+                                        <label for="soirFin-nv-rdv" class="col-form-label">Soire heure fin:</label>
+                                        <input type="text" class="form-control" id="soirFin-nv-rdv"
+                                            name="soirFin" value="18:00:00">
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                <input id="buttonCreerPraticien" type="submit" class="btn btn-success success"
+                                    value="Creer Praticien">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

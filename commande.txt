@@ -1,0 +1,63 @@
+
+
+cd/d  D:\projets\web\tabibi\utilisa
+node D:\projets\web\tabibi\connectionMysql.js
+
+
+
+cd/d  D:\projets\web\tabibi\rdvs
+npm install mysql
+npm install -g mysql
+rmat0n:~$ npm install express
+rmat0n:~$ npm install socket.io
+npm install jsonwebtoken
+npm install cookie-parser
+npm install sync-mysql
+npm install mysql-libmysqlclient
+npm install nodejslogger
+
+cd/d  D:\projets\web\tabibi\utilisa
+
+
+
+http://localhost:4000/users/
+{
+        "email": "test@test.fr",
+        "password": "testtest",
+        "confirmPassword": "testtest",
+        "title": "test",
+        "firstName": "test",
+        "lastName": "test",
+        "role": "User"
+}
+
+
+
+
+
+http://localhost:3000/rdvs
+http://localhost:4000/users/
+http://localhost:4000/spe
+http://localhost:4000/users/email/test@test.fr
+http://localhost:3000/codeTabibi/bo/lesRDV.html
+http://localhost:3000/codeTabibi/bo/patientTB.html
+http://localhost:4000/rdvs/supp/2
+http://localhost:4000/pat/rchPat/zzaoui
+http://localhost:4000/bo/nvRdvPat.html
+http://localhost:4000/rdvs/rdvlib
+http://localhost:4000/bo/patientTB.html
+http://localhost:4000/rdvs/rdvs
+http://localhost:4000/rdvs/RdvById
+http://localhost:4000/bo/connectUtilisateur.html
+http://localhost:4000/bo/nouveauPraticien.html
+http://localhost:4000/pra/2
+http://localhost:4000/bo/lesRDV.html
+http://localhost:4000/rdvs/rdvs
+http://localhost:4000/rdvs/supp/2
+http://localhost:4000/pat/rchPat/ti
+http://localhost:4000/pra/logOut
+
+
+DROP TABLES praticiens, patients, adresses
+
+verifierbsi le rdv nest pas deja creer

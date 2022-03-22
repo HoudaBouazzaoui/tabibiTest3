@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8' />
+  <!-- -->
+
+  <link href='../lib/main.css' rel='stylesheet' />
+  <script src='../lib/main.js'></script>
+  <script src='../lib/locales-all.js'></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+
+  <script>
+
+    var eventsDonnees = [];
+
+    function affichercalendar() {
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var initialLocaleCode = 'fr';
+        var localeSelectorEl = document.getElementById('locale-selector');
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+
+
+          //plugins: ['interaction', 'dayGrid', 'list', 'googleCalendar', 'timeGrid'],
+          allDaySlot: false,
+
+          initialView: 'timeGridDay',
+          views: {
+            timeGrid: {
+              // options apply to timeGridWeek and timeGridDay views
+              slotDuration: '00:15:00',
+              slotMinTime: '00:00:00',
+              slotMaxTime: '23:00:00'
+              //scrollTime: '10:00:00'
+            },
+            timeGridDay: {
+              duration: { days: 3 }  // vue 3 JOURS
+            }
+          },
+
+          selectable: true,
+          selectMirror: true,
+          select: function (arg) {
+            var title = prompt('Event Title IIIIIWA ii:');
+            if (title) {
+              calendar.addEvent({
+                title: title,
+                start: arg.start,
+                end: arg.end,
+                allDay: arg.allDay
+              })
+            }
+            calendar.unselect()
+          },
+          //eventClick: function(event, element) {
+          eventClick: function (info) {
+            afficherInfoRdv(info);
+          },
+          dateClick: function (info) {
+            nouveauRDV(info);
+          },
+
+          headerToolbar: {
+            left: 'prev,next today',
+            //left: 'prec,suiv auj',
+            center: '',
+            //center: 'title',
+            right: ''
+            //right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+          },
+          locale: initialLocaleCode,
+          /*
+                    locale: 'fr',
+                    header: {
+                      left: 'prev today',
+                      right: 'next',
+                      center: ''
+                    },
+          */
+          buttonIcons: false, // show the prev/next text
+          weekNumbers: true,
+          navLinks: true, // can click day/week names to navigate views
+          editable: true,
+          dayMaxEvents: true, // allow "more" link when too many events
+          events:
+            recupererEvent(eventsDonnees)
+        });
+
+        calendar.render();
+
+        // build the locale selector's options
+        calendar.getAvailableLocaleCodes().forEach(function (localeCode) {
+          var optionEl = document.createElement('option');
+          optionEl.value = localeCode;
+          optionEl.selected = localeCode == initialLocaleCode;
+          optionEl.innerText = localeCode;
+          localeSelectorEl.appendChild(optionEl);
+        });
+
+        // when the selected option changes, dynamically change the calendar option
+        localeSelectorEl.addEventListener('change', function () {
+          if (this.value) {
+            calendar.setOption('locale', this.value);
+          }
+        });
+
+        //calendar.scrollToTime( '17:00:00' );
+
+      });
+
+    }
+
+
+
+
+
+
+
+
+    function affichercalendar1() {
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          columnHeaderHtml: function (date) {
+            if (date.getUTCDay() === 0) {
+              var date_day = "Lundi";
+            }
+            if (date.getUTCDay() === 1) {
+              var date_day = "Mardi";
+            }
+            if (date.getUTCDay() === 2) {
+              var date_day = "Mercredi";
+            }
+            if (date.getUTCDay() === 3) {
+              var date_day = "Jeudi";
+            }
+            if (date.getUTCDay() === 4) {
+              var date_day = "Vendredi";
+            }
+            if (date.getUTCDay() === 5) {
+              var date_day = "Samedi";
+            }
+            if (date.getUTCDay() === 6) {
+              var date_day = "Dimanche";
+            }
+            if (date.getMonth() === 0) {
+              var date_month = "Jan";
+            }
+            if (date.getMonth() === 1) {
+              var date_month = "Fev";
+            }
+            if (date.getMonth() === 2) {
+              var date_month = "Mar";
+            }
+            if (date.getMonth() === 3) {
+              var date_month = "Avr";
+            }
+            if (date.getMonth() === 4) {
+              var date_month = "Mai";
+            }
+            if (date.getMonth() === 5) {
+              var date_month = "Juin";
+            }
+            if (date.getMonth() === 6) {
+              var date_month = "Juil";
+            }
+            if (date.getMonth() === 7) {
+              var date_month = "Août";
+            }
+            if (date.getMonth() === 8) {
+              var date_month = "Sept";
+            }
+            if (date.getMonth() === 9) {
+              var date_month = "Oct";
+            }
+            if (date.getMonth() === 10) {
+              var date_month = "Nov";
+            }
+            if (date.getMonth() === 11) {
+              var date_month = "Dec";
+            }
+
+            var day_num = date.getDate();
+            return '<b>' + date_day + '</b><br><small>' + day_num + " " + date_month + "</small>";
+
+          },
+          plugins: ['interaction', 'dayGrid', 'list', 'googleCalendar', 'timeGrid'],
+          selectable: true,
+
+          defaultView: 'timeGridFourDay',
+          views: {
+            timeGridFourDay: {
+              type: 'timeGrid',
+              duration: { days: 4 },
+              buttonText: '4 day'
+            }
+          },
+          slotLabelFormat: {
+            hour: 'numeric',
+            minute: '2-digit',
+            omitZeroMinute: true,
+            meridiem: 'short'
+          },
+
+          locale: 'fr',
+          header: {
+            left: 'prev today',
+            right: 'next'
+          },
+          validRange: {
+            start: '2022-01-16',
+            end: '2022-03-16'
+          },
+          allDaySlot: false,
+          firstDay: 1,
+          minTime: "08:00:00",
+          maxTime: "20:00:00",
+
+          displayEventTime: true, // don't show the time column in list view
+
+          // THIS KEY WON'T WORK IN PRODUCTION!!!
+          // To make your own Google API key, follow the directions here:
+          // http://fullcalendar.io/docs/google_calendar/
+          googleCalendarApiKey: 'AIzaSyAL9K2UqkCVfV0n81mDW0iEpOJSwcklfsY',
+
+          // US Holidays
+          events: 'fr.fr#holiday@group.v.calendar.google.com',
+
+          eventClick: function (arg) {
+            arg.jsEvent.preventDefault() // don't navigate in main tab
+
+            console.log(arg);
+          },
+          select: function (info) {
+
+            console.log(info)
+
+          },
+          loading: function (bool) {
+
+          },
+          eventSources: [
+            {
+              googleCalendarId: 'contact@vetorino.com',
+              className: "gcalEvent"
+
+            }],
+
+          displayEventEnd: false,
+          events: [
+            { // this object will be "parsed" into an Event Object
+
+              start: '2022-02-16 12:30:00', // a property!
+              end: '2022-02-16 14:00:00', // a property! ** see important note below about 'e6d' **
+              overlap: true,
+              backgroundColor: "#F7F7F7",
+              textColor: "#979797",
+              classNames: "closed",
+            }], contentHeight: "auto",
+
+        });
+
+        calendar.render();
+      });
+    }
+
+    affichercalendar();
+    //affichercalendar1();
+
+
+    function recupererEvent() {
+      console.log("----------------------------recupererEvent1 ");
+      var eventsDonnees1 = [];
+      $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: "http://localhost:4000/rdvs/rdvlib",
+        //cache: false,
+        async: false,
+        success: function (data) {
+          var iwa = JSON.stringify(data);
+          console.log("success     okkkk" + iwa);
+          eventsDonnees1 = data;
+        },
+        error: recupererRendezVousErreur
+      });
+      console.log("---------------FIN -------------recupererEvent1 ");
+      return eventsDonnees1;
+    }
+
+    function recupererRendezVousErreur(jqXHR, textStatus, errorThrown) {
+      console.log("------------recupererRendezVousErreur");
+      console.log("jqXHR.status: " + jqXHR.status);
+      console.log(jqXHR.responseJSON);
+      console.log("recupererRendezVousErreur Details0: " + textStatus + "\nError:" + errorThrown);
+      if (jqXHR.status == 401) {
+        $("#modal-co-pra").modal("show");
+      } else if (jqXHR.status == 404) {
+        //Not found
+      }
+    }
+
+    function nouveauRDV(info) {
+
+      $(".container").show();
+      var dateRdvDebut = info.dateStr;
+      var dureeRDV = 15;
+      var dateRdvFin = new Date(dateRdvDebut);
+      dateRdvFin.setMinutes(dateRdvFin.getMinutes() + dureeRDV/* - dateRdvFin.getTimezoneOffset()*/);
+
+      $("#modal-rdv").modal("show");
+      $("#modal-rdv .modal-body p").text('booboo');
+      $("#modal-rdv #dateRdvDebut").val(dateRdvDebut);
+      $("#modal-rdv #dateRDVFin").val(dateRdvFin.toISOString());
+
+      var call = document.getElementById('calendar');
+
+      var eventObj = info.event;
+      if (eventObj.start) {
+        alert('Clicked' + eventObj.start);
+      }
+
+    }
+
+
+    function logOut() {
+      alert('LOGG OUTTT =' + document.cookie);
+
+var req = new XMLHttpRequest();
+req.open('GET', document.location, false);
+req.send(null);
+var headers = req.getAllResponseHeaders().toLowerCase();
+alert(headers);
+
+      var cookieArray = document.cookie.split(';');
+      for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i];
+        console.log("---------------------- cookie = " +cookie );
+        while (cookie.charAt(0) == ' ') {
+          cookie = cookie.substring(1);
+        }
+        cookieHalves = cookie.split('=');
+        if (cookieHalves[0] == 'jwt') {
+          return cookieHalves[1];
+        }
+      }
+
+      console.log("----------------------------logOut() ");
+      $.ajax({
+        /*headers: {
+        'Cookie':'jwt=111kkkkkkkkkkkkkkkkkkkkkkeyJhbGciOiJIUzI1NiI',
+        'cookie':'jwt=222kkkkkkkkkkkkkkkkkkkkkkeyJhbGciOiJIUzI1NiI'       
+        },*/
+        type: "GET",
+        dataType: 'json',
+        url: "http://localhost:4000/pra/logOut",
+        //cache: false,
+        async: false,
+        success: function (data) {
+          var iwa = JSON.stringify(data);
+          console.log("success     okkkk" + iwa);
+        },
+        error: function (data) {
+          var iwa = JSON.stringify(data);
+          console.log("ORROR     KOOO iwa=" + iwa);
+          var msg = JSON.stringify(data.responseJSON);
+          console.log("ORROR     KOOO msg=" + msg);    
+        }
+      });
+      console.log("---------------FIN -------------logOut() ");
+      return false;
+    }
+
+    $(document).ready(function () {
+
+
+      $("#logOut").click(function (event) {
+        logOut();
+        return false;
+      });
+
+      $("#contactForm").submit(function (event) {
+        alert($("#contactForm").serialize());
+        creerRdv();
+        return false;
+      });
+
+      $("#modal-co-pra-form").submit(function (event) {
+        //$("#successModal #confirmPassword-connect").val($("#successModal #password-connect").val());
+        connecterPratitien();
+        return false;
+      });
+
+    });
+
+    function creerRdv() {
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:4000/rdvs/creerRDV",
+        cache: false,
+        data: $("form#contactForm").serialize(),
+        //data: "date=453&action=test",
+
+        success: function (response) {
+          //$("#contact").html(response)
+          console.log(response);
+          $("#modal-rdv").modal('hide');
+
+          affichercalendar();
+          location.reload();
+        },
+        error: function (data) {
+          var msg = JSON.stringify(data.responseJSON);
+          $("#modal-rdv .modal-body p").text('ERROR = ' + msg);
+          console.log("ORROR     KOOO=" + msg);
+        }
+      });
+    }
+
+    function connecterPratitien() {
+      var utilisateur = {
+        email: $("#modal-co-pra #email-co-pra").val(),
+        password: $("#modal-co-pra #password-co-pra").val()
+        //role: "User"
+      };
+      var utilisateur = JSON.stringify(utilisateur);
+      // $("#successModal").modal('hide');
+
+      $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        dataType: 'json',
+        url: "http://localhost:4000/pra/connect",
+        cache: false,
+        data: utilisateur,
+        success: function (data) {
+          var iwa = JSON.stringify(data);
+          $("#modal-co-pra .modal-body p").text('connect = ' + iwa);
+          console.log("success     okkkk=" + iwa);
+          // $("#modal-co-pra").modal("hide");
+          //recupererRendezVous();
+          location.reload();
+        },
+        error: function (data) {
+          var iwa = JSON.stringify(data.responseJSON);
+          $("#modal-co-pra .modal-body p").text('ERROR connect = ' + iwa);
+          console.log("ORROR     KOOO=" + iwa);
+        }
+      });
+    }
+
+
+    function afficherInfoRdv(info) {
+      console.log(info.event.extendedProps);
+      $("#modal-info-rdv").modal("show");
+      $("#modal-info-rdv .modal-body p").text('non disponible!');
+    }
+
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+
+    #top {
+      background: #eee;
+      border-bottom: 1px solid #ddd;
+      padding: 0 10px;
+      line-height: 40px;
+      font-size: 12px;
+    }
+
+    #calendar {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 10px;
+    }
+
+    .ui-widget-header,
+    .ui-state-default,
+    ui-button {
+      background: #b9cd6d;
+      border: 1px solid #b9cd6d;
+      color: #FFFFFF;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id='top'>
+
+    Locales:
+    <select id='locale-selector'></select>
+
+    <button type="button" id="logOut" class="btn btn-secondary" data-dismiss="modal">LOG OUT</button>
+
+  </div>
+
+  <div id='calendar'></div>
+
+
+  <div class="modal fade" id="modal-rdv" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <p></p>
+
+          <div class="modal-body">
+            <form id="contactForm" name="contact" role="form">
+              <div class="form-group">
+                <label for="dateRdvDebut" class="col-form-label">Date:</label>
+                <input type="text" class="form-control" id="dateRdvDebut" name="dateRdvDebut">
+                <input type="hidden" id="dateRDVFin" name="dateRDVFin" value="">
+              </div>
+              <div class="form-group">
+                <label for="motif-nv-rdv" class="col-form-label">Sujet:</label>
+                <input type="text" class="form-control" id="motif-nv-rdv" name="motif">
+              </div>
+
+              <div class="form-group">
+                <label for="titre-nv-rdv" class="col-form-label">Titre:</label>
+                <select class="form-control" id="titre-nv-rdv" name="titre">
+                  <option value="">--Choisir Titre--</option>
+                  <option value="MR">MR</option>
+                  <option value="MD">MD</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="nom-nv-rdv" class="col-form-label">Nom:</label>
+                <input type="text" class="form-control" id="nom-nv-rdv" name="nom">
+              </div>
+              <div class="form-group">
+                <label for="prenom-nv-rdv" class="col-form-label">Prenom:</label>
+                <input type="text" class="form-control" id="prenom-nv-rdv" name="prenom">
+              </div>
+              <div class="form-group">
+                <label for="dateNaissance-nv-rdv" class="col-form-label">Date de naissance:</label>
+                <input type="date" class="form-control" name="dateNaissance" id="dateNaissance-nv-rdv"
+                  value="2018-07-22" min="1900-01-01" max="2022-12-31">
+              </div>
+
+              <div class="form-group">
+                <label for="telephone-nv-rdv" class="col-form-label">Telephone:</label>
+                <input type="text" class="form-control" id="telephone-nv-rdv" name="telephone">
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <input id="buttonCreerRDV" type="submit" class="btn btn-success success" value="Creer RDV">
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal fade" id="modal-co-pra" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <p></p>
+
+          <div class="modal-body">
+            <form id="modal-co-pra-form" name="contact" role="form">
+
+              <div class="form-group">
+                <label for="email-co-pra" class="col-form-label">Email:</label>
+                <input type="text" class="form-control" id="email-co-pra" name="email">
+              </div>
+              <div class="form-group">
+                <label for="password-co-pra" class="col-form-label">Pws:</label>
+                <input type="text" class="form-control" id="password-co-pra" name="password">
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <input id="buttonCreerRDV" type="submit" class="btn btn-secondary" value="connecter">
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="modal fade" id="modal-info-rdv" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <p></p>
+
+          <div class="modal-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  </script>
+
+</body>
+
+</html>
