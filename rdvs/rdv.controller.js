@@ -46,7 +46,7 @@ async function transformRdvsToEvents(rdvs) {
             todo: 'todo on peut ajouter une description ou autre'
         };
         events.push(ev);
-6
+        6
     }
     console.log('----transformRdvsToEvents ----fin----');
     return events;
@@ -55,19 +55,22 @@ async function transformRdvsToEvents(rdvs) {
 function getListeRdvsPatientLibre(req, res, next) {
     console.log('-------------rdv.controller----DEB----------------  getListeRdvsPatientLibre');
     //return rdvService.getListeRdvsPraticien(req).then(rdvs => res.json(rdvs)).catch(next);
-    
+
     var listRdv = rdvService.getListeRdvsPatientLibre(req).then(rdvs => transformRdvsLIBREToEvents(rdvs, req))
         .then(events => res.json(events)).catch(next);
     console.log('-------------rdv.controller----FIN----------------  getListeRdvsPatientLibre');
     return listRdv;
 }
 async function getListeRdvsPatientLibre1(req, res, next) {
-    console.log('-------------rdv.controller----DEB----------------  getListeRdvsPatientLibre1');
+    console.log('-------------rdv.controller----DEB----------------  getListeRdvsPatientLibre1 ==' + req.praticiens);
 
-const rdvHandler = require('./rdv.handler');
-const listEvent = await rdvHandler.getRdvLibre(req);
+    var criterRch = req.body;
+    console.log('ccccccc-----req.criterRch=' + JSON.stringify(criterRch));
 
-res.json(listEvent);
+    const rdvHandler = require('./rdv.handler');
+    const listEvent = await rdvHandler.getRdvLibre(req);
+
+    res.json(listEvent);
     console.log('-------------rdv.controller----FIN----------------  getListeRdvsPatientLibre1');
     return listEvent;
 }
@@ -79,7 +82,7 @@ async function transformRdvsLIBREToEvents(rdvs, req, idPraticien) {
 
     let taille = rdvs.length;
 
-    if(taille == 0){
+    if (taille == 0) {
         throw 'pas de rdvs';
     }
     const rdv = rdvs[0];
@@ -156,7 +159,7 @@ async function transformRdvsLibreHoraire(rdvs, req, idPraticien) {
     const horairePraticien = await horaireService.getHorairePraticien(req);
     //const horairePraticien = await horaireService.getById(idPraticien);
 
-    console.log('-------------------------horairePraticien===' +  JSON.stringify(horairePraticien));
+    console.log('-------------------------horairePraticien===' + JSON.stringify(horairePraticien));
 
     const jourRepos = getJourRepos(horairePraticien);
 
@@ -185,10 +188,10 @@ async function transformRdvsLibreHoraire(rdvs, req, idPraticien) {
         };
 
         const jourDelaSemaine = rdv.start.getDay();
-        if(jourRepos.indexOf(jourDelaSemaine) == -1){
-            console.log('-------GGGGGGG------------getDay===' +  rdv.start.getDay());
+        if (jourRepos.indexOf(jourDelaSemaine) == -1) {
+            console.log('-------GGGGGGG------------getDay===' + rdv.start.getDay());
         }
-        console.log('-------------------getDay===' +  rdv.start.getDay());
+        console.log('-------------------getDay===' + rdv.start.getDay());
         var timeDebut_H = rdv.start.getHours();
 
         //console.log('§§§---rdv.start=' + rdv.start);
@@ -202,7 +205,7 @@ async function transformRdvsLibreHoraire(rdvs, req, idPraticien) {
             //console.log('-----------------------nbJourDiff=' + nbJourDiff);
 
             if (soirFin_H < timeDebut_H) {
-               // console.log('*** 1 seul ev pour demain');
+                // console.log('*** 1 seul ev pour demain');
                 ev.start.setDate(rdv.start.getDate() + 1);
                 ev.start.setHours(matinDebut_H);
                 ev.start.setMinutes(matinDebut_M);
@@ -223,16 +226,16 @@ async function transformRdvsLibreHoraire(rdvs, req, idPraticien) {
                     ev1.end.setHours(soirFin_H);
                     ev1.end.setMinutes(soirFin_M);
 
-                    if(j > 0){ // cas ou diff de 2 rdvs est plus de 1 jours donc init les jours precedents a l ouverture
+                    if (j > 0) { // cas ou diff de 2 rdvs est plus de 1 jours donc init les jours precedents a l ouverture
                         ev1.start.setHours(matinDebut_H);
                         ev1.start.setMinutes(matinDebut_M);
                     }
 
-                    console.log('-------GGGGGGG------------getDay1===' +  ev1.start.getDay());
-                    if(jourRepos.indexOf(ev1.start.getDay()) == -1){
+                    console.log('-------GGGGGGG------------getDay1===' + ev1.start.getDay());
+                    if (jourRepos.indexOf(ev1.start.getDay()) == -1) {
                         events.push(ev1); // un event en plus, TODO peut etre meme nbJourDiff events en plus 
                     }
-                    
+
 
                     j = j + 1;
 
@@ -250,11 +253,11 @@ async function transformRdvsLibreHoraire(rdvs, req, idPraticien) {
             ev.start.setMinutes(matinDebut_M);
         }
 
-        console.log('-------GGGGGGG------------getDay===' +  ev.start.getDay());
-        if(jourRepos.indexOf(ev.start.getDay()) == -1){
+        console.log('-------GGGGGGG------------getDay===' + ev.start.getDay());
+        if (jourRepos.indexOf(ev.start.getDay()) == -1) {
             events.push(ev); // un event en plus, TODO peut etre meme nbJourDiff events en plus 
         }
-         
+
 
     }
     console.log('FIN---------rdv.controller-----  transformRdvsLibreHoraire');
@@ -272,7 +275,7 @@ function getJourRepos(horairePraticien) {
     jourRepos += horairePraticien.jeu ? '' : '4';
     jourRepos += horairePraticien.ven ? '' : '5';
     jourRepos += horairePraticien.sam ? '' : '6';
-    
+
     console.log('--*-*-*-*-*-/*-*-*-*-*-*-*--*-*-*---jourRepos' + jourRepos);
 
     return jourRepos;

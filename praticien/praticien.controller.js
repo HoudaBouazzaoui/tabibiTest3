@@ -13,6 +13,7 @@ const app = express();
 app.use(cookieParser());
 
 // routes
+router.get('/pra/',verifyToken.verifyToken, getPraticienConnect);
 router.get('/logOut/',verifyToken.verifyToken, logOut);
 router.get('/', getAll);// TODO verifyToken
 router.get('/:id', getById);// TODO verifyToken
@@ -28,6 +29,12 @@ router.post('/connect', connect);
 module.exports = router;
 
 // route functions
+
+function getPraticienConnect(req, res, next) {
+    console.log('---------------------------------  getPraticienConnect');
+    let id = req.payload.praticien.id;
+    praticienService.getByIdComplet(id).then(pra => res.json(pra)).catch(next);
+}
 
 function getAll(req, res, next) {
     // TODO

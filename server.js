@@ -10,18 +10,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // api routes
-app.use('/users', require('./utilisa/users/users.controller'));
+app.use('/users', require('./utilisa/users/users.controller'));// TODO est ce que l on centralise la connexion
 app.use('/rdvs', require('./rdvs/rdv.controller'));
 app.use('/pra', require('./praticien/praticien.controller'));
 app.use('/spe', require('./specialite/specialite.controller'));
 app.use('/pat', require('./patient/patient.controller'));
 app.use('/hor', require('./praticien/horairePraticien.controller'));
+app.use('/adr', require('./praticien/adresse.controller'));
+app.use('/pro', require('./praticien/profil.controller'));
 
-
-
+/*
 app.get('/codeTabibi/bo/lesRDV.html', function (request, response) {
     response.sendFile('D:/projets/web/tabibi/rdvs/public/codeTabibi/bo/lesRDV.html');
 });
+*/
 
 // global error handler
 app.use(errorHandler);

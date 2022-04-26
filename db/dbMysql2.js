@@ -24,9 +24,13 @@ async function initialize() {
     db.Rdv = require('../rdvs/rdv.model')(sequelize);
     db.HorairePraticien = require('../praticien/horairePraticien.model')(sequelize);
 
+    db.Profil = require('../praticien/profil.model')(sequelize);
+
     db.Praticien.belongsTo(db.Adresse);
     db.Praticien.hasMany(db.Patient, {as: 'patients'});
     db.Praticien.belongsTo(db.HorairePraticien);
+    db.Praticien.belongsTo(db.Profil);
+
 
     // sync all models with database
     await sequelize.sync({ alter: true });

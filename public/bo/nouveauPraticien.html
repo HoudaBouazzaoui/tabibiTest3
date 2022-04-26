@@ -28,6 +28,8 @@
 
                 var praticien = {
 
+                    image: $("#imgProfil").files,
+
                     id_speCat: $("#successModal #id_speCat-nv-rdv").val(),
 
                     titre: $("#successModal #titre-nv-rdv").val(),
@@ -142,6 +144,8 @@
                     <div class="modal-body">
                         <form id="creerPraticien" name="contact" role="form">
 
+                            <input type="file" name="imgProfil" id="imgProfil"/>
+                            
                             <div class="form-group">
                                 <label for="id_speCat-nv-rdv" class="col-form-label">Specialite:</label>
                                 <select class="form-control" id="id_speCat-nv-rdv" name="id_speCat"></select>
@@ -219,42 +223,49 @@
                                 <tr>
                                     <td>
                                         <label for="matinDebut-nv-rdv" class="col-form-label">Mat heure deb:</label>
-                                        <input type="text" class="form-control" id="matinDebut-nv-rdv"
-                                            name="matinDebut" value="08:00:00">
+                                        <input type="text" class="form-control" id="matinDebut-nv-rdv" name="matinDebut"
+                                            value="08:00:00">
                                     </td>
                                     <td>
                                         <label for="matinFin-nv-rdv" class="col-form-label">Mat heure fin:</label>
-                                        <input type="text" class="form-control" id="matinFin-nv-rdv"
-                                            name="matinFin" value="12:00:00">
+                                        <input type="text" class="form-control" id="matinFin-nv-rdv" name="matinFin"
+                                            value="12:00:00">
                                     </td>
                                     <td rowspan="2">
                                         <label for="lun">Lun</label>
-                                        <input type="checkbox" id="lun" name="lun" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;" >
+                                        <input type="checkbox" id="lun" name="lun" value="1" checked
+                                            onclick="if(this.checked)this.value=1;else this.value=0;">
                                         <label for="mar">Mar</label>
-                                        <input type="checkbox" id="mar" name="mar" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <input type="checkbox" id="mar" name="mar" value="1" checked
+                                            onclick="if(this.checked)this.value=1;else this.value=0;">
                                         <label for="mer">Mer</label>
-                                        <input type="checkbox" id="mer" name="mer" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <input type="checkbox" id="mer" name="mer" value="1" checked
+                                            onclick="if(this.checked)this.value=1;else this.value=0;">
                                         <label for="jeu">Jeu</label>
-                                        <input type="checkbox" id="jeu" name="jeu" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <input type="checkbox" id="jeu" name="jeu" value="1" checked
+                                            onclick="if(this.checked)this.value=1;else this.value=0;">
                                         <label for="ven">Ven</label>
-                                        <input type="checkbox" id="ven" name="ven" value="1" checked onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <input type="checkbox" id="ven" name="ven" value="1" checked
+                                            onclick="if(this.checked)this.value=1;else this.value=0;">
                                         <label for="sam">Sam</label>
-                                        <input type="checkbox" id="sam" name="sam" value="0" onclick="if(this.checked)this.value=1;else this.value=0;">
+                                        <input type="checkbox" id="sam" name="sam" value="0"
+                                            onclick="if(this.checked)this.value=1;else this.value=0;">
                                         <label for="dim">Dim</label>
-                                        <input type="checkbox" id="dim" name="dim" value="0" onclick="if(this.checked)this.value=1;else this.value=0;"> 
+                                        <input type="checkbox" id="dim" name="dim" value="0"
+                                            onclick="if(this.checked)this.value=1;else this.value=0;">
                                     </td>
 
                                 </tr>
                                 <tr>
                                     <td>
                                         <label for="soirDebut-nv-rdv" class="col-form-label">Soire heure deb:</label>
-                                        <input type="text" class="form-control" id="soirDebut-nv-rdv"
-                                            name="soirDebut" value="14:00:00">
+                                        <input type="text" class="form-control" id="soirDebut-nv-rdv" name="soirDebut"
+                                            value="14:00:00">
                                     </td>
                                     <td>
                                         <label for="soirFin-nv-rdv" class="col-form-label">Soire heure fin:</label>
-                                        <input type="text" class="form-control" id="soirFin-nv-rdv"
-                                            name="soirFin" value="18:00:00">
+                                        <input type="text" class="form-control" id="soirFin-nv-rdv" name="soirFin"
+                                            value="18:00:00">
                                     </td>
                                 </tr>
                             </table>

@@ -16,6 +16,10 @@ npm install sync-mysql
 npm install mysql-libmysqlclient
 npm install nodejslogger
 
+npm install multer
+npm install sharp
+
+
 cd/d  D:\projets\web\tabibi\utilisa
 
 
@@ -56,6 +60,11 @@ http://localhost:4000/rdvs/rdvs
 http://localhost:4000/rdvs/supp/2
 http://localhost:4000/pat/rchPat/ti
 http://localhost:4000/pra/logOut
+http://localhost:4000/bo/rchrdv.html
+http://localhost:4000/adr/rchAdresse
+http://localhost:4000/bo/image.html
+http://localhost:4000/pra/pra
+http://localhost:4000/bo/praticienProfil.html
 
 
 DROP TABLES praticiens, patients, adresses

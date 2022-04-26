@@ -30,7 +30,7 @@ async function getRdvLibre(req) {
 
     console.log('!!!!!!!!!! DEB getRdvLibre');
     const praticienService = require('praticien/praticien.service');
-    const rdvService1 = require('./rdv.service');
+
     const listePraticiens = await praticienService.getAll();
 
     var listEvent = [];
@@ -40,31 +40,35 @@ async function getRdvLibre(req) {
         console.log('***----forEach------------  pra.id=' + praticien.id);
         const idPraticien = praticien.id;
 
-        var rdvs = await rdvService1.getListeRdvsLibre1(req, idPraticien);
-
-        var events = await transformRdvsLIBREToEvents(rdvs, req, idPraticien);
-
-        var rdvsPra = {
-            idPra: idPraticien,
-            nom: praticien.nom,
-            prenom: praticien.prenom,
-            rdvs: events
-        };
-
-        //listEvent.push(events);
-        listEvent.push(rdvsPra);
+        var rdvs = await rdvService.getListeRdvsLibre1(req, idPraticien);
+        
+        if (0 < rdvs.length) { 
+            var events = await transformRdvsLIBREToEvents(rdvs, idPraticien);
+            var rdvsPra = {
+                idPra: idPraticien,
+                nom: praticien.nom,
+                prenom: praticien.prenom,
+                rdvs: events
+            };
+            listEvent.push(rdvsPra);
+        }else{
+            // TODO
+            // si pas de rdv donc la plage est vide il faut proposer des rdv 
+            // cas de premier rdv pour un nv praticien
+        }
+        
     }
     console.log('!!!!!!!!!! FIN getRdvLibre');
     return listEvent;
 }
 
-async function transformRdvsLIBREToEvents(rdvs, req, idPraticien) {
+async function transformRdvsLIBREToEvents(rdvs, idPraticien) {
     var events = [];
     console.log('----transformRdvsLIBREToEvents ---deb-----taille=' + rdvs.length + ' ' + JSON.stringify(rdvs));
 
     let taille = rdvs.length;
 
-    if (taille == 0) {
+    if (taille == 0) { // TODO
         throw 'pas de rdvs';
     }
     const rdv = rdvs[0];
@@ -105,13 +109,13 @@ async function transformRdvsLIBREToEvents(rdvs, req, idPraticien) {
     };
     events.push(evF);
 
-    events = transformRdvsLibreHoraire(events, req, idPraticien);
+    events = transformRdvsLibreHoraire(events, idPraticien);
     console.log('----transformRdvsLIBREToEvents ----fin----');
     return events;
 }
 
 
-async function transformRdvsLibreHoraire(rdvs, req, idPraticien) {
+async function transformRdvsLibreHoraire(rdvs, idPraticien) {
     console.log('DEB---------rdv.controller-----  transformRdvsLibreHoraire');
     const horaireService = require('praticien/horairePraticien.service');
     //const horairePraticien = await horaireService.getHorairePraticien(req);

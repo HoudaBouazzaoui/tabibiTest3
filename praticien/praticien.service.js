@@ -6,6 +6,7 @@ const adresseService = require('./adresse.service');
 
 
 module.exports = {
+    getByIdComplet,
     getAll,
     getAllComplete,
     getById,
@@ -25,6 +26,10 @@ async function getAllComplete() {
 
 async function getById(id) {
     return await getPraticien(id);
+}
+
+async function getByIdComplet(id) {
+    return await getByIdComplet(id);
 }
 
 async function create(params) {
@@ -86,6 +91,14 @@ async function _delete(id) {
 async function getPraticien(id) {
     const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'}]});
     if (!praticien) throw 'praticien not found';
+    return praticien;
+}
+
+async function getByIdComplet(id) {
+    const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'},{model: db.Profil, as: 'Profil'}]});
+    
+    praticien.Profil.dataImg = Buffer.from(praticien.Profil.dataImg).toString('base64');
+    
     return praticien;
 }
 
