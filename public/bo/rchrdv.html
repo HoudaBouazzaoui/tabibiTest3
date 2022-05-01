@@ -13,7 +13,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script>
 
         $(document).ready(function () {
@@ -38,6 +39,8 @@
 
                 //event.preventDefault();
             });
+
+            $("#id_speCat").combobox();
         });
 
 
@@ -60,6 +63,7 @@
                 },
                 error: function (data) {
                     var iwa = JSON.stringify(data.responseJSON);
+                    $("#resu").html(iwa);
                     console.log("ORROR     KOOO=" + iwa);
                 }
             });
@@ -87,7 +91,9 @@
         }
 
         function selectSpecialite(jsonData) {
-            var listItems = '<option selected="selected" value="">- Select -</option>';
+            
+            var listItems = '<option value>Select one...</option>';
+            //var listItems = '<option selected="selected" value="">- Select -</option>';
             for (var i = 0; i < jsonData.length; i++) {
                 listItems += "<option value='" + jsonData[i].id_speCat + "'>" + jsonData[i].titre + "</option>";
             }
@@ -105,6 +111,7 @@
                     listItems += '<img src="data:' + pro.typeImg + ';base64, ' + pro.dataImg + '" alt="'+ p.nom+'" />';
                 } 
                 listItems += '</div><span class="padding-left100">'+p.titre+' '+p.prenom+' '+p.nom+'</span></div>';
+                listItems += '</div><span class="padding-left100">'+p.id_speCat+'</span></div>';
                 listItems += '<div class="adr padding-left100">'+ard.numero+'<br>'+ard.voie+'<br>'+ard.ville+'</div></div>';
                 
 
@@ -141,6 +148,9 @@
             <form id="rechercheRdv" role="form">
 
                 <div class="">
+
+
+                    
                     <label for="id_speCat" class="col-form-label">Specialite:</label>
                     <select class="form-control" id="id_speCat" name="id_speCat"></select>
     

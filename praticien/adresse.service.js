@@ -29,7 +29,8 @@ async function getListePraticienByAdresse(criterRch) {
     */
     const Op = Sequelize.Op;
     var praticiens = null;
-    if (!villeRch.length && !id_speCat.length) {
+    if (villeRch.length && id_speCat.length) {
+        console.log('---- SERVICE ADRESSE-------CASSSS --------0000000000000000000');
         praticiens = await db.Praticien.findAll({
             include: [{
                 model: db.Adresse,
@@ -42,7 +43,8 @@ async function getListePraticienByAdresse(criterRch) {
             { model: db.Profil, as: 'Profil' }
             ]
         });
-    } else if (villeRch.length && id_speCat.length == 0) {
+    } else if (villeRch.length && !id_speCat.length) {
+        console.log('---- SERVICE ADRESSE-------CASSSS --------1111111111111');
         praticiens = await db.Praticien.findAll({
             include: [{
                 model: db.Adresse,
@@ -53,7 +55,8 @@ async function getListePraticienByAdresse(criterRch) {
             { model: db.Profil, as: 'Profil' }
             ]
         });
-    } else if (villeRch.length == 0 && id_speCat.length) {
+    } else if (!villeRch.length && id_speCat.length) {
+        console.log('---- SERVICE ADRESSE-------CASSSS --------222222222222');
         praticiens = await db.Praticien.findAll({
             include: [{
                 model: db.Adresse,
@@ -64,7 +67,11 @@ async function getListePraticienByAdresse(criterRch) {
             { model: db.Profil, as: 'Profil' }
             ]
         });
-    }
+    } else {
+        console.log('---- SERVICE ADRESSE-------CASSSS --------3333333333333333');
+    } 
+
+    if (!praticiens) throw 'praticien not found';
 
     for (var i = 0; i < praticiens.length; i++) {
         const pra = praticiens[i];
@@ -74,8 +81,8 @@ async function getListePraticienByAdresse(criterRch) {
         }    
     }
 
-    console.log('----FIN SERVICE ADRESSE--------getPraticienByAdresse params=' + JSON.stringify(praticiens));
-    if (!praticiens) throw 'praticien not found';
+    //console.log('----FIN SERVICE ADRESSE--------getPraticienByAdresse params=' + JSON.stringify(praticiens));
+    //if (!praticiens) throw 'praticien not found';
     return praticiens;
 }
 

@@ -32,6 +32,8 @@ async function initialize() {
     db.Praticien.belongsTo(db.Profil);
 
 
+    //db.sequelize = sequelize;
+
     // sync all models with database
     await sequelize.sync({ alter: true });
 }

@@ -16,7 +16,7 @@ async function uploadFiles(req, res) {
         var dataImg = fs.readFileSync("./resources/static/assets/uploads/" + req.file.filename);
 
         // const bufferOut = await sharp(dataImg).resize({ width: 250, height: 250 }).toBuffer();
-        const bufferOut = await sharp(dataImg).resize({ width: 250}).toBuffer();
+        const bufferOut = await sharp(dataImg).resize({ width: 250 }).toBuffer();
 
         const profil = new db.Profil({
             typeImg: req.file.mimetype,
@@ -24,18 +24,17 @@ async function uploadFiles(req, res) {
             //data: fs.readFileSync("./resources/static/assets/uploads/" + req.file.filename),
             dataImg: bufferOut
         });
-
         await profil.save();
         const profilId = profil.id;
-
+        profilId = kawkaw;
         var praticien = req.payload.praticien;
         const praticienId = praticien.id;
         console.log('-----------  praticien.id=' + praticienId + '---------  profilId=' + profilId);
-        
         const result = await db.Praticien.update(
             { ProfilId: profilId },
             { where: { id: praticienId } }
         );
+
 
         console.log('------------------DEB img DERV---------------  uploadFiles CREAT ProfilId=' + profilId);
         fs.writeFileSync("./resources/static/assets/tmp/" + "-petit-" + profil.nomImg, profil.dataImg);
@@ -44,8 +43,8 @@ async function uploadFiles(req, res) {
 
     } catch (error) {
         console.log(error);
-        //return res.send(`Error when trying upload images: ${error}`);
-        throw `Une erreur de telechargement de l image: ${error}`;
+        return res.send(`Error when trying upload images: ${error}`);
+        //throw `Une erreur de telechargement de l image: ${error}`;
     }
     console.log('------------------DEB img DERV---------------  uploadFiles');
 }
@@ -66,7 +65,7 @@ async function uploadFilesOld(req, res) {
         var dataImg = fs.readFileSync("./resources/static/assets/uploads/" + req.file.filename);
 
         // const bufferOut = await sharp(dataImg).resize({ width: 250, height: 250 }).toBuffer();
-        const bufferOut = await sharp(dataImg).resize({ width: 250}).toBuffer();
+        const bufferOut = await sharp(dataImg).resize({ width: 250 }).toBuffer();
 
         const image = new db.Image({
             typeImg: req.file.mimetype,
