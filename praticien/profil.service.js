@@ -26,7 +26,6 @@ async function uploadFiles(req, res) {
         });
         await profil.save();
         const profilId = profil.id;
-        profilId = kawkaw;
         var praticien = req.payload.praticien;
         const praticienId = praticien.id;
         console.log('-----------  praticien.id=' + praticienId + '---------  profilId=' + profilId);
