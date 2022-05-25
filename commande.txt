@@ -18,6 +18,7 @@ npm install nodejslogger
 
 npm install multer
 npm install sharp
+npm install node-cache 
 
 
 cd/d  D:\projets\web\tabibi\utilisa

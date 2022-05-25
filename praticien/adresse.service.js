@@ -1,6 +1,7 @@
 const db = require('db/dbMysql2');
 let consAuth = require("_const/auth");
 const Sequelize = require("sequelize");
+const specialiteService = require('../specialite/specialite.service');
 
 module.exports = {
     getListePraticienByAdresse,
@@ -73,8 +74,14 @@ async function getListePraticienByAdresse(criterRch) {
 
     if (!praticiens) throw 'praticien not found';
 
+    const listeSpe = await specialiteService.getAllCache();
+    
     for (var i = 0; i < praticiens.length; i++) {
         const pra = praticiens[i];
+        var speTitre = await specialiteService.getByCat(pra.id_speCat);
+        var speTitre = listeSpe[pra.id_speCat];
+        pra.id_speCat = speTitre;
+
         const pro = pra.Profil;
         if(pro != null) {
             pro.dataImg = Buffer.from(pro.dataImg).toString('base64');

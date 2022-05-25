@@ -42,3 +42,7 @@ process.nextTick(function () {
     throw new Error("Une Maivaise Error");
 });
 */
+
+// demmarage du cache
+let cacheProvider = require('./cache-provider');
+//cacheProvider.start();

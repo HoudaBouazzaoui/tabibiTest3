@@ -11,6 +11,7 @@ const specialiteService = require('./specialite.service');
 
 // routes
 router.get('/', getAll);
+router.get('/cache', getAllCache);
 router.get('/:id', getByCat);
 
 module.exports = router;
@@ -20,6 +21,13 @@ module.exports = router;
 function getAll(req, res, next) {
     console.log('---------------------------------  getAll');
     specialiteService.getAll()
+        .then(users => res.json(users))
+        .catch(next);
+}
+
+function getAllCache(req, res, next) {
+    console.log('---------------------------------  getAll');
+    specialiteService.getAllCache()
         .then(users => res.json(users))
         .catch(next);
 }
