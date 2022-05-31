@@ -10,6 +10,8 @@
     <!---->
     <!---->
 
+    <script src="../js/utils.js"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
@@ -19,7 +21,7 @@
 
         $(document).ready(function () {
 
-            recupererSpecialite('/cache');
+            recupererSpecialite('/cache', "#id_speCat");
             //recupererSpecialite('');
             
             $("#ville").change(function () {
@@ -69,45 +71,6 @@
                     console.log("ORROR     KOOO=" + iwa);
                 }
             });
-        }
-
-        function recupererSpecialite(cache) {
-            const urlspe = 'http://localhost:4000/spe' + cache;
-            $.ajax({
-                type: "GET",
-                dataType: 'json',
-                url: urlspe,
-                cache: true,
-                success: function (data) {
-                    var iwa = JSON.stringify(data);
-                    //$("#successModal .modal-body p").text('creerr = ' + data.id);
-                    console.log("success     okkkk" + iwa);
-                    selectSpecialite(data);
-                },
-                error: function (xhr, desc, err) {
-                    $("#successModal .modal-body p").text('error = ' + xhr.responseJSON.message);
-                    console.log(xhr.responseJSON.message);
-                    console.log("Details0: " + desc + "\nError:" + err);
-                }
-            });
-        }
-
-
-        function selectSpecialite(jsonData) {
-            
-            var listItems = '<option value>Select one...</option>';
-            //var listItems = '<option selected="selected" value="">- Select -</option>';
-            /*
-            for (var i = 0; i < jsonData.length; i++) {
-                listItems += "<option value='" + jsonData[i].id_speCat + "'>" + jsonData[i].titre + "</option>";
-            }
-*/
-            Object.entries(jsonData).forEach(([key, value]) => {
-                console.log(` `);
-                listItems += "<option value='" + `${key}` + "'>" + `${value}`  + "</option>";
-            });
-
-            $("#id_speCat").html(listItems);
         }
 
         function afficherResultat(jsonData) {

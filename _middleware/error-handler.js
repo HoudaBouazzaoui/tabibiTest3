@@ -6,8 +6,9 @@ module.exports = errorHandler;
 function errorHandler(err, req, res, next) {
     console.log('---------------------------------  errorHandler = '+ err);
     console.error(err);
-    logger.error(err);
-    logger.error(err.stack);
+    const url = req.url + ';' + JSON.stringify(req.params) + ';';
+    logger.error(url + err + '\n' + err.stack);
+    //logger.error(err.stack);
     switch (true) {
         
         case typeof err === 'string':

@@ -65,22 +65,32 @@ async function create(params) {
 }
 
 async function update(id, params) {
+
+    console.log('------------------DEB SERVICE PRATICIEN---------------  update id=' + id);
+    console.log('------------------DEB SERVICE PRATICIEN---------------  update params=' + params);
     const praticien = await getPraticien(id);
 
-    // validate
+    // TODO changement du username et pws voir si nexiste pas dans la base 
+    // faire le changement des params de connexion dans une autre fonction dediee
+    /*
     const usernameChanged = params.username && user.username !== params.username;
     if (usernameChanged && await db.Praticien.findOne({ where: { username: params.username } })) {
         throw 'Username "' + params.username + '" is already taken';
     }
-
     // hash password if it was entered
     if (params.password) {
         params.passwordHash = await bcrypt.hash(params.password, 10);
     }
+    */
+
+    // ne pas modifier les params de connexioooo
+    params.email = praticien.email;
+    //params.motpasse = praticien.motpasse;
 
     // copy params to Praticien and save
     Object.assign(praticien, params);
     await praticien.save();
+    console.log('------------------FIN SERVICE PRATICIEN---------------  update');
 }
 
 async function _delete(id) {
@@ -95,10 +105,13 @@ async function getPraticien(id) {
 }
 
 async function getByIdComplet(id) {
-    const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'},{model: db.Profil, as: 'Profil'}]});
+    const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'},{model: db.HorairePraticien, as: 'HorairePraticien'},{model: db.Profil, as: 'Profil'}]});
     
-    praticien.Profil.dataImg = Buffer.from(praticien.Profil.dataImg).toString('base64');
-    
+    // Image profile decode
+    if (praticien.Profil){
+        praticien.Profil.dataImg = Buffer.from(praticien.Profil.dataImg).toString('base64');
+    }  
+      
     return praticien;
 }
 

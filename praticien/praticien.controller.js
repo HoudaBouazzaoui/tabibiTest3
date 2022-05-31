@@ -19,7 +19,8 @@ router.get('/', getAll);// TODO verifyToken
 router.get('/:id', getById);// TODO verifyToken
 //router.post('/',verifyToken.verifyToken, createSchema, create); // TODO verifyToken
 router.post('/', createSchema, create); // TODO verifyToken
-router.put('/:id', updateSchema, update);// TODO verifyToken
+//router.post('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
+router.put('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
 router.delete('/:id', _delete);// TODO verifyToken
 //router.get('/email/:email', getByEmail);
 router.post('/connect', connect);
@@ -32,7 +33,7 @@ module.exports = router;
 
 function getPraticienConnect(req, res, next) {
     console.log('---------------------------------  getPraticienConnect');
-    let id = req.payload.praticien.id;
+    const id = req.payload.praticien.id;
     praticienService.getByIdComplet(id).then(pra => res.json(pra)).catch(next);
 }
 
@@ -61,10 +62,15 @@ function create(req, res, next) {
 
 function update(req, res, next) {
     // TODO
-    console.log('---------------------------------  update');
-    praticienService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'User updated' }))
+    console.log('---------------------------------  update body=' + JSON.stringify(req.body));
+    if(req.payload.praticien.id != req.params.id){
+        //res.json({ message: 'Il ya un probleme d identifiant' });
+        throw 'Il ya un probleme d identifiant';
+    }else{
+        praticienService.update(req.params.id, req.body)
+        .then(() => res.json({ message: 'Mis a jour' }))
         .catch(next);
+    }
 }
 
 function _delete(req, res, next) {
@@ -139,7 +145,7 @@ function logOut(req, res, next) {
     const jwt = require("jsonwebtoken");
     var payload = req.payload;
 
-    res.cookie(consAuth.ACCESS_TOKEN_NOM, 'tzzzzzzzz', { secure: true, httpOnly: true })
+    res.cookie(consAuth.ACCESS_TOKEN_NOM, 'na3na3', { secure: true, httpOnly: true })
     // TODO erreur lors de la maj du expiresIn
     try {
         let accessToken1 = jwt.sign(payload, consAuth.ACCESS_TOKEN_SECRET, {
