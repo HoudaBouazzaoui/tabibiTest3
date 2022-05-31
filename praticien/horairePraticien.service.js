@@ -38,10 +38,12 @@ async function getAll() {
 }
 
 async function update(id, params) {
+    console.log('------------------DEB SERVICE horairePraticien------  update id='+id+' params=' + JSON.stringify(params) );
     const horairePraticien = await getById(id);
     // copy params to horairePraticien and save
     Object.assign(horairePraticien, params);
     await horairePraticien.save();
+    console.log('------------------FIN SERVICE horairePraticien------  update params=' + JSON.stringify(params));
 }
 
 async function _delete(id) {

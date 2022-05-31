@@ -124,6 +124,14 @@ function peuplerFormPraticien(pra) {
     $("#creerPraticien #sam").prop('checked', pra.HorairePraticien.sam);
     $("#creerPraticien #dim").prop('checked', pra.HorairePraticien.dim);
 
+    $("#creerPraticien #lun").val(pra.HorairePraticien.lun);
+    $("#creerPraticien #mar").val(pra.HorairePraticien.mar);
+    $("#creerPraticien #mer").val(pra.HorairePraticien.mer);
+    $("#creerPraticien #jeu").val(pra.HorairePraticien.jeu);
+    $("#creerPraticien #ven").val(pra.HorairePraticien.ven);
+    $("#creerPraticien #sam").val(pra.HorairePraticien.sam);
+    $("#creerPraticien #dim").val(pra.HorairePraticien.dim);
+
 }
 
 function dateStrYYYYMMDD(d, sP) {

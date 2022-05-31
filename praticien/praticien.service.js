@@ -68,7 +68,8 @@ async function update(id, params) {
 
     console.log('------------------DEB SERVICE PRATICIEN---------------  update id=' + id);
     console.log('------------------DEB SERVICE PRATICIEN---------------  update params=' + params);
-    const praticien = await getPraticien(id);
+    //const praticien = await getPraticien(id);
+    const praticien = await getByIdComplet(id);
 
     // TODO changement du username et pws voir si nexiste pas dans la base 
     // faire le changement des params de connexion dans une autre fonction dediee
@@ -86,6 +87,10 @@ async function update(id, params) {
     // ne pas modifier les params de connexioooo
     params.email = praticien.email;
     params.motpasse = praticien.motpasse;
+
+    const idH = praticien.HorairePraticien.id;
+    const horaireService = require('./horairePraticien.service');
+    const horairePraticien = await horaireService.update(idH, params.horairePraticien);
 
     // copy params to Praticien and save
     Object.assign(praticien, params);
