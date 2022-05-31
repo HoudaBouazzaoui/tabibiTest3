@@ -85,7 +85,7 @@ async function update(id, params) {
 
     // ne pas modifier les params de connexioooo
     params.email = praticien.email;
-    //params.motpasse = praticien.motpasse;
+    params.motpasse = praticien.motpasse;
 
     // copy params to Praticien and save
     Object.assign(praticien, params);
