@@ -29,12 +29,21 @@
 
             $("#successModal").modal("show");
 
-            $("#creerPraticien").submit(function (event) {
+            $("#modifierPraticien").submit(function (event) {
+                alert('modifierPraticien');
                 var praticien = construirePraticien();
                 // $("#successModal").modal('hide');
                 modifierPraticien(praticien);
                 return false;
             });
+
+            $("#modifierHoraire").submit(function (event) {
+                alert('modifierHoraire');
+                var praticien = construirePraticien();
+                modifierHoraire(praticien);
+                return false;
+            });
+
         });
 
         function recupererPraticien() {
@@ -72,7 +81,44 @@
 
             $("#resu").html(listItems);
         }
-        
+
+        function modifierHoraire(praticien) {
+            const praid = praticien.id;
+            alert('praid = ' + praid);
+            const horData = JSON.stringify(praticien.horairePraticien);
+            alert(horData);
+            console.log(horData);
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "http://localhost:4000/hor/mod/" + praid,
+                cache: false,
+                data: horData,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text(iwa);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    //alert('error = ');
+                    var errMessage1;
+                    var errMessage2;
+                    if (err) {
+                        errMessage1 = err;
+                    } else {
+                        alert('xhr.responseJSON.message');
+                        errMessage2 = xhr.responseJSON.message;
+                    }
+                    $("#successModal .modal-body p").text('errMessage1 = ' + errMessage1 + ' errMessage2 = '+errMessage2);
+                    console.log(errMessage);
+                    console.log("Details0: " + desc + "\nError:" + err);
+                }
+            });
+
+        }
+
+
         function modifierPraticien(praticien) {
 
             const praid = praticien.id;
@@ -86,7 +132,7 @@
                 type: "PUT",
                 contentType: "application/json",
                 dataType: 'json',
-                url: "http://localhost:4000/pra/mod/"+praid,
+                url: "http://localhost:4000/pra/mod/" + praid,
                 cache: false,
                 data: praData,
                 success: function (data) {
@@ -97,9 +143,9 @@
                 error: function (xhr, desc, err) {
                     //alert('error = ');
                     var errMessage;
-                    if(err){
+                    if (err) {
                         errMessage = err;
-                    }else{
+                    } else {
                         alert('xhr.responseJSON.message');
                         errMessage = xhr.responseJSON.message;
                     }
@@ -108,6 +154,7 @@
                     console.log("Details0: " + desc + "\nError:" + err);
                 }
             });
+
         }
     </script>
 
@@ -171,7 +218,7 @@
                 </button>
                 <p></p>
 
-                <form id="creerPraticien" name="contact" role="form">
+                <form id="modifierPraticien" name="contact" role="form">
 
                     <input id="praId" name="praId" type="hidden" value="">
 
@@ -247,62 +294,73 @@
                         <input type="text" class="form-control" id="ville" name="ville">
                     </div>
 
-                    <table>
-                        <tr>
-                            <td>
-                                <label for="matinDebut" class="col-form-label">Mat heure deb:</label>
-                                <input type="text" class="form-control" id="matinDebut" name="matinDebut"
-                                    value="08:00:00">
-                            </td>
-                            <td>
-                                <label for="matinFin" class="col-form-label">Mat heure fin:</label>
-                                <input type="text" class="form-control" id="matinFin" name="matinFin" value="12:00:00">
-                            </td>
-                            <td rowspan="2">
-                                <label for="lun">Lun</label>
-                                <input type="checkbox" id="lun" name="lun" value="true" checked
-                                    onclick="if(this.checked)this.value=true;else this.value=false;">
-                                <label for="mar">Mar</label>
-                                <input type="checkbox" id="mar" name="mar" value="true" checked
-                                    onclick="if(this.checked)this.value=true;else this.value=false;">
-                                <label for="mer">Mer</label>
-                                <input type="checkbox" id="mer" name="mer" value="true" checked
-                                    onclick="if(this.checked)this.value=true;else this.value=false;">
-                                <label for="jeu">Jeu</label>
-                                <input type="checkbox" id="jeu" name="jeu" value="true" checked
-                                    onclick="if(this.checked)this.value=true;else this.value=false;">
-                                <label for="ven">Ven</label>
-                                <input type="checkbox" id="ven" name="ven" value="true" checked
-                                    onclick="if(this.checked)this.value=true;else this.value=false;">
-                                <label for="sam">Sam</label>
-                                <input type="checkbox" id="sam" name="sam" value="false"
-                                    onclick="if(this.checked)this.value=true;else this.value=false;">
-                                <label for="dim">Dim</label>
-                                <input type="checkbox" id="dim" name="dim" value="false"
-                                    onclick="if(this.checked)this.value=true;else this.value=false;">
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="soirDebut" class="col-form-label">Soire heure deb:</label>
-                                <input type="text" class="form-control" id="soirDebut" name="soirDebut"
-                                    value="14:00:00">
-                            </td>
-                            <td>
-                                <label for="soirFin" class="col-form-label">Soire heure fin:</label>
-                                <input type="text" class="form-control" id="soirFin" name="soirFin" value="18:00:00">
-                            </td>
-                        </tr>
-                    </table>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                        <input id="buttonCreerPraticien" type="submit" class="btn btn-success success"
-                            value="Modifier Praticien">
-                    </div>
-
+                    <input id="buttonModifierPraticien" type="submit" class="btn btn-success success"
+                        value="Modifier Praticien">
                 </form>
+                
+                <form id="modifierHoraire" action="#">
+                    <fieldset>
+                        <legend>Horaires</legend>
+                        <table>
+                            <tr>
+                                <td>
+                                    <label for="matinDebut" class="col-form-label">Mat heure deb:</label>
+                                    <input type="text" class="form-control" id="matinDebut" name="matinDebut"
+                                        value="08:00:00">
+                                </td>
+                                <td>
+                                    <label for="matinFin" class="col-form-label">Mat heure fin:</label>
+                                    <input type="text" class="form-control" id="matinFin" name="matinFin"
+                                        value="12:00:00">
+                                </td>
+                                <td rowspan="2">
+                                    <label for="lun">Lun</label>
+                                    <input type="checkbox" id="lun" name="lun" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="mar">Mar</label>
+                                    <input type="checkbox" id="mar" name="mar" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="mer">Mer</label>
+                                    <input type="checkbox" id="mer" name="mer" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="jeu">Jeu</label>
+                                    <input type="checkbox" id="jeu" name="jeu" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="ven">Ven</label>
+                                    <input type="checkbox" id="ven" name="ven" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="sam">Sam</label>
+                                    <input type="checkbox" id="sam" name="sam" value="false"
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="dim">Dim</label>
+                                    <input type="checkbox" id="dim" name="dim" value="false"
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="soirDebut" class="col-form-label">Soire heure deb:</label>
+                                    <input type="text" class="form-control" id="soirDebut" name="soirDebut"
+                                        value="14:00:00">
+                                </td>
+                                <td>
+                                    <label for="soirFin" class="col-form-label">Soire heure fin:</label>
+                                    <input type="text" class="form-control" id="soirFin" name="soirFin"
+                                        value="18:00:00">
+                                </td>
+                            </tr>
+                        </table>
+                        <input id="buttonModifierHoraire" type="submit" class="btn btn-success success"
+                            value="Modifier Horaire">
+                    </fieldset>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+
+                </div>
+
+
             </div>
         </div>
     </div>

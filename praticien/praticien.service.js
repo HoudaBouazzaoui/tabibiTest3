@@ -6,31 +6,16 @@ const adresseService = require('./adresse.service');
 
 
 module.exports = {
-    getByIdComplet,
-    getAll,
-    getAllComplete,
-    getById,
-    create,
-    update,
-    delete: _delete,
-    connect
+    create
+    ,update
+    ,connect
+    //,delete: _delete  
+    ,getByIdComplet
+    ,getAll
+    ,getAllComplete
+    ,getById
 };
 
-async function getAll() {
-    return await db.Praticien.findAll();
-}
-
-async function getAllComplete() {
-    return await db.Praticien.findAll({ include: [{model: db.Adresse, as: 'Adresse'}]});
-}
-
-async function getById(id) {
-    return await getPraticien(id);
-}
-
-async function getByIdComplet(id) {
-    return await getByIdComplet(id);
-}
 
 async function create(params) {
     // TODO peut etre mettre une transaction afin errors to rollback car 2 creation adresse et praticien
@@ -88,6 +73,9 @@ async function update(id, params) {
     params.email = praticien.email;
     params.motpasse = praticien.motpasse;
 
+    const idA = praticien.Adresse.id;
+    const adresse = await adresseService.update(idA, params.adresse);
+
     const idH = praticien.HorairePraticien.id;
     const horaireService = require('./horairePraticien.service');
     const horairePraticien = await horaireService.update(idH, params.horairePraticien);
@@ -98,54 +86,30 @@ async function update(id, params) {
     console.log('------------------FIN SERVICE PRATICIEN---------------  update');
 }
 
-async function _delete(id) {
-    const praticien = await getPraticien(id);
-    await praticien.destroy();
-}
-
-async function getPraticien(id) {
-    const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'}]});
-    if (!praticien) throw 'praticien not found';
-    return praticien;
-}
-
-async function getByIdComplet(id) {
-    const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'},{model: db.HorairePraticien, as: 'HorairePraticien'},{model: db.Profil, as: 'Profil'}]});
-    
-    // Image profile decode
-    if (praticien.Profil){
-        praticien.Profil.dataImg = Buffer.from(praticien.Profil.dataImg).toString('base64');
-    }  
-      
-    return praticien;
-}
-
 async function connect(params, res) {
     console.log('------------------DEB---------------  connect praticien servicepassword = ' + params.password);
     var passwordHash = await bcrypt.hash(params.password, 10);
     console.log('-------------------1--------------  connect praticien servicepasswordHash = ' + passwordHash);
 
-    var praticien = await getUserByEmail(params.email);
+    let praticienPay = await getUserByEmail(params.email);
 
-    console.log('--------*************--THE praticien.HorairePraticienId = ' + praticien.HorairePraticienId);
+    console.log('*************--THE praticien.HorairePraticienId = ' + praticienPay.HorairePraticienId);
 
-    if (!praticien){ // TODO
+    if (!praticienPay){ // TODO
         throw 'L email est inconnue';
-    }
-        
+    }      
 
-    console.log('-------------------2--------------  connect praticien servicepraticien.passwordHash = ' + praticien.passwordHash);
+    console.log('-------------------2--------------  connect praticien servicepraticien.passwordHash = ' + praticienPay.passwordHash);
 
-    bcrypt.compare(params.password, praticien.motpasse, (err, data) => {
+    bcrypt.compare(params.password, praticienPay.motpasse, (err, data) => {
         //if error than throw error
         if (err) throw err;
         //if both match than you can do anything
         if (data) {
-            console.log('---------------3------------------  connect praticien serviceokk success ');
+            console.log('---------------3------------------  connect praticien serviceokk success');
 
-            let praticienToken = praticien;
             //use the payload to store information about the user such as username, user role, etc.
-            let payload = { praticien: praticienToken };
+            let payload = { praticien: praticienPay };
             
             let accessToken = jwt.sign(payload, consAuth.ACCESS_TOKEN_SECRET, {
                 algorithm: consAuth.ALGORITHM,
@@ -163,7 +127,7 @@ async function connect(params, res) {
             
             res.status(200).json({
                 msg: "Login success",
-                userId: praticien.id,
+                userId: praticienPay.id,
                 token: accessToken
             });
         } else {
@@ -175,7 +139,44 @@ async function connect(params, res) {
         }
 
     });
+    return praticienPay;
+}
+
+async function _delete(id) {
+    const praticien = await getPraticien(id);
+    await praticien.destroy();
+}
+
+async function getPraticien(id) {
+    const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'}]});
+    if (!praticien) throw 'praticien not found';
     return praticien;
+}
+
+async function getByIdComplet(id) {
+    return await getByIdComplet(id);
+}
+async function getByIdComplet(id) {
+    const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'},{model: db.HorairePraticien, as: 'HorairePraticien'},{model: db.Profil, as: 'Profil'}]});
+    
+    // Image profile decode
+    if (praticien.Profil){
+        praticien.Profil.dataImg = Buffer.from(praticien.Profil.dataImg).toString('base64');
+    }  
+      
+    return praticien;
+}
+
+async function getAll() {
+    return await db.Praticien.findAll();
+}
+
+async function getAllComplete() {
+    return await db.Praticien.findAll({ include: [{model: db.Adresse, as: 'Adresse'}]});
+}
+
+async function getById(id) {
+    return await getPraticien(id);
 }
 
 async function getUserByEmail(email) {

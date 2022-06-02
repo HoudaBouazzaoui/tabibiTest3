@@ -112,10 +112,12 @@ async function create(params) {
 }
 
 async function update(id, params) {
+    console.log('---------DEB SERVICE ADRESSE----------  update id='+id+' params=' + params);
     const adresse = await getAdresse(id);
     // copy params to adresse and save
     Object.assign(adresse, params);
     await adresse.save();
+    console.log('---------FIN SERVICE ADRESSE----------  update');
 }
 
 async function _delete(id) {

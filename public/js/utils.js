@@ -42,44 +42,44 @@ function construirePraticien() {
 
     var praticien = {
 
-        id: $("#creerPraticien #praId").val(),
+        id: $("#praId").val(),
 
         image: $("#imgProfil").files,
 
-        id_speCat: $("#creerPraticien #id_speCat").val(),
+        id_speCat: $("#id_speCat").val(),
 
-        titre: $("#creerPraticien #titre").val(),
-        nom: $("#creerPraticien #nom").val(),
-        prenom: $("#creerPraticien #prenom").val(),
-        dateNaissance: $("#creerPraticien #dateNaissance").val(),
+        titre: $("#titre").val(),
+        nom: $("#nom").val(),
+        prenom: $("#prenom").val(),
+        dateNaissance: $("#dateNaissance").val(),
 
-        email: $("#creerPraticien #email").val(),
+        email: $("#email").val(),
 
-        telephone: $("#creerPraticien #telephone").val(),
-        fax: $("#creerPraticien #fax").val(),
+        telephone: $("#telephone").val(),
+        fax: $("#fax").val(),
 
-        motpasse: $("#creerPraticien #motpasse").val(),
-        motpasseConfirme: $("#creerPraticien #motpasseConfirme").val(),
+        motpasse: $("#motpasse").val(),
+        motpasseConfirme: $("#motpasseConfirme").val(),
 
         adresse: {
-            numero: $("#creerPraticien #numero").val(),
-            voie: $("#creerPraticien #voie").val(),
-            codePostale: $("#creerPraticien #codePostale").val(),
-            ville: $("#creerPraticien #ville").val()
+            numero: $("#numero").val(),
+            voie: $("#voie").val(),
+            codePostale: $("#codePostale").val(),
+            ville: $("#ville").val()
         },
         horairePraticien: {
-            matinDebut: $("#creerPraticien #matinDebut").val(),
-            matinFin: $("#creerPraticien #matinFin").val(),
-            soirDebut: $("#creerPraticien #soirDebut").val(),
-            soirFin: $("#creerPraticien #soirFin").val(),
+            matinDebut: $("#matinDebut").val(),
+            matinFin: $("#matinFin").val(),
+            soirDebut: $("#soirDebut").val(),
+            soirFin: $("#soirFin").val(),
 
-            lun: $("#creerPraticien #lun").val(),
-            mar: $("#creerPraticien #mar").val(),
-            mer: $("#creerPraticien #mer").val(),
-            jeu: $("#creerPraticien #jeu").val(),
-            ven: $("#creerPraticien #ven").val(),
-            sam: $("#creerPraticien #sam").val(),
-            dim: $("#creerPraticien #dim").val()
+            lun: $("#lun").val(),
+            mar: $("#mar").val(),
+            mer: $("#mer").val(),
+            jeu: $("#jeu").val(),
+            ven: $("#ven").val(),
+            sam: $("#sam").val(),
+            dim: $("#dim").val()
         }
     };
 
@@ -90,47 +90,47 @@ function peuplerFormPraticien(pra) {
 
     //image: $("#imgProfil").files;
 
-    $("#creerPraticien #praId").val(pra.id);
+    $("#praId").val(pra.id);
 
-    $("#creerPraticien #id_speCat").val(pra.id_speCat);
+    $("#id_speCat").val(pra.id_speCat);
 
-    $("#creerPraticien #titre").val(pra.titre);
-    $("#creerPraticien #nom").val(pra.nom);
-    $("#creerPraticien #prenom").val(pra.prenom);
-    $("#creerPraticien #dateNaissance").val(dateStrYYYYMMDD(pra.dateNaissance, '-'));
+    $("#titre").val(pra.titre);
+    $("#nom").val(pra.nom);
+    $("#prenom").val(pra.prenom);
+    $("#dateNaissance").val(dateStrYYYYMMDD(pra.dateNaissance, '-'));
 
-    $("#creerPraticien #email").val(pra.email);
+    $("#email").val(pra.email);
 
-    $("#creerPraticien #telephone").val(pra.telephone);
-    $("#creerPraticien #fax").val(pra.fax);
+    $("#telephone").val(pra.telephone);
+    $("#fax").val(pra.fax);
 
-    $("#creerPraticien #motpasse").val(pra.motpasse);
+    $("#motpasse").val(pra.motpasse);
 
-    $("#creerPraticien #numero").val(pra.Adresse.numero);
-    $("#creerPraticien #voie").val(pra.Adresse.voie);
-    $("#creerPraticien #codePostale").val(pra.Adresse.codePostale);
-    $("#creerPraticien #ville").val(pra.Adresse.ville)
+    $("#numero").val(pra.Adresse.numero);
+    $("#voie").val(pra.Adresse.voie);
+    $("#codePostale").val(pra.Adresse.codePostale);
+    $("#ville").val(pra.Adresse.ville)
 
-    $("#creerPraticien #matinDebut").val(pra.HorairePraticien.matinDebut);
-    $("#creerPraticien #matinFin").val(pra.HorairePraticien.matinFin);
-    $("#creerPraticien #soirDebut").val(pra.HorairePraticien.soirDebut);
-    $("#creerPraticien #soirFin").val(pra.HorairePraticien.soirFin);
+    $("#matinDebut").val(pra.HorairePraticien.matinDebut);
+    $("#matinFin").val(pra.HorairePraticien.matinFin);
+    $("#soirDebut").val(pra.HorairePraticien.soirDebut);
+    $("#soirFin").val(pra.HorairePraticien.soirFin);
 
-    $("#creerPraticien #lun").prop('checked', pra.HorairePraticien.lun);
-    $("#creerPraticien #mar").prop('checked', pra.HorairePraticien.mar);
-    $("#creerPraticien #mer").prop('checked', pra.HorairePraticien.mer);
-    $("#creerPraticien #jeu").prop('checked', pra.HorairePraticien.jeu);
-    $("#creerPraticien #ven").prop('checked', pra.HorairePraticien.ven);
-    $("#creerPraticien #sam").prop('checked', pra.HorairePraticien.sam);
-    $("#creerPraticien #dim").prop('checked', pra.HorairePraticien.dim);
+    $("#lun").prop('checked', pra.HorairePraticien.lun);
+    $("#mar").prop('checked', pra.HorairePraticien.mar);
+    $("#mer").prop('checked', pra.HorairePraticien.mer);
+    $("#jeu").prop('checked', pra.HorairePraticien.jeu);
+    $("#ven").prop('checked', pra.HorairePraticien.ven);
+    $("#sam").prop('checked', pra.HorairePraticien.sam);
+    $("#dim").prop('checked', pra.HorairePraticien.dim);
 
-    $("#creerPraticien #lun").val(pra.HorairePraticien.lun);
-    $("#creerPraticien #mar").val(pra.HorairePraticien.mar);
-    $("#creerPraticien #mer").val(pra.HorairePraticien.mer);
-    $("#creerPraticien #jeu").val(pra.HorairePraticien.jeu);
-    $("#creerPraticien #ven").val(pra.HorairePraticien.ven);
-    $("#creerPraticien #sam").val(pra.HorairePraticien.sam);
-    $("#creerPraticien #dim").val(pra.HorairePraticien.dim);
+    $("#lun").val(pra.HorairePraticien.lun);
+    $("#mar").val(pra.HorairePraticien.mar);
+    $("#mer").val(pra.HorairePraticien.mer);
+    $("#jeu").val(pra.HorairePraticien.jeu);
+    $("#ven").val(pra.HorairePraticien.ven);
+    $("#sam").val(pra.HorairePraticien.sam);
+    $("#dim").val(pra.HorairePraticien.dim);
 
 }
 

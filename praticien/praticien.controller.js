@@ -13,23 +13,49 @@ const app = express();
 app.use(cookieParser());
 
 // routes
+router.post('/', createSchema, create); // TODO verifyToken
+router.put('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
+router.post('/connect', connect);
 router.get('/pra/',verifyToken.verifyToken, getPraticienConnect);
 router.get('/logOut/',verifyToken.verifyToken, logOut);
+
 router.get('/', getAll);// TODO verifyToken
-router.get('/:id', getById);// TODO verifyToken
-//router.post('/',verifyToken.verifyToken, createSchema, create); // TODO verifyToken
-router.post('/', createSchema, create); // TODO verifyToken
+//router.get('/:id', getById);// TODO verifyToken
+//router.post('/',verifyToken.verifyToken, createSchema, create); // TODO verifyToke
 //router.post('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
-router.put('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
-router.delete('/:id', _delete);// TODO verifyToken
+//router.delete('/:id', _delete);// TODO verifyToken
 //router.get('/email/:email', getByEmail);
-router.post('/connect', connect);
-
-
 
 module.exports = router;
 
-// route functions
+function connect(req, res, next) {
+    console.log('------------------DEB---------------praticien.controller  connect ');
+    var message = '';
+    //praticienService.connect(req.body, res).then(user => res.json(user)).catch(next);
+    praticienService.connect(req.body, res).catch(next);
+    console.log('------------------FIN---------------praticien.controller  connect ');
+}
+
+function create(req, res, next) {
+    console.log('---------------------------------  create body=' + JSON.stringify(req.body));
+    praticienService.create(req.body)
+        .then(praticien => res.json(praticien))
+        .catch(next);
+}
+
+function update(req, res, next) {
+    // TODO
+    console.log('---------------------------------  update body=' + JSON.stringify(req.body));
+    // on verifie l id praticien avec l id praticien envoye
+    if(req.payload.praticien.id != req.params.id){
+        //res.json({ message: 'Il ya un probleme d identifiant' });
+        throw 'Il ya un probleme d identifiant';
+    }else{
+        praticienService.update(req.params.id, req.body)
+        .then(() => res.json({ message: 'Mis a jour' }))
+        .catch(next);
+    }
+}
 
 function getPraticienConnect(req, res, next) {
     console.log('---------------------------------  getPraticienConnect');
@@ -51,26 +77,6 @@ function getById(req, res, next) {
     praticienService.getById(req.params.id)
         .then(user => res.json(user))
         .catch(next);
-}
-
-function create(req, res, next) {
-    console.log('---------------------------------  create body=' + JSON.stringify(req.body));
-    praticienService.create(req.body)
-        .then(praticien => res.json(praticien))
-        .catch(next);
-}
-
-function update(req, res, next) {
-    // TODO
-    console.log('---------------------------------  update body=' + JSON.stringify(req.body));
-    if(req.payload.praticien.id != req.params.id){
-        //res.json({ message: 'Il ya un probleme d identifiant' });
-        throw 'Il ya un probleme d identifiant';
-    }else{
-        praticienService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'Mis a jour' }))
-        .catch(next);
-    }
 }
 
 function _delete(req, res, next) {
@@ -103,24 +109,23 @@ function createSchema(req, res, next) {
 function updateSchema(req, res, next) {
     console.log('---------------------------------  updateSchema');
     const schema = Joi.object({
-        title: Joi.string().empty(''),
-        firstName: Joi.string().empty(''),
-        lastName: Joi.string().empty(''),
-        role: Joi.string().valid(Role.Admin, Role.User).empty(''),
-        phoneNumber: Joi.string().empty(''),
+        id_speCat: Joi.string().empty(''),
+        titre: Joi.string().empty(''),
+        //titre: Joi.string().valid(Role.Admin, Role.User).empty(''),
+        nom: Joi.string().empty(''),
+        prenom: Joi.string().empty(''),
+        nom: Joi.string().empty(''),
+        dateNaissance: Joi.string().empty(''),
         email: Joi.string().email().empty(''),
-        password: Joi.string().min(6).empty(''),
-        confirmPassword: Joi.string().valid(Joi.ref('password')).empty('')
+        telephone: Joi.string().min(10).empty(''),
+        fax: Joi.string().min(10).empty(''),
+        nom: Joi.string().empty(''),
+        nom: Joi.string().empty(''),
+        nom: Joi.string().empty(''),
+        motpasse: Joi.string().min(6).empty(''),
+        motpasseConfirme: Joi.string().valid(Joi.ref('password')).empty('')
     }).with('password', 'confirmPassword');
     validateRequest(req, next, schema);
-}
-
-function connect(req, res, next) {
-    console.log('------------------DEB---------------praticien.controller  connect ');
-    var message = '';
-    //praticienService.connect(req.body, res).then(user => res.json(user)).catch(next);
-    praticienService.connect(req.body, res).catch(next);
-    console.log('------------------FIN---------------praticien.controller  connect ');
 }
 
 function logOut(req, res, next) {
