@@ -4,12 +4,12 @@ const Sequelize = require("sequelize");
 const specialiteService = require('../specialite/specialite.service');
 
 module.exports = {
-    getListePraticienByAdresse,
-    getAll,
-    getById,
-    create,
-    update,
-    delete: _delete
+    getListePraticienByAdresse
+    ,update
+    ,create 
+    //,getAll
+    //,getById 
+    //,delete: _delete
 };
 
 async function getListePraticienByAdresse(criterRch) {
@@ -93,12 +93,20 @@ async function getListePraticienByAdresse(criterRch) {
     return praticiens;
 }
 
-async function getAll() {
-    return await db.Adresse.findAll();
+async function update(id, params) {
+    console.log('---------DEB SERVICE ADRESSE----------  update id='+id+' params=' + params);
+    const adresse = await getAdresse(id);
+    // copy params to adresse and save
+    Object.assign(adresse, params);
+    await adresse.save();
+    console.log('---------FIN SERVICE ADRESSE----------  update');
 }
-
 async function getById(id) {
     return await getAdresse(id);
+}
+
+async function getAll() {
+    return await db.Adresse.findAll();
 }
 
 async function create(params) {
@@ -111,14 +119,7 @@ async function create(params) {
     return adresse;
 }
 
-async function update(id, params) {
-    console.log('---------DEB SERVICE ADRESSE----------  update id='+id+' params=' + params);
-    const adresse = await getAdresse(id);
-    // copy params to adresse and save
-    Object.assign(adresse, params);
-    await adresse.save();
-    console.log('---------FIN SERVICE ADRESSE----------  update');
-}
+
 
 async function _delete(id) {
     const adresse = await getAdresse(id);

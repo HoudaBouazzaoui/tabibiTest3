@@ -5,11 +5,13 @@ const validateRequest = require('_middleware/validate-request');
 const verifyToken = require("_middleware/auth");
 const horaireService = require('./horairePraticien.service');
 
+/*
 var cookieParser = require('cookie-parser')
 const app = express();
 app.use(cookieParser());
+*/
 
-// routes
+
 router.get('/horaire', verifyToken.verifyToken, getByIdPraticien);
 router.put('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
 module.exports = router;

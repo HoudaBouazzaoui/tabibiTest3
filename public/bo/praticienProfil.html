@@ -44,6 +44,14 @@
                 return false;
             });
 
+            $("#modifierAdresse").submit(function (event) {
+                alert('modifierAdresse');
+                var praticien = construirePraticien();
+                modifierAdresse(praticien);
+                return false;
+            });
+
+
         });
 
         function recupererPraticien() {
@@ -82,43 +90,6 @@
             $("#resu").html(listItems);
         }
 
-        function modifierHoraire(praticien) {
-            const praid = praticien.id;
-            alert('praid = ' + praid);
-            const horData = JSON.stringify(praticien.horairePraticien);
-            alert(horData);
-            console.log(horData);
-            $.ajax({
-                type: "PUT",
-                contentType: "application/json",
-                dataType: 'json',
-                url: "http://localhost:4000/hor/mod/" + praid,
-                cache: false,
-                data: horData,
-                success: function (data) {
-                    var iwa = JSON.stringify(data);
-                    $("#successModal .modal-body p").text(iwa);
-                    console.log("success     okkkk" + iwa);
-                },
-                error: function (xhr, desc, err) {
-                    //alert('error = ');
-                    var errMessage1;
-                    var errMessage2;
-                    if (err) {
-                        errMessage1 = err;
-                    } else {
-                        alert('xhr.responseJSON.message');
-                        errMessage2 = xhr.responseJSON.message;
-                    }
-                    $("#successModal .modal-body p").text('errMessage1 = ' + errMessage1 + ' errMessage2 = '+errMessage2);
-                    console.log(errMessage);
-                    console.log("Details0: " + desc + "\nError:" + err);
-                }
-            });
-
-        }
-
-
         function modifierPraticien(praticien) {
 
             const praid = praticien.id;
@@ -141,20 +112,101 @@
                     console.log("success     okkkk" + iwa);
                 },
                 error: function (xhr, desc, err) {
-                    //alert('error = ');
-                    var errMessage;
-                    if (err) {
-                        errMessage = err;
-                    } else {
-                        alert('xhr.responseJSON.message');
-                        errMessage = xhr.responseJSON.message;
-                    }
-                    $("#successModal .modal-body p").text('error = ' + errMessage);
-                    console.log(errMessage);
-                    console.log("Details0: " + desc + "\nError:" + err);
+                    gererErreur(xhr, desc, err);
                 }
             });
+        }
 
+        function modifierAdresse(praticien) {
+            const praid = praticien.id;
+            alert('praid = ' + praid);
+            const adrData = JSON.stringify(praticien.adresse);
+            alert(adrData);
+            console.log(adrData);
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "http://localhost:4000/adr/mod/" + praid,
+                //url: "http://localhost:4000/adr/mod/" ,
+                cache: false,
+                data: adrData,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text(iwa);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    gererErreur(xhr, desc, err);
+                }
+            });
+        }
+
+        function modifierHoraire(praticien) {
+            const praid = praticien.id;
+            alert('praid = ' + praid);
+            const horData = JSON.stringify(praticien.horairePraticien);
+            alert(horData);
+            console.log(horData);
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "http://localhost:4000/hor/mod/" + praid,
+                cache: false,
+                data: horData,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text(iwa);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    gererErreur(xhr, desc, err);
+                }
+            });
+        }
+
+        function gererErreur(xhr, desc, err) {
+
+            alert('error status=' + xhr.status);
+            
+            var errMessage1 = '';
+            var errMessage2 = '';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errMessage1 = xhr.responseJSON.message;
+            } else {
+                errMessage2 = err;
+            }
+
+            if (400 == xhr.status) {
+                // recuperation des champs en erreur a partir du message
+                // et affichage en rouge 
+                var tab = errMessage1.split('"');
+                tab.forEach(element => {
+                    alert(element);
+                    // lors des erreur de validation 
+                    // identifier les champs a partir du message d erreur 
+                    if (!element.includes(' ')) {
+                        alert('NO ESSSS ' + element);
+                        if ($('#' + element).length) {// test pour eviter les erreur de compil
+                            $('#' + element).css('border-color', '#c89494');
+                        }
+                    }
+                });
+                alert(tab);
+                console.log(tab);
+            } else if (404 == xhr.status) {
+                // TODO ou rediriger 
+                alert('404 probleme technique ; TODO ou rediriger ?');
+            } else if (401 == xhr.status) {
+                // TODO page de connexion
+                alert('401 exipirationnnn ; TODO page de connexion');
+            }
+            
+
+            $("#successModal .modal-body p").text('errMessage1 = ' + errMessage1 + ' errMessage2 = ' + errMessage2);
+            console.log(errMessage);
+            console.log("Details0: " + desc + "\nError:" + err);
         }
     </script>
 
@@ -276,28 +328,36 @@
                         <input type="date" class="form-control" name="dateNaissance" id="dateNaissance" value=""
                             min="1900-01-01" max="2022-12-31">
                     </div>
-
-                    <div class="form-group">
-                        <label for="numero" class="col-form-label">Numero:</label>
-                        <input type="text" class="form-control" id="numero" name="numero">
-                    </div>
-                    <div class="form-group">
-                        <label for="voie" class="col-form-label">Voie:</label>
-                        <input type="text" class="form-control" id="voie" name="voie">
-                    </div>
-                    <div class="form-group">
-                        <label for="codePostale" class="col-form-label">CP:</label>
-                        <input type="text" class="form-control" id="codePostale" name="codePostale">
-                    </div>
-                    <div class="form-group">
-                        <label for="ville" class="col-form-label">Ville:</label>
-                        <input type="text" class="form-control" id="ville" name="ville">
-                    </div>
-
                     <input id="buttonModifierPraticien" type="submit" class="btn btn-success success"
                         value="Modifier Praticien">
                 </form>
-                
+
+                <form id="modifierAdresse" action="#">
+                    <fieldset>
+                        <legend>Adresse</legend>
+
+                        <div class="form-group">
+                            <label for="numero" class="col-form-label">Numero:</label>
+                            <input type="text" class="form-control" id="numero" name="numero">
+                        </div>
+                        <div class="form-group">
+                            <label for="voie" class="col-form-label">Voie:</label>
+                            <input type="text" class="form-control" id="voie" name="voie">
+                        </div>
+                        <div class="form-group">
+                            <label for="codePostale" class="col-form-label">CP:</label>
+                            <input type="text" class="form-control" id="codePostale" name="codePostale">
+                        </div>
+                        <div class="form-group">
+                            <label for="ville" class="col-form-label">Ville:</label>
+                            <input type="text" class="form-control" id="ville" name="ville">
+                        </div>
+
+                        <input id="buttonAodifierAdresse" type="submit" class="btn btn-success success"
+                            value="Modifier Adresse">
+                    </fieldset>
+                </form>
+
                 <form id="modifierHoraire" action="#">
                     <fieldset>
                         <legend>Horaires</legend>

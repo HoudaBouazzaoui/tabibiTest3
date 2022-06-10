@@ -13,6 +13,8 @@ const app = express();
 app.use(cookieParser());
 
 // routes
+router.get('/esp', chargement);
+
 router.post('/', createSchema, create); // TODO verifyToken
 router.put('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
 router.post('/connect', connect);
@@ -27,6 +29,19 @@ router.get('/', getAll);// TODO verifyToken
 //router.get('/email/:email', getByEmail);
 
 module.exports = router;
+
+// todo methode pur charger un html
+function chargement(req, res, next) {
+    console.log('------------------DEB--------chargement __dirname=' + __dirname);
+    var message = '';
+
+    const path = require("path");
+    let indexPath = path.join(__dirname, "/../public/bo/lesRDV.html");
+
+    //res.sendFile(__dirname + "/../public/bo/lesRDV.html");
+    res.sendFile(indexPath);
+    console.log('------------------FIN---------------praticien.controller  connect ');
+}
 
 function connect(req, res, next) {
     console.log('------------------DEB---------------praticien.controller  connect ');

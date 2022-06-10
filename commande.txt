@@ -56,7 +56,10 @@ http://localhost:4000/rdvs/RdvById
 http://localhost:4000/bo/connectUtilisateur.html
 http://localhost:4000/bo/nouveauPraticien.html
 http://localhost:4000/pra/2
+
 http://localhost:4000/bo/lesRDV.html
+http://localhost:4000/pra/esp
+
 http://localhost:4000/rdvs/rdvs
 http://localhost:4000/rdvs/supp/2
 http://localhost:4000/pat/rchPat/ti
