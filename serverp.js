@@ -25,7 +25,7 @@ app.get('/codeTabibi/bo/lesRDV.html', function (request, response) {
 });
 */
 
-// global error handler
+// global error handler, par exemple la validation des forms Joi fct validateRequest qui revois le message JSON 
 app.use(errorHandler);
 
 // start server

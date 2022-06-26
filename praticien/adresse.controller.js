@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const adresseService = require('./adresse.service');
 const verifyToken = require("_middleware/auth");
-const validateRequest = require('_middleware/validate-request');
-const Joi = require('joi');
+const valForm = require('../_middleware/validate-form');
+
+//const Joi = require('joi');
+//const validateRequest = require('_middleware/validate-request');
 
 /*
 var cookieParser = require('cookie-parser')
@@ -13,7 +15,7 @@ app.use(cookieParser());
 
 // routes
 router.post('/rchAdresse', getListePraticienByAdresse);
-router.put('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
+router.put('/mod/:id',verifyToken.verifyToken, valForm.adrUp, update);// TODO verifyToken
 module.exports = router;
 
 
@@ -54,6 +56,7 @@ function update(req, res, next) {
     }
 }
 
+/*
 function updateSchema(req, res, next) {
     console.log('---------------------------------  updateSchema');
     const schema = Joi.object({
@@ -64,3 +67,4 @@ function updateSchema(req, res, next) {
     });
     validateRequest(req, next, schema);
 }
+*/

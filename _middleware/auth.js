@@ -2,9 +2,10 @@ const jwt = require("jsonwebtoken");
 const config = process.env;
 let consAuth = require("_const/auth");
 
-
 const verifyToken = (req, res, next) => {
-    console.log('------------------DEBbb---------------  verifyToken');
+
+    const originalUrl = req.originalUrl;
+    console.log('------------------DEBbb---------------  verifyToken url=' + originalUrl);
 
     let payload
     try {
@@ -39,6 +40,12 @@ const verifyToken = (req, res, next) => {
     }
     catch (e) {
         console.log('----ERRRR---jwt.verify' + e);
+
+        if(originalUrl && originalUrl.includes('/gest/')){
+            console.log('---TODO ---REDIRECT  ---TODO ---REDIRECT  ---TODO ---REDIRECT  ');
+            res.redirect(307, '/gest/esp');
+        }
+
         return res.status(401).json({
             msg: e
         });

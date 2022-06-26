@@ -32,7 +32,7 @@ async function getListePraticienByAdresse(criterRch) {
     var praticiens = null;
     if (villeRch.length && id_speCat.length) {
         console.log('---- SERVICE ADRESSE-------CASSSS --------0000000000000000000');
-        praticiens = await db.Praticien.findAll({
+        praticiens = await db.Praticien.findAll({ where: { valide: true },
             include: [{
                 model: db.Adresse,
                 as: 'Adresse',
@@ -46,7 +46,7 @@ async function getListePraticienByAdresse(criterRch) {
         });
     } else if (villeRch.length && !id_speCat.length) {
         console.log('---- SERVICE ADRESSE-------CASSSS --------1111111111111');
-        praticiens = await db.Praticien.findAll({
+        praticiens = await db.Praticien.findAll({ where: { valide: true },
             include: [{
                 model: db.Adresse,
                 as: 'Adresse',
@@ -58,7 +58,7 @@ async function getListePraticienByAdresse(criterRch) {
         });
     } else if (!villeRch.length && id_speCat.length) {
         console.log('---- SERVICE ADRESSE-------CASSSS --------222222222222');
-        praticiens = await db.Praticien.findAll({
+        praticiens = await db.Praticien.findAll({ where: { valide: true },
             include: [{
                 model: db.Adresse,
                 as: 'Adresse',

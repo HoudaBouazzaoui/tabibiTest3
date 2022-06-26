@@ -18,18 +18,21 @@ async function initialize() {
 
     // init models and add them to the exported db object
     db.User = require('../utilisa/users/user.model')(sequelize);
+    db.Patient = require('../patient/patient.model')(sequelize);
+
+    db.Rdv = require('../rdvs/rdv.model')(sequelize);
+
     db.Praticien = require('../praticien/praticien.model')(sequelize);
     db.Adresse = require('../praticien/adresse.model')(sequelize);
-    db.Patient = require('../patient/patient.model')(sequelize);
-    db.Rdv = require('../rdvs/rdv.model')(sequelize);
     db.HorairePraticien = require('../praticien/horairePraticien.model')(sequelize);
-
     db.Profil = require('../praticien/profil.model')(sequelize);
 
     db.Praticien.belongsTo(db.Adresse);
     db.Praticien.hasMany(db.Patient, {as: 'patients'});
     db.Praticien.belongsTo(db.HorairePraticien);
     db.Praticien.belongsTo(db.Profil);
+
+    db.Gestio = require('../gestio/gestio/gestio.model')(sequelize);
 
 
     //db.sequelize = sequelize;

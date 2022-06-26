@@ -4,6 +4,7 @@ const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
 const verifyToken = require("_middleware/auth");
 const horaireService = require('./horairePraticien.service');
+const valForm = require('../_middleware/validate-form');
 
 /*
 var cookieParser = require('cookie-parser')
@@ -13,7 +14,7 @@ app.use(cookieParser());
 
 
 router.get('/horaire', verifyToken.verifyToken, getByIdPraticien);
-router.put('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
+router.put('/mod/:id',verifyToken.verifyToken, valForm.horUp, update);// TODO verifyToken
 module.exports = router;
 
 // route functions
@@ -44,24 +45,4 @@ function update(req, res, next) {
         .then(() => res.json({ message: 'Mis a jour' }))
         .catch(next);
     }
-}
-
-function updateSchema(req, res, next) {
-    console.log('---------------------------------  updateSchema');
-    const schema = Joi.object({
-        matinDebut: Joi.string().required(),
-        matinFin: Joi.string().empty(''),
-        soirDebut: Joi.string().empty(''),
-        soirFin: Joi.string().required(),
-
-        lun: Joi.string().required(),
-        mar: Joi.string().required(),
-        mer: Joi.string().required(),
-        jeu: Joi.string().required(),
-        ven: Joi.string().required(),
-        sam: Joi.string().required(),
-        dim: Joi.string().required()
-    });
-
-    validateRequest(req, next, schema);
 }

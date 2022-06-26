@@ -71,6 +71,16 @@ http://localhost:4000/pra/pra
 http://localhost:4000/bo/praticienProfil.html
 
 
+
+http://localhost:5000/gest/esp
+http://localhost:5000/gest/valid/
+http://localhost:5000/bog/nvGestio.html
+http://localhost:5000/bog/gpra.html
+http://localhost:5000/gest/charg/praticienProfil
+http://localhost:5000/gest/charg/vPra
+
+
+
 DROP TABLES praticiens, patients, adresses
 
 verifierbsi le rdv nest pas deja creer

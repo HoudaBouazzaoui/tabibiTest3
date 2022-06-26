@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+
+    <!---->
+    <!---->
+    <link href='../css/nouveauRDV.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#modal-co-pra").modal("show");
+
+            $("#modal-co-pra-form").submit(function (event) {
+                var utilisateur = {
+                    email: $("#modal-co-pra #email-co-pra").val(),
+                    password: $("#modal-co-pra #password-co-pra").val()
+                    //role: "User"
+                };
+                var utilisateur = JSON.stringify(utilisateur);
+                // $("#successModal").modal('hide');
+                //$("#successModal #confirmPassword-connect").val($("#successModal #password-connect").val());
+                connecterGestio(utilisateur);
+                return false;
+            });
+
+        });
+
+
+        function connecterGestio(utilisateur) {
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "/gest/connect",
+                cache: false,
+                data: utilisateur,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#modal-co-pra .modal-body p").text('connect = ' + iwa);
+                    console.log("success     okkkk=" + iwa);
+                    // $("#modal-co-pra").modal("hide");
+                    //recupererRendezVous();
+                    //location.reload();
+                   
+                    //window.location.href = "http://localhost:5000/bog/gpra.html";
+                    //window.location.href = "/bog/gpra.html";
+                    window.location.href = "/gest/charg/gPra";               
+                },
+                error: function (data) {
+                    var iwa = JSON.stringify(data.responseJSON);
+                    $("#modal-co-pra .modal-body p").text('ERROR connect = ' + iwa);
+                    console.log("ORROR     KOOO=" + iwa);
+                }
+            });
+        }
+
+
+
+    </script>
+
+</head>
+
+<body>
+    <div class="modal fade" id="modal-co-pra" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <p></p>
+
+                    <div class="modal-body">
+                        <form id="modal-co-pra-form" name="contact" role="form">
+
+                            <div class="form-group">
+                                <label for="email-co-pra" class="col-form-label">Email:</label>
+                                <input type="text" class="form-control" id="email-co-pra" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="password-co-pra" class="col-form-label">Pws:</label>
+                                <input type="text" class="form-control" id="password-co-pra" name="password">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                <input id="buttonCreerRDV" type="submit" class="btn btn-secondary" value="connecter">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const Joi = require('joi');
-const validateRequest = require('_middleware/validate-request');
-//const verifyToken = require("utilisa/_middleware/auth");
 const verifyToken = require("_middleware/auth");
-const Role = require('utilisa/_helpers/role');
 const praticienService = require('./praticien.service');
+const valForm = require('../_middleware/validate-form');
 let consAuth = require("_const/auth");
+//const Joi = require('joi');
+//const validateRequest = require('_middleware/validate-request');
+//const verifyToken = require("utilisa/_middleware/auth");
+//const Role = require('utilisa/_helpers/role');
+
 
 var cookieParser = require('cookie-parser')
 const app = express();
@@ -15,8 +17,8 @@ app.use(cookieParser());
 // routes
 router.get('/esp', chargement);
 
-router.post('/', createSchema, create); // TODO verifyToken
-router.put('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
+router.post('/', valForm.praCre, create); // TODO verifyToken
+router.put('/mod/:id',verifyToken.verifyToken, valForm.praUp, update);// TODO verifyToken
 router.post('/connect', connect);
 router.get('/pra/',verifyToken.verifyToken, getPraticienConnect);
 router.get('/logOut/',verifyToken.verifyToken, logOut);
@@ -59,6 +61,7 @@ function create(req, res, next) {
 }
 
 function update(req, res, next) {
+    const uniquementPra = false; // permet de maj soit uniqument Praticien soit en + Adresse et HorairePraticien 
     // TODO
     console.log('---------------------------------  update body=' + JSON.stringify(req.body));
     // on verifie l id praticien avec l id praticien envoye
@@ -66,7 +69,7 @@ function update(req, res, next) {
         //res.json({ message: 'Il ya un probleme d identifiant' });
         throw 'Il ya un probleme d identifiant';
     }else{
-        praticienService.update(req.params.id, req.body)
+        praticienService.update(req.params.id, req.body, )
         .then(() => res.json({ message: 'Mis a jour' }))
         .catch(next);
     }
@@ -100,47 +103,6 @@ function _delete(req, res, next) {
     praticienService.delete(req.params.id)
         .then(() => res.json({ message: 'User deleted' }))
         .catch(next);
-}
-
-// schema functions
-
-function createSchema(req, res, next) {
-    console.log('----------------PRATICIEN CONTROLLER-----------------  createSchema');
-    const schema = Joi.object({
-        id_speCat: Joi.string().required(),
-        titre: Joi.string().required(),
-        nom: Joi.string().required(),
-        prenom: Joi.string().required(),
-        dateNaissance: Joi.string().required(),
-        email: Joi.string().email().required(),
-        telephone: Joi.string().min(10).required(),
-        fax: Joi.string().min(10).required(),
-        motpasse: Joi.string().min(6).required(),
-        motpasseConfirme: Joi.string().valid(Joi.ref('motpasse')).required()
-    });
-    validateRequest(req, next, schema);
-}
-
-function updateSchema(req, res, next) {
-    console.log('---------------------------------  updateSchema');
-    const schema = Joi.object({
-        id_speCat: Joi.string().empty(''),
-        titre: Joi.string().empty(''),
-        //titre: Joi.string().valid(Role.Admin, Role.User).empty(''),
-        nom: Joi.string().empty(''),
-        prenom: Joi.string().empty(''),
-        nom: Joi.string().empty(''),
-        dateNaissance: Joi.string().empty(''),
-        email: Joi.string().email().empty(''),
-        telephone: Joi.string().min(10).empty(''),
-        fax: Joi.string().min(10).empty(''),
-        nom: Joi.string().empty(''),
-        nom: Joi.string().empty(''),
-        nom: Joi.string().empty(''),
-        motpasse: Joi.string().min(6).empty(''),
-        motpasseConfirme: Joi.string().valid(Joi.ref('password')).empty('')
-    }).with('password', 'confirmPassword');
-    validateRequest(req, next, schema);
 }
 
 function logOut(req, res, next) {
@@ -190,6 +152,46 @@ function getByEmail(req, res, next) {
         .then(user => res.json(user))
         .catch(next);
 }
+*/
 
+// schema functions
+/*
+function createSchema(req, res, next) {
+    console.log('----------------PRATICIEN CONTROLLER-----------------  createSchema');
+    const schema = Joi.object({
+        id_speCat: Joi.string().required(),
+        titre: Joi.string().required(),
+        nom: Joi.string().required(),
+        prenom: Joi.string().required(),
+        dateNaissance: Joi.string().required(),
+        email: Joi.string().email().required(),
+        telephone: Joi.string().min(10).required(),
+        fax: Joi.string().min(10).required(),
+        motpasse: Joi.string().min(6).required(),
+        motpasseConfirme: Joi.string().valid(Joi.ref('motpasse')).required()
+    });
+    validateRequest(req, next, schema);
+}
 
+function updateSchema(req, res, next) {
+    console.log('---------------------------------  updateSchema');
+    const schema = Joi.object({
+        id_speCat: Joi.string().empty(''),
+        titre: Joi.string().empty(''),
+        //titre: Joi.string().valid(Role.Admin, Role.User).empty(''),
+        nom: Joi.string().empty(''),
+        prenom: Joi.string().empty(''),
+        nom: Joi.string().empty(''),
+        dateNaissance: Joi.string().empty(''),
+        email: Joi.string().email().empty(''),
+        telephone: Joi.string().min(10).empty(''),
+        fax: Joi.string().min(10).empty(''),
+        nom: Joi.string().empty(''),
+        nom: Joi.string().empty(''),
+        nom: Joi.string().empty(''),
+        motpasse: Joi.string().min(6).empty(''),
+        motpasseConfirme: Joi.string().valid(Joi.ref('password')).empty('')
+    }).with('password', 'confirmPassword');
+    validateRequest(req, next, schema);
+}
 */

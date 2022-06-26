@@ -13,7 +13,8 @@ function model(sequelize) {
         email: { type: DataTypes.STRING(100), allowNull: false },
         motpasse: { type: DataTypes.STRING(100), allowNull: false },
         telephone: { type: DataTypes.STRING(20), allowNull: false },
-        fax: { type: DataTypes.STRING(20), allowNull: false }
+        fax: { type: DataTypes.STRING(20), allowNull: false },
+        valide: { type: DataTypes.BOOLEAN, allowNull: false }
     };
     
     return sequelize.define('Praticien', attributes);
