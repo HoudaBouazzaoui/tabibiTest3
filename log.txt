@@ -1,8 +1,8 @@
-[20220702,20:52:36] ERROR: /adr/mod/4;{};Validation error: "numero" is required, "voie" is required, "codePostale" is required, "ville" is required
+[20220702,23:39:33] ERROR: /adr/rchAdresse;{};praticien not found
 undefined
-[20220702,20:52:57] ERROR: /hor/mod/8;{};Validation error: "matinDebut" is required, "soirFin" is required, "lun" is required, "mar" is required, "mer" is required, "jeu" is required, "ven" is required, "sam" is required, "dim" is required
+[20220702,23:39:34] ERROR: /adr/rchAdresse;{};praticien not found
 undefined
-[20220702,20:53:52] ERROR: /gest/pra/undefined;{};TypeError: Cannot read properties of null (reading 'Profil')
-TypeError: Cannot read properties of null (reading 'Profil')
-    at Object.getByIdComplet (D:\projets\web\tabibi\praticien\praticien.service.js:169:19)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[20220702,23:39:35] ERROR: /adr/rchAdresse;{};praticien not found
+undefined
+[20220702,23:39:35] ERROR: /adr/rchAdresse;{};praticien not found
+undefined

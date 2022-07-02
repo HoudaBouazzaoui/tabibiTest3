@@ -27,8 +27,11 @@ app.get('/codeTabibi/bo/lesRDV.html', function (request, response) {
 });
 */
 
+// !!! NE PAS DEPLACER CETTE LIGNE, le statut de la reponse passe de 400 a 500
+//Important que ce soit declarer a la fin; car cela modifie la reponse du html a json
 // global error handler, par exemple la validation des forms Joi fct validateRequest qui revois le message JSON 
 app.use(errorHandler);
+
 
 // start server
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3000;

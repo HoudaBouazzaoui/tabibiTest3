@@ -4,13 +4,14 @@ const app = express();
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 app.use(express.static('pubp'));
 app.use('/pubp', express.static('pubp'));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.use(cors());
-// global error handler, par exemple la validation des forms Joi fct validateRequest qui revois le message JSON 
-app.use(errorHandler);
+
 
 // api routes
 // dans les 3 serveurs
@@ -19,6 +20,12 @@ app.use('/pra', require('./praticien/praticien.controller'));
 app.use('/hor', require('./praticien/horairePraticien.controller'));
 app.use('/adr', require('./praticien/adresse.controller'));
 app.use('/rdvs', require('./rdvs/rdv.controller'));
+
+// !!! NE PAS DEPLACER CETTE LIGNE, le statut de la reponse passe de 400 a 500
+//Important que ce soit declarer a la fin; car cela modifie la reponse du html a json
+// global error handler, par exemple la validation des forms Joi fct validateRequest qui revois le message JSON 
+app.use(errorHandler);
+
 
 // start server
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 7000;

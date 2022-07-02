@@ -191,7 +191,7 @@
                     alert(element);
                     // lors des erreur de validation 
                     // identifier les champs a partir du message d erreur 
-                    if (!element.includes(' ')) {
+                    if (!element.includes(' ')) {// il faut ajouter des espace cote serveur pour identifier les champs
                         alert('NO ESSSS ' + element);
                         if ($('#' + element).length) {// test pour eviter les erreur de compil
                             $('#' + element).css('border-color', '#c89494');
@@ -210,7 +210,8 @@
 
 
             $("#successModal .modal-body p").text('errMessage1 = ' + errMessage1 + ' errMessage2 = ' + errMessage2);
-            console.log(errMessage);
+            console.log(errMessage1);
+            console.log(errMessage2);
             console.log("Details0: " + desc + "\nError:" + err);
         }
 
@@ -219,7 +220,7 @@
                 type: "POST",
                 contentType: "application/json",
                 dataType: 'json',
-                url: "/pra/cr",
+                url: "/pra/",
                 cache: false,
                 data: praticien,
                 success: function (data) {
@@ -227,11 +228,10 @@
                     $("#successModal .modal-body p").text('Praticien = ' + data.id + ' ' + data.titre + ' ' + data.nom + ' ' + data.prenom);
                     console.log("success     okkkk" + iwa);
                 },
-                error: function (xhr, desc, err) {
-                    gererErreur(xhr, desc, err);
-                }
+                error: gererErreur
             });
         }
+
     </script>
 
 </head>

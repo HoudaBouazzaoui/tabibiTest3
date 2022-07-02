@@ -25,7 +25,8 @@ async function create(params) {
     console.log('------------------DEB SERVICE PRATICIEN---------------  create params=' + params);
     // validate
     if (await db.Praticien.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
+        //throw 'Validation error: "email" ' + params.email + ' is already registered';
+        throw ' "email" ' + params.email + ' is already registered';
     }
 
     const adresse = await adresseService.create(params.Adresse);

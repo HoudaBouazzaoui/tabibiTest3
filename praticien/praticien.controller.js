@@ -18,10 +18,10 @@ app.use(cookieParser());
 router.get('/esp', chargement);
 
 router.post('/', valForm.praCre, create); // TODO verifyToken
-router.put('/mod/:id',verifyToken.verifyToken, valForm.praUp, update);// TODO verifyToken
+router.put('/mod/:id', verifyToken.verifyToken, valForm.praUp, update);// TODO verifyToken
 router.post('/connect', connect);
-router.get('/pra/',verifyToken.verifyToken, getPraticienConnect);
-router.get('/logOut/',verifyToken.verifyToken, logOut);
+router.get('/pra/', verifyToken.verifyToken, getPraticienConnect);
+router.get('/logOut/', verifyToken.verifyToken, logOut);
 
 router.get('/', getAll);// TODO verifyToken
 //router.get('/:id', getById);// TODO verifyToken
@@ -54,10 +54,11 @@ function connect(req, res, next) {
 }
 
 function create(req, res, next) {
-    console.log('---------------------------------  create body=' + JSON.stringify(req.body));
-    praticienService.create(req.body)
-        .then(praticien => res.json(praticien))
-        .catch(next);
+    const creerPar = require("_const/creerPar");
+    var pra = req.body;
+    pra.cr = creerPar.Praticien;
+    console.log('---------------------------------  create body=' + JSON.stringify(pra));
+    praticienService.create(pra).then(praticien => res.json(praticien)).catch(next);
 }
 
 function update(req, res, next) {
@@ -65,13 +66,13 @@ function update(req, res, next) {
     // TODO
     console.log('---------------------------------  update body=' + JSON.stringify(req.body));
     // on verifie l id praticien avec l id praticien envoye
-    if(req.payload.praticien.id != req.params.id){
+    if (req.payload.praticien.id != req.params.id) {
         //res.json({ message: 'Il ya un probleme d identifiant' });
         throw 'Il ya un probleme d identifiant';
-    }else{
-        praticienService.update(req.params.id, req.body, )
-        .then(() => res.json({ message: 'Mis a jour' }))
-        .catch(next);
+    } else {
+        praticienService.update(req.params.id, req.body,)
+            .then(() => res.json({ message: 'Mis a jour' }))
+            .catch(next);
     }
 }
 
