@@ -13,6 +13,9 @@ module.exports = router;
 
 
 function create(req, res, next) {
+    const creerPar = require("_const/creerPar");
+    var pra = req.body;
+    pra.cr = creerPar.Gestio;
     console.log('---------------------------------  create body=' + JSON.stringify(req.body));
     praticienService.create(req.body).then(praticien => res.json(praticien)).catch(next);
 }
