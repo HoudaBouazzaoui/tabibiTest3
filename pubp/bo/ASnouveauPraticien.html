@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+
+    <!---->
+    <!-- <link href='../css/nouveauRDV.css' rel='stylesheet' /> -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="../js/utils.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+ 
+            recupererSpecialite('/cache', "#id_speCat");
+            //recupererSpecialite('');
+
+
+            $("#successModal").modal("show");
+
+            $("#creerPraticien").submit(function (event) {
+
+                //$("#creerPraticien #motpasseConfirme").val($("#creerPraticien #motpasse").val());
+/*
+                var praticien = {
+
+                    image: $("#imgProfil").files,
+
+                    id_speCat: $("#creerPraticien #id_speCat").val(),
+
+                    titre: $("#creerPraticien #titre").val(),
+                    nom: $("#creerPraticien #nom").val(),
+                    prenom: $("#creerPraticien #prenom").val(),
+                    dateNaissance: $("#creerPraticien #dateNaissance").val(),
+
+                    email: $("#creerPraticien #email").val(),
+
+                    telephone: $("#creerPraticien #telephone").val(),
+                    fax: $("#creerPraticien #fax").val(),
+
+                    motpasse: $("#creerPraticien #motpasse").val(),
+                    motpasseConfirme: $("#creerPraticien #motpasseConfirme").val(),
+
+                    adresse: {
+                        numero: $("#creerPraticien #numero").val(),
+                        voie: $("#creerPraticien #voie").val(),
+                        codePostale: $("#creerPraticien #codePostale").val(),
+                        ville: $("#creerPraticien #ville").val()
+                    },
+                    horairePraticien: {
+                        matinDebut: $("#creerPraticien #matinDebut").val(),
+                        matinFin: $("#creerPraticien #matinFin").val(),
+                        soirDebut: $("#creerPraticien #soirDebut").val(),
+                        soirFin: $("#creerPraticien #soirFin").val(),
+
+                        lun: $("#creerPraticien #lun").val(),
+                        mar: $("#creerPraticien #mar").val(),
+                        mer: $("#creerPraticien #mer").val(),
+                        jeu: $("#creerPraticien #jeu").val(),
+                        ven: $("#creerPraticien #ven").val(),
+                        sam: $("#creerPraticien #sam").val(),
+                        dim: $("#creerPraticien #dim").val()
+                    }
+                };
+*/
+
+                var praticien = construirePraticien();
+                var data = JSON.stringify(praticien);
+                // $("#successModal").modal('hide');
+                console.log(data);
+                creerPraticien(data);
+                return false;
+            });
+        });
+
+        function creerPraticien(praticien) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "http://localhost:4000/pra/",
+                cache: false,
+                data: praticien,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text('Praticien = ' + data.id + ' ' + data.titre + ' ' + data.nom + ' ' + data.prenom);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    $("#successModal .modal-body p").text('error = ' + xhr.responseJSON.message);
+                    console.log(xhr.responseJSON.message);
+                    console.log("Details0: " + desc + "\nError:" + err);
+                }
+            });
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <p></p>
+
+                    <div class="modal-body">
+                        <form id="creerPraticien" name="contact" role="form">
+
+                            <input type="file" name="imgProfil" id="imgProfil"/>
+                            
+                            <div class="form-group">
+                                <label for="id_speCat" class="col-form-label">Specialite:</label>
+                                <select class="form-control" id="id_speCat" name="id_speCat"></select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="titre" class="col-form-label">Titre:</label>
+                                <select class="form-control" id="titre" name="titre">
+                                    <option value="">--Choisir Titre--</option>
+                                    <option value="MR">MR</option>
+                                    <option value="MD">MD</option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="nom" class="col-form-label">Nom:</label>
+                                <input type="text" class="form-control" id="nom" name="nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="prenom" class="col-form-label">Prenom:</label>
+                                <input type="text" class="form-control" id="prenom" name="prenom">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="telephone" class="col-form-label">Telephone:</label>
+                                <input type="text" class="form-control" id="telephone" name="telephone">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fax" class="col-form-label">Fax:</label>
+                                <input type="text" class="form-control" id="fax" name="fax">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="col-form-label">Email:</label>
+                                <input type="text" class="form-control" id="email" name="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="motpasse" class="col-form-label">Pws:</label>
+                                <input type="text" class="form-control" id="motpasse" name="motpasse">
+                            </div>
+                            <div class="form-group">
+                                <label for="motpasseConfirme" class="col-form-label">Pws Confirm:</label>
+                                <input type="text" class="form-control" id="motpasseConfirme"
+                                    name="motpasseConfirme">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dateNaissance" class="col-form-label">Date de naissance:</label>
+                                <input type="date" class="form-control" name="dateNaissance" id="dateNaissance"
+                                    value="" min="1900-01-01" max="2022-12-31">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="numero" class="col-form-label">Numero:</label>
+                                <input type="text" class="form-control" id="numero" name="numero">
+                            </div>
+                            <div class="form-group">
+                                <label for="voie" class="col-form-label">Voie:</label>
+                                <input type="text" class="form-control" id="voie" name="voie">
+                            </div>
+                            <div class="form-group">
+                                <label for="codePostale" class="col-form-label">CP:</label>
+                                <input type="text" class="form-control" id="codePostale" name="codePostale">
+                            </div>
+                            <div class="form-group">
+                                <label for="ville" class="col-form-label">Ville:</label>
+                                <input type="text" class="form-control" id="ville" name="ville">
+                            </div>
+
+                            <table>
+                                <tr>
+                                    <td>
+                                        <label for="matinDebut" class="col-form-label">Mat heure deb:</label>
+                                        <input type="text" class="form-control" id="matinDebut" name="matinDebut"
+                                            value="08:00:00">
+                                    </td>
+                                    <td>
+                                        <label for="matinFin" class="col-form-label">Mat heure fin:</label>
+                                        <input type="text" class="form-control" id="matinFin" name="matinFin"
+                                            value="12:00:00">
+                                    </td>
+                                    <td rowspan="2">
+                                        <label for="lun">Lun</label>
+                                        <input type="checkbox" id="lun" name="lun" value="true" checked
+                                            onclick="if(this.checked)this.value=true;else this.value=false;">
+                                        <label for="mar">Mar</label>
+                                        <input type="checkbox" id="mar" name="mar" value="true" checked
+                                            onclick="if(this.checked)this.value=true;else this.value=false;">
+                                        <label for="mer">Mer</label>
+                                        <input type="checkbox" id="mer" name="mer" value="true" checked
+                                            onclick="if(this.checked)this.value=true;else this.value=false;">
+                                        <label for="jeu">Jeu</label>
+                                        <input type="checkbox" id="jeu" name="jeu" value="true" checked
+                                            onclick="if(this.checked)this.value=true;else this.value=false;">
+                                        <label for="ven">Ven</label>
+                                        <input type="checkbox" id="ven" name="ven" value="true" checked
+                                            onclick="if(this.checked)this.value=true;else this.value=false;">
+                                        <label for="sam">Sam</label>
+                                        <input type="checkbox" id="sam" name="sam" value="false"
+                                            onclick="if(this.checked)this.value=true;else this.value=false;">
+                                        <label for="dim">Dim</label>
+                                        <input type="checkbox" id="dim" name="dim" value="false"
+                                            onclick="if(this.checked)this.value=true;else this.value=false;">
+
+                                            <!--
+                                            <label for="lun">Lun</label>
+                                            <input type="checkbox" id="lun" name="lun" value="1" checked
+                                                onclick="if(this.checked)this.value=1;else this.value=0;">
+                                            <label for="mar">Mar</label>
+                                            <input type="checkbox" id="mar" name="mar" value="1" checked
+                                                onclick="if(this.checked)this.value=1;else this.value=0;">
+                                            <label for="mer">Mer</label>
+                                            <input type="checkbox" id="mer" name="mer" value="1" checked
+                                                onclick="if(this.checked)this.value=1;else this.value=0;">
+                                            <label for="jeu">Jeu</label>
+                                            <input type="checkbox" id="jeu" name="jeu" value="1" checked
+                                                onclick="if(this.checked)this.value=1;else this.value=0;">
+                                            <label for="ven">Ven</label>
+                                            <input type="checkbox" id="ven" name="ven" value="1" checked
+                                                onclick="if(this.checked)this.value=1;else this.value=0;">
+                                            <label for="sam">Sam</label>
+                                            <input type="checkbox" id="sam" name="sam" value="0"
+                                                onclick="if(this.checked)this.value=1;else this.value=0;">
+                                            <label for="dim">Dim</label>
+                                            <input type="checkbox" id="dim" name="dim" value="0"
+                                                onclick="if(this.checked)this.value=1;else this.value=0;">
+                                             -->
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="soirDebut" class="col-form-label">Soire heure deb:</label>
+                                        <input type="text" class="form-control" id="soirDebut" name="soirDebut"
+                                            value="14:00:00">
+                                    </td>
+                                    <td>
+                                        <label for="soirFin" class="col-form-label">Soire heure fin:</label>
+                                        <input type="text" class="form-control" id="soirFin" name="soirFin"
+                                            value="18:00:00">
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                <input id="buttonCreerPraticien" type="submit" class="btn btn-success success"
+                                    value="Creer Praticien">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

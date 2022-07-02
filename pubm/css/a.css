@@ -1,0 +1,46 @@
+.prof {
+    height: 100%;
+    width: 100%;
+    /*float: left;*/
+    background: #7F00FF;
+}
+
+.prof-image {
+    /*background: white;*/
+    width: 80px;
+    height: 30px;
+    /*border-radius: 50%;*/
+    padding: 5px;
+    transform: translate(5px, 5px);
+}
+
+.prof-image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.prat {
+    border-radius: 5%;
+    padding: 3px;
+    background: #e5e5e5;
+}
+
+.adr {
+    background-color: turquoise;
+}
+
+
+
+
+.padding-left100 {
+    padding-left: 100px;
+}
+
+.resu {
+    float: left;
+    width: 60%;
+    padding: 0 20px;
+    background-color: #9de25c ;
+    background-color: turquoise;
+  }

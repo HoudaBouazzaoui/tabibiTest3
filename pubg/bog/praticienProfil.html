@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="/pubg/jsG/utils.js"></script>
+
+    <link href='/pubg/cssG/main.css' rel='stylesheet' />
+    <!---->
+
+    <script src="/pubg/lib/jquery-3.6.0.min.js"></script>
+
+    <!-- popup modal-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            const praId = window.idPra;
+            alert('passVar praId=' + praId);
+
+            $("#successModal").modal("show");
+
+            recupererSpecialite('/cache', "#id_speCat");
+
+            if ("NV" == praId) {// creation d un nouveau praticien
+                alert('Creation=' + praId);
+                $("#BTNmodifierAdresse").hide();
+                $("#BTNmodifierPraticien").hide();
+                $("#BTNmodifierHoraire").hide();
+            } else {//modification recuparation du praticien pour modi
+                recupererPraticien(praId);
+                $("#BTNcreerPraticien").hide();
+            }
+
+            $("#modifierPraticien").submit(function (event) {
+                alert('modifierPraticien');
+                var praticien = construirePraticien();
+                // $("#successModal").modal('hide');
+                modifierPraticien(praticien);
+                return false;
+            });
+
+            $("#modifierHoraire").submit(function (event) {
+                alert('modifierHoraire');
+                var praticien = construirePraticien();
+                modifierHoraire(praticien);
+                return false;
+            });
+
+            $("#modifierAdresse").submit(function (event) {
+                alert('modifierAdresse');
+                var praticien = construirePraticien();
+                modifierAdresse(praticien);
+                return false;
+            });
+
+            $("#BTNcreerPraticien").click(function (event) {
+                alert('BTNcreerPraticien');
+                var praticien = construirePraticien();
+                var data = JSON.stringify(praticien);
+                // $("#successModal").modal('hide');
+                console.log(data);
+                creerPraticien(data);
+                return false;
+            });
+
+        });
+
+        function recupererPraticien(praId) {
+            $.ajax({
+                type: "GET",
+                //contentType: "application/json",
+                dataType: 'json',
+                url: "/gest/pra/" + praId,
+                cache: true,
+                success: function (data) {
+                    peuplerFormPraticien(data);
+                    selectSpecialite(data);
+                    var pra = JSON.stringify(data);
+                    console.log("success     ok pra=" + pra);
+                },
+                error: function (xhr, desc, err) {
+                    alert('ERRROOOOORRR');
+                    $("#successModal .modal-body p").text('error = ' + xhr.responseJSON.message);
+                    console.log(xhr.responseJSON.message);
+                    console.log("Details0: " + desc + "\nError:" + err);
+                }
+            });
+        }
+
+        function modifierPraticien(praticien) {
+
+            const praid = praticien.id;
+            alert('praid = ' + praid);
+
+            const praData = JSON.stringify(praticien);
+            alert(praData);
+            console.log(praData);
+
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json",
+                dataType: 'json',
+                //url: "http://localhost:4000/pra/mod/" + praid,
+                url: "/pra/mod/" + praid,
+                cache: false,
+                data: praData,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text(iwa);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    gererErreur(xhr, desc, err);
+                }
+            });
+        }
+
+        function modifierAdresse(praticien) {
+            const praid = praticien.id;
+            const AdresseId = praticien.AdresseId;
+            alert('praid = ' + praid);
+            alert(JSON.stringify(praticien));
+            const adrData = JSON.stringify(praticien.Adresse);
+            alert(adrData);
+            console.log(adrData);
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "/adr/mod/" + AdresseId,
+                //url: "http://localhost:4000/adr/mod/" + praid,
+                //url: "http://localhost:4000/adr/mod/" ,
+                cache: false,
+                data: adrData,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text(iwa);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    gererErreur(xhr, desc, err);
+                }
+            });
+        }
+
+        function modifierHoraire(praticien) {
+            const horId = praticien.HorairePraticienId;
+            alert('horId = ' + horId);
+            const horData = JSON.stringify(praticien.HorairePraticien);
+            alert(horData);
+            console.log(horData);
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json",
+                dataType: 'json',
+                //url: "http://localhost:4000/hor/mod/" + praid,
+                url: "/hor/mod/" + horId,
+                cache: false,
+                data: horData,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text(iwa);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    gererErreur(xhr, desc, err);
+                }
+            });
+        }
+
+        function gererErreur(xhr, desc, err) {
+
+            alert('error status=' + xhr.status);
+
+            var errMessage1 = '';
+            var errMessage2 = '';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errMessage1 = xhr.responseJSON.message;
+            } else {
+                errMessage2 = err;
+            }
+
+            if (400 == xhr.status) {
+                // recuperation des champs en erreur a partir du message
+                // et affichage en rouge 
+                var tab = errMessage1.split('"');
+                tab.forEach(element => {
+                    alert(element);
+                    // lors des erreur de validation 
+                    // identifier les champs a partir du message d erreur 
+                    if (!element.includes(' ')) {
+                        alert('NO ESSSS ' + element);
+                        if ($('#' + element).length) {// test pour eviter les erreur de compil
+                            $('#' + element).css('border-color', '#c89494');
+                        }
+                    }
+                });
+                alert(tab);
+                console.log(tab);
+            } else if (404 == xhr.status) {
+                // TODO ou rediriger 
+                alert('404 probleme technique ; TODO ou rediriger ?');
+            } else if (401 == xhr.status) {
+                // TODO page de connexion
+                alert('401 exipirationnnn ; TODO page de connexion');
+            }
+
+
+            $("#successModal .modal-body p").text('errMessage1 = ' + errMessage1 + ' errMessage2 = ' + errMessage2);
+            console.log(errMessage);
+            console.log("Details0: " + desc + "\nError:" + err);
+        }
+
+        function creerPraticien(praticien) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "/pra/cr",
+                cache: false,
+                data: praticien,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text('Praticien = ' + data.id + ' ' + data.titre + ' ' + data.nom + ' ' + data.prenom);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    gererErreur(xhr, desc, err);
+                }
+            });
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-body">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p></p>
+
+                <form id="modifierPraticien" name="contact" role="form">
+
+                    <input id="praId" name="praId" type="hidden" value="">
+
+                    <input type="file" name="imgProfil" id="imgProfil" />
+
+                    <div class="form-group">
+                        <label for="id_speCat" class="col-form-label">Specialite:</label>
+                        <select class="form-control" id="id_speCat" name="id_speCat"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="titre" class="col-form-label">Titre:</label>
+                        <select class="form-control" id="titre" name="titre">
+                            <option value="">--Choisir Titre--</option>
+                            <option value="MR">MR</option>
+                            <option value="MD">MD</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nom" class="col-form-label">Nom:</label>
+                        <input type="text" class="form-control" id="nom" name="nom">
+                    </div>
+                    <div class="form-group">
+                        <label for="prenom" class="col-form-label">Prenom:</label>
+                        <input type="text" class="form-control" id="prenom" name="prenom">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telephone" class="col-form-label">Telephone:</label>
+                        <input type="text" class="form-control" id="telephone" name="telephone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fax" class="col-form-label">Fax:</label>
+                        <input type="text" class="form-control" id="fax" name="fax">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="col-form-label">Email:</label>
+                        <input type="text" class="form-control" id="email" name="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motpasse" class="col-form-label">Pws:</label>
+                        <input type="text" class="form-control" id="motpasse" name="motpasse">
+                    </div>
+                    <div class="form-group">
+                        <label for="motpasseConfirme" class="col-form-label">Pws Confirm:</label>
+                        <input type="text" class="form-control" id="motpasseConfirme" name="motpasseConfirme">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateNaissance" class="col-form-label">Date de naissance:</label>
+                        <input type="date" class="form-control" name="dateNaissance" id="dateNaissance" value=""
+                            min="1900-01-01" max="2022-12-31">
+                    </div>
+                    <input id="BTNmodifierPraticien" type="submit" class="btn btn-success success"
+                        value="Modifier Praticien">
+                </form>
+
+                <form id="modifierAdresse" action="#">
+                    <fieldset>
+                        <legend>Adresse</legend>
+
+                        <input id="AdresseId" name="AdresseId" type="hidden" value="">
+
+                        <div class="form-group">
+                            <label for="numero" class="col-form-label">Numero:</label>
+                            <input type="text" class="form-control" id="numero" name="numero">
+                        </div>
+                        <div class="form-group">
+                            <label for="voie" class="col-form-label">Voie:</label>
+                            <input type="text" class="form-control" id="voie" name="voie">
+                        </div>
+                        <div class="form-group">
+                            <label for="codePostale" class="col-form-label">CP:</label>
+                            <input type="text" class="form-control" id="codePostale" name="codePostale">
+                        </div>
+                        <div class="form-group">
+                            <label for="ville" class="col-form-label">Ville:</label>
+                            <input type="text" class="form-control" id="ville" name="ville">
+                        </div>
+
+                        <input id="BTNmodifierAdresse" type="submit" class="btn btn-success success"
+                            value="Modifier Adresse">
+                    </fieldset>
+                </form>
+
+                <form id="modifierHoraire" action="#">
+                    <fieldset>
+                        <legend>Horaires</legend>
+                        <input id="HorairePraticienId" name="HorairePraticienId" type="hidden" value="">
+                        <table>
+                            <tr>
+                                <td>
+                                    <label for="matinDebut" class="col-form-label">Mat heure deb:</label>
+                                    <input type="text" class="form-control" id="matinDebut" name="matinDebut"
+                                        value="08:00:00">
+                                </td>
+                                <td>
+                                    <label for="matinFin" class="col-form-label">Mat heure fin:</label>
+                                    <input type="text" class="form-control" id="matinFin" name="matinFin"
+                                        value="12:00:00">
+                                </td>
+                                <td rowspan="2">
+                                    <label for="lun">Lun</label>
+                                    <input type="checkbox" id="lun" name="lun" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="mar">Mar</label>
+                                    <input type="checkbox" id="mar" name="mar" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="mer">Mer</label>
+                                    <input type="checkbox" id="mer" name="mer" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="jeu">Jeu</label>
+                                    <input type="checkbox" id="jeu" name="jeu" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="ven">Ven</label>
+                                    <input type="checkbox" id="ven" name="ven" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="sam">Sam</label>
+                                    <input type="checkbox" id="sam" name="sam" value="false"
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                    <label for="dim">Dim</label>
+                                    <input type="checkbox" id="dim" name="dim" value="false"
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="soirDebut" class="col-form-label">Soire heure deb:</label>
+                                    <input type="text" class="form-control" id="soirDebut" name="soirDebut"
+                                        value="14:00:00">
+                                </td>
+                                <td>
+                                    <label for="soirFin" class="col-form-label">Soire heure fin:</label>
+                                    <input type="text" class="form-control" id="soirFin" name="soirFin"
+                                        value="18:00:00">
+                                </td>
+                            </tr>
+                        </table>
+                        <input id="BTNmodifierHoraire" type="submit" class="btn btn-success success"
+                            value="Modifier Horaire">
+                    </fieldset>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <input id="BTNcreerPraticien" type="submit" class="btn btn-success success"
+                        value="Creer Praticien">
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

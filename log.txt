@@ -1,26 +1,8 @@
-[20220626,19:03:05] ERROR: /hor/horaire;{};TypeError: Cannot read properties of undefined (reading 'HorairePraticienId')
-TypeError: Cannot read properties of undefined (reading 'HorairePraticienId')
-    at Object.getHorairePraticien (D:\projets\web\tabibi\praticien\horairePraticien.service.js:15:40)
-    at getByIdPraticien (D:\projets\web\tabibi\praticien\horairePraticien.controller.js:25:20)
-    at Layer.handle [as handle_request] (D:\projets\web\tabibi\node_modules\express\lib\router\layer.js:95:5)
-    at next (D:\projets\web\tabibi\node_modules\express\lib\router\route.js:137:13)
-    at verifyToken (D:\projets\web\tabibi\_middleware\auth.js:39:16)
-    at Layer.handle [as handle_request] (D:\projets\web\tabibi\node_modules\express\lib\router\layer.js:95:5)
-    at next (D:\projets\web\tabibi\node_modules\express\lib\router\route.js:137:13)
-    at Route.dispatch (D:\projets\web\tabibi\node_modules\express\lib\router\route.js:112:3)
-    at Layer.handle [as handle_request] (D:\projets\web\tabibi\node_modules\express\lib\router\layer.js:95:5)
-    at D:\projets\web\tabibi\node_modules\express\lib\router\index.js:281:22
-[20220626,19:03:07] ERROR: /pra/pra;{};TypeError: Cannot read properties of undefined (reading 'id')
-TypeError: Cannot read properties of undefined (reading 'id')
-    at getPraticienConnect (D:\projets\web\tabibi\praticien\praticien.controller.js:80:38)
-    at Layer.handle [as handle_request] (D:\projets\web\tabibi\node_modules\express\lib\router\layer.js:95:5)
-    at next (D:\projets\web\tabibi\node_modules\express\lib\router\route.js:137:13)
-    at verifyToken (D:\projets\web\tabibi\_middleware\auth.js:39:16)
-    at Layer.handle [as handle_request] (D:\projets\web\tabibi\node_modules\express\lib\router\layer.js:95:5)
-    at next (D:\projets\web\tabibi\node_modules\express\lib\router\route.js:137:13)
-    at Route.dispatch (D:\projets\web\tabibi\node_modules\express\lib\router\route.js:112:3)
-    at Layer.handle [as handle_request] (D:\projets\web\tabibi\node_modules\express\lib\router\layer.js:95:5)
-    at D:\projets\web\tabibi\node_modules\express\lib\router\index.js:281:22
-    at Function.process_params (D:\projets\web\tabibi\node_modules\express\lib\router\index.js:341:12)
-[20220626,19:03:17] ERROR: /adr/rchAdresse;{};praticien not found
+[20220702,20:52:36] ERROR: /adr/mod/4;{};Validation error: "numero" is required, "voie" is required, "codePostale" is required, "ville" is required
 undefined
+[20220702,20:52:57] ERROR: /hor/mod/8;{};Validation error: "matinDebut" is required, "soirFin" is required, "lun" is required, "mar" is required, "mer" is required, "jeu" is required, "ven" is required, "sam" is required, "dim" is required
+undefined
+[20220702,20:53:52] ERROR: /gest/pra/undefined;{};TypeError: Cannot read properties of null (reading 'Profil')
+TypeError: Cannot read properties of null (reading 'Profil')
+    at Object.getByIdComplet (D:\projets\web\tabibi\praticien\praticien.service.js:169:19)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)

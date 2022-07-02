@@ -5,12 +5,10 @@
     <meta charset='utf-8' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="/pub/jsG/utils.js"></script>
-
-    <link href='/pub/cssG/main.css' rel='stylesheet' />
     <!---->
-
-    <script src="/pub/lib/jquery-3.6.0.min.js"></script>
+    <script src="../js/utils.js"></script>
+    <link href='../css/main.css' rel='stylesheet' />
+    <script src="../lib/jquery-3.6.0.min.js"></script>
 
     <!-- popup modal-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -27,7 +25,7 @@
 
             recupererSpecialite('/cache', "#id_speCat");
 
-            if ("NV" == praId) {// creation d un nouveau praticien
+            if ("NV" == praId || praId === undefined) {// creation d un nouveau praticien
                 alert('Creation=' + praId);
                 $("#BTNmodifierAdresse").hide();
                 $("#BTNmodifierPraticien").hide();

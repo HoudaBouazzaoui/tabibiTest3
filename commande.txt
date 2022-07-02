@@ -79,7 +79,7 @@ http://localhost:5000/bog/vpra.html
 http://localhost:5000/gest/charg/praticienProfil
 http://localhost:5000/gest/charg/vPra
 
-http://localhost:5000/gest/charg/gPra
+http://localhost:5000/gest/charg/gPra geston des praticien CRUD
 
 DROP TABLES praticiens, patients, adresses
 

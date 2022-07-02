@@ -5,16 +5,10 @@ const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('pubg'));
+app.use(express.static('pubm'));
 
-app.use('/pubg', express.static('pubg'));
+//app.use('/pubm', express.static('pubm'));
 
-//app.use('/public', express.static('public'));
-//app.use('/static', express.static(__dirname + '/public'));
-
-//var path = require('path');
-//app.use('/static',express.static(path.join(__dirname, 'public')));
-//app.use('/static', express.static(__dirname + '/public'));
 
 
 app.use(express.json());
@@ -22,13 +16,10 @@ app.use(express.json());
 app.use(cors());
 
 // api routes
-app.use('/gest', require('./gestio/gestio/gestio.controller'));
-// dans les 2 serveurs
-app.use('/spe', require('./specialite/specialite.controller')); 
-//app.use('/pra', require('./praticien/praticien.controller'));
-app.use('/pra', require('./gestio/praticien.controller'));
-app.use('/adr', require('./gestio/adresse.controller'));
-app.use('/hor', require('./gestio/horairePraticien.controller'));
+// dans les 3 serveurs
+app.use('/spe', require('./specialite/specialite.controller'));
+app.use('/adr', require('./praticien/adresse.controller'));
+//app.use('/rdvs', require('./rdvs/rdv.controller'));
 
 /*
 app.get('/codeTabibi/bo/lesRDV.html', function (request, response) {
@@ -40,7 +31,7 @@ app.get('/codeTabibi/bo/lesRDV.html', function (request, response) {
 app.use(errorHandler);
 
 // start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 5000;
+const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3000;
 app.listen(port, () => console.log('Server listening on port ' + port));
 
 process.on('uncaughtException', function (err) {

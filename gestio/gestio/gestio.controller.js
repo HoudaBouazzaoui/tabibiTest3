@@ -44,7 +44,7 @@ function chargement(req, res, next) {
     const path = require("path");
     // TODO
     //let indexPath = path.join(__dirname, "../../public/bog/hw.html");
-    let indexPath = path.join(__dirname, "../../pub/bog/coGestio.html");
+    let indexPath = path.join(__dirname, "../../pubg/bog/coGestio.html");
 
     res.sendFile(indexPath);
     //res.render(indexPath, {name:"kawiiiiiiii kaw"});
@@ -57,8 +57,8 @@ function charg(req, res, next) {
     console.log('------------------1--------chargement fileName=' + fileName);
     const path = require("path");
     //let indexPath = path.join(__dirname, "../../public/bog/vPra.html");
-    //const chemin = "../../pub/bog/" + fileName + ".html" ;
-    const chemin = "../../pub/bog/" + fileName + ".html" ;
+    //const chemin = "../../pubg/bog/" + fileName + ".html" ;
+    const chemin = "../../pubg/bog/" + fileName + ".html" ;
     console.log('************---chargement chemin=' + chemin);
     let indexPath = path.join(__dirname, chemin);
     res.sendFile(indexPath);

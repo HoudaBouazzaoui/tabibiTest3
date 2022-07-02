@@ -4,32 +4,24 @@ const app = express();
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
 
-app.use(express.static('public'));
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static('pubp'));
+app.use('/pubp', express.static('pubp'));
 app.use(cors());
-
-// api routes
-app.use('/users', require('./utilisa/users/users.controller'));// TODO est ce que l on centralise la connexion
-app.use('/rdvs', require('./rdvs/rdv.controller'));
-app.use('/pra', require('./praticien/praticien.controller'));
-app.use('/spe', require('./specialite/specialite.controller'));
-app.use('/pat', require('./patient/patient.controller'));
-app.use('/hor', require('./praticien/horairePraticien.controller'));
-app.use('/adr', require('./praticien/adresse.controller'));
-app.use('/pro', require('./praticien/profil.controller'));
-
-/*
-app.get('/codeTabibi/bo/lesRDV.html', function (request, response) {
-    response.sendFile('D:/projets/web/tabibi/rdvs/public/codeTabibi/bo/lesRDV.html');
-});
-*/
-
 // global error handler, par exemple la validation des forms Joi fct validateRequest qui revois le message JSON 
 app.use(errorHandler);
 
+// api routes
+// dans les 3 serveurs
+app.use('/spe', require('./specialite/specialite.controller')); 
+app.use('/pra', require('./praticien/praticien.controller'));
+app.use('/hor', require('./praticien/horairePraticien.controller'));
+app.use('/adr', require('./praticien/adresse.controller'));
+app.use('/rdvs', require('./rdvs/rdv.controller'));
+
 // start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
+const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 7000;
 app.listen(port, () => console.log('Server listening on port ' + port));
 
 process.on('uncaughtException', function (err) {
@@ -44,5 +36,5 @@ process.nextTick(function () {
 */
 
 // demmarage du cache
-let cacheProvider = require('./cache-provider');
+//let cacheProvider = require('./cache-provider');
 //cacheProvider.start();
