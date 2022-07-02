@@ -12,15 +12,19 @@ const verifyToken = (req, res, next) => {
         try {
             //let accessToken = req.cookies.jwt
             const token = req.headers.cookie;
+            if (!token) {
+                console.log('----1---NOOOOOO token = ');
+                return res.status(401).json({msg: 'NO TOKEN 1'});
+            }
             var accessToken = token.split('jwt=')[1];
             console.log('-------accessToken = ' + accessToken);
             if (!accessToken) {
-                console.log('-------NOOOOOO token = ');
-                return res.status(401).json({msg: 'NO TOKEN'});
+                console.log('----2---NOOOOOO token = ');
+                return res.status(401).json({msg: 'NO TOKEN 2'});
             }
         }
         catch (e) {
-            console.log('----ERRRR---jwt.verify' + e);
+            console.log('----ERRRR---jwt.verify =' + e);
             return res.status(401).json({
                 msg: e
             });

@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
-const validateRequest = require('_middleware/validate-request');
+
+const validateRequestParent = require('_middleware/validate-request');
+const validateRequest = validateRequestParent.validateRequest;
+const validateRequestSous = validateRequestParent.validateRequestSous;
+
 const verifyToken = require("_middleware/auth");
 const horaireService = require('./horairePraticien.service');
 const valForm = require('../_middleware/validate-form');
