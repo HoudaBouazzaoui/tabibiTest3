@@ -1,0 +1,14 @@
+[20220704,21:34:18] ERROR: /gest/charg/gPra;{};Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at new NodeError (node:internal/errors:371:5)
+    at ServerResponse.setHeader (node:_http_outgoing:576:11)
+    at ServerResponse.header (D:\projets\web\tabibi\node_modules\express\lib\response.js:776:10)
+    at ServerResponse.send (D:\projets\web\tabibi\node_modules\express\lib\response.js:170:12)
+    at ServerResponse.json (D:\projets\web\tabibi\node_modules\express\lib\response.js:267:15)
+    at verifyToken (D:\projets\web\tabibi\_middleware\auth.js:53:32)
+    at Layer.handle [as handle_request] (D:\projets\web\tabibi\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\projets\web\tabibi\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (D:\projets\web\tabibi\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (D:\projets\web\tabibi\node_modules\express\lib\router\layer.js:95:5)
+[20220704,21:35:16] ERROR: /gest/charg/vPra;{};Error: ENOENT: no such file or directory, stat 'D:\projets\web\tabibi\pubg\bog\vPra.html'
+Error: ENOENT: no such file or directory, stat 'D:\projets\web\tabibi\pubg\bog\vPra.html'
