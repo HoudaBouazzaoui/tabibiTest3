@@ -10,11 +10,9 @@ module.exports = {
     create
     ,update
     ,connect
-    //,delete: _delete  
-    ,getByIdComplet
-    ,getAll
-    ,getAllComplete
-    ,getById
+    ,getGestioById
+    ,getGestioCompletById
+    //,delete: _delete
 };
 
 
@@ -44,19 +42,24 @@ async function connect(params, res) {
     var passwordHash = await bcrypt.hash(params.password, 10);
     console.log('-------------------1--------------  connect gestioPay servicepasswordHash = ' + passwordHash);
 
-    let gestioPay = await getGestioByEmail(params.email);
-    if (!gestioPay){ // TODO
+    let gestio = await getGestioByEmail(params.email);
+    if (!gestio){ // TODO
         throw 'L email est inconnue';
     }      
 
-    bcrypt.compare(params.password, gestioPay.motpasse, (err, data) => {
+    bcrypt.compare(params.password, gestio.motpasse, (err, data) => {
         
         if (err) throw err;//if error than throw error
         
         if (data) {//if both match than you can do anything
             console.log('---------------3------------------  connect gestio serviceokk success');
-            //use the payload to store information about the user such as username, user role, etc.
-            let payload = { gestio: gestioPay };
+            // utilisation du payload pour stoke les information du gestio 
+            // faire une copie du gestio sans motpasse et ids afin de le stoke
+            const gestioPaySansIds = JSON.parse(JSON.stringify(gestio));
+            //delete gestioPaySansIds['id'];
+            delete gestioPaySansIds['motpasse'];
+            delete gestioPaySansIds['email'];
+            let payload = { gestio: gestioPaySansIds };
             
             let accessToken = jwt.sign(payload, consAuth.ACCESS_TOKEN_SECRET, {
                 algorithm: consAuth.ALGORITHM,
@@ -74,7 +77,7 @@ async function connect(params, res) {
             
             res.status(200).json({
                 msg: "Login success",
-                userId: gestioPay.id,
+                //userId: gestioPay.id,
                 token: accessToken
             });
             
@@ -86,7 +89,7 @@ async function connect(params, res) {
         }
 
     });
-    return gestioPay;
+    return gestio;
 }
 
 
@@ -127,45 +130,26 @@ async function update(id, params) {
     console.log('------------------FIN SERVICE PRATICIEN---------------  update');
 }
 
-async function _delete(id) {
-    const praticien = await getPraticien(id);
-    await praticien.destroy();
+async function getGestioCompletById(id) {
+    const gestio = await db.Gestio.findByPk(id);
+    if (!gestio) throw 'praticien not found';
+    return gestio;
 }
 
-async function getPraticien(id) {
-    const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'}]});
-    if (!praticien) throw 'praticien not found';
-    return praticien;
-}
-
-async function getByIdComplet(id) {
-    return await getByIdComplet(id);
-}
-async function getByIdComplet(id) {
-    const praticien = await db.Praticien.findByPk(id , { include: [{model: db.Adresse, as: 'Adresse'},{model: db.HorairePraticien, as: 'HorairePraticien'},{model: db.Profil, as: 'Profil'}]});
-    
-    // Image profile decode
-    if (praticien.Profil){
-        praticien.Profil.dataImg = Buffer.from(praticien.Profil.dataImg).toString('base64');
-    }  
-      
-    return praticien;
-}
-
-async function getAll() {
-    return await db.Praticien.findAll();
-}
-
-async function getAllComplete() {
-    return await db.Praticien.findAll({ include: [{model: db.Adresse, as: 'Adresse'}]});
-}
-
-async function getById(id) {
-    return await getPraticien(id);
+async function getGestioById(id) {
+    const gestio = await db.Gestio.scope('sansIds').findByPk(id);
+    if (!gestio) throw 'praticien not found';
+    return gestio;
 }
 
 async function getGestioByEmail(email) {
     const gestio = await db.Gestio.findOne({ where: { email: email } });
     if (!gestio) throw 'Utilisateur Inconnu';
     return gestio;
+}
+
+
+async function _delete(id) {
+    const praticien = await getPraticien(id);
+    await praticien.destroy();
 }

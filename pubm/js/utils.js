@@ -1,5 +1,4 @@
 function recupererSpecialite(cache, idSelect) {
-    //const urlspe = 'http://localhost:4000/spe' + cache;
     const urlspe = '/spe' + cache;
     $.ajax({
         type: "GET",
@@ -37,6 +36,7 @@ function selectSpecialite(jsonData, idSelect) {
 
     $(idSelect).html(listItems);
 }
+
 
 function construirePraticien() {
 

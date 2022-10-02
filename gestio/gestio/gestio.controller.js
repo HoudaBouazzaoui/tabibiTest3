@@ -17,7 +17,7 @@ const app = express();
 app.use(cookieParser());
 
 // routes
-router.get('/esp', chargement);
+router.get('/co', coGestio);
 router.get('/charg/:id',verifyToken.verifyToken, charg);
 
 router.post('/aVal',verifyToken.verifyToken , getListePraticienAValider);
@@ -28,7 +28,7 @@ router.get('/pra/:id',verifyToken.verifyToken , getPraticien);
 router.post('/nv', createSchema, create); // TODO verifyToken
 router.put('/mod/:id',verifyToken.verifyToken, updateSchema, update);// TODO verifyToken
 router.post('/connect', connect);
-router.get('/pra/',verifyToken.verifyToken, getPraticienConnect);
+router.get('/gestC', verifyToken.verifyToken, getGestioConnect);
 router.get('/logOut/',verifyToken.verifyToken, logOut);
 
 router.get('/', getAll);// TODO verifyToken
@@ -40,28 +40,23 @@ router.get('/', getAll);// TODO verifyToken
 
 module.exports = router;
 
-// todo methode pur charger un html
-function chargement(req, res, next) {
+
+function coGestio(req, res, next) {
     console.log('------------------DEB--------chargement __dirname=' + __dirname);
     var message = '';
-
     const path = require("path");
-    // TODO
-    //let indexPath = path.join(__dirname, "../../public/bog/hw.html");
     let indexPath = path.join(__dirname, "../../pubg/bog/coGestio.html");
-
     res.sendFile(indexPath);
     //res.render(indexPath, {name:"kawiiiiiiii kaw"});
     console.log('------------------FIN---------------chargement __dirname');
 }
 
+// todo methode pur charger un html, l html necessite la connect Token
 function charg(req, res, next) {
     const fileName = req.params.id;
     console.log('------------------DEB--------chargement __dirname=' + __dirname);
     console.log('------------------1--------chargement fileName=' + fileName);
     const path = require("path");
-    //let indexPath = path.join(__dirname, "../../public/bog/vPra.html");
-    //const chemin = "../../pubg/bog/" + fileName + ".html" ;
     const chemin = "../../pubg/bog/" + fileName + ".html" ;
     console.log('************---chargement chemin=' + chemin);
     let indexPath = path.join(__dirname, chemin);
@@ -70,9 +65,9 @@ function charg(req, res, next) {
 }
 
 async function getListePraticienAValider(req, res, next) {
-    console.log('-----gesyio.controller-----getListePraticienAValider');
+    console.log('cccccc-------gesyio.controller-----getListePraticienAValider');
     var criterRch = req.body;
-    console.log('-----req.criterRch=' + JSON.stringify(criterRch));
+    console.log('cccccc-------req.criterRch=' + JSON.stringify(criterRch));
 
     praticienService.getAllCompleteNonValide().then(praticiens => res.json(praticiens)).catch(next);
 }
@@ -125,7 +120,14 @@ function connect(req, res, next) {
     console.log('------------------FIN---------------gestio.controller  connect ');
 }
 
-
+function getGestioConnect(req, res, next) {
+    console.log('******-----------  getGestioConnect = ' + req.payload.gestio.nom +'**' + req.payload.gestio.prenom);
+    res.json(req.payload.gestio);
+    /*
+    const id = req.payload.gestio.id;
+    gestioService.getGestioById(id).then(gest => res.json(gest)).catch(next);
+    */
+}
 
 function update(req, res, next) {
     // TODO
@@ -139,12 +141,6 @@ function update(req, res, next) {
         .then(() => res.json({ message: 'Mis a jour' }))
         .catch(next);
     }
-}
-
-function getPraticienConnect(req, res, next) {
-    console.log('---------------------------------  getPraticienConnect');
-    const id = req.payload.praticien.id;
-    gestioService.getByIdComplet(id).then(pra => res.json(pra)).catch(next);
 }
 
 function getAll(req, res, next) {
@@ -247,3 +243,6 @@ function getByEmail(req, res, next) {
 
 
 */
+
+
+

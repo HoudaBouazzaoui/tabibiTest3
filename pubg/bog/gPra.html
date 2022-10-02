@@ -41,17 +41,18 @@
             });
 
             //$("#id_speCat").combobox();
+
+            recupererGestioC();
         });
 
 
         function listerPraAVal(criterRch) {
             //alert(criterRch);
-
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
                 dataType: 'json',
-                url: "http://localhost:5000/gest/aVal",
+                url: "/gest/aVal",
                 cache: false,
                 data: criterRch,
                 success: function (data) {
@@ -72,10 +73,10 @@
             console.log("ORROR     KOOO=" + iwa);
 
             if (jqXHR.status == 401) {
-               // redirection vers la page de connexion
-               //window.location.href = "/gest/charg/coGestio";
-               window.location.href = "/bog/coGestio.html";
-               
+                // redirection vers la page de connexion
+                //window.location.href = "/gest/charg/coGestio";
+                window.location.href = "/bog/coGestio.html";
+
             } else if (jqXHR.status == 404) {
                 //Not found
             }
@@ -141,6 +142,39 @@
             praWindow.idPra = praId;// passage de id pra a la nouvelle fenetre
         }
 
+        function logOut() {
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "/gest/logOut",
+                //cache: false,
+                async: false,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: recupererRendezVousErreur
+            });
+            location.reload();
+            return false;
+        }
+
+        
+        function recupererGestioC() {
+            $.ajax({
+                type: "GET",
+                //contentType: "application/json",
+                dataType: 'json',
+                url: "/gest/gestC",
+                cache: true,
+                success: function (data) {
+                    console.log("success     ok gest=" + JSON.stringify(data));
+                    $("#gestioC").text(data.nom + ' ' + data.prenom);
+                },
+                error: recupererRendezVousErreur
+            });
+        }
+
     </script>
 
 </head>
@@ -148,21 +182,17 @@
 <body>
 
     <div class="">
-
     </div>
-
-
-
-
 
     <div style="background-color:#e5e5e5;padding:15px;text-align:center;">
         <h1>Gestion des praticiens</h1>
+        <h2 id="gestioC">--- ---</h2>
     </div>
 
     <div style="overflow:auto">
         <div class="menu">
             <a href="#" onclick="afficherDetailPra('NV');return false;">NV Praticien</a>
-            <a href="#">Link 2</a>
+            <a href="#" onclick="logOut();return false;">LOG OUT</a>
             <a href="#">Link 3</a>
             <a href="#">Link 4</a>
         </div>
@@ -186,24 +216,20 @@
 
                 <div class="">
                     <button type="button" class="">Annuler</button>
-                    <input id="buttonCreerRDV" type="submit" class="" value="chercher">
+                    <input id="chercher" type="submit" class="" value="chercher">
                 </div>
 
             </form>
 
             <div class="res" id="resu"></div>
-            
+
         </div>
 
         <div class="right">
-
             <div class="" id="afficheResu">
                 <p></p>
             </div>
-
-            <div class="" id="affichePupup">
-
-            </div>
+            <div class="" id="affichePupup"></div>
         </div>
     </div>
 

@@ -1,5 +1,5 @@
 
-
+cd/d  D:\projets\web\tabibi
 cd/d  D:\projets\web\tabibi\utilisa
 node D:\projets\web\tabibi\connectionMysql.js
 
@@ -58,7 +58,7 @@ http://localhost:4000/bo/nouveauPraticien.html
 http://localhost:4000/pra/2
 
 http://localhost:4000/bo/lesRDV.html
-http://localhost:4000/pra/esp
+http://localhost:4000/pra/co
 
 http://localhost:4000/rdvs/rdvs
 http://localhost:4000/rdvs/supp/2
@@ -72,7 +72,7 @@ http://localhost:4000/bo/praticienProfil.html
 
 
 
-http://localhost:5000/gest/esp
+http://localhost:5000/gest/co
 http://localhost:5000/gest/valid/
 http://localhost:5000/bog/vpra.html
 http://localhost:5000/gest/charg/praticienProfil
@@ -80,6 +80,25 @@ http://localhost:5000/gest/charg/vPra
 
 http://localhost:5000/bog/nvGestio.html            creation de gestionnaire 
 http://localhost:5000/gest/esp                     geston des praticien CRUD
+
+------------------------------------------------
+
+http://localhost:3000/bom/rchrdv.html
+
+http://localhost:5000/bog/nvGestio.html
+http://localhost:5000/gest/charg/gPra
+http://localhost:5000/gest/charg/coGestio
+http://localhost:5000/gest/charg/praticienProfil
+
+http://localhost:7000/bo/lesRDV.html
+http://localhost:7000/bop/praticienProfil.html
+
+http://localhost:4000/bo/nvRdvPat.html
+http://localhost:4000/pra/pra
+http://localhost:4000/bo/praticienProfil.html
+http://localhost:4000/bo/lesRDV.html
+http://localhost:4000/pra/co
+-----------------------------------------------
 
 DROP TABLES praticiens, patients, adresses
 

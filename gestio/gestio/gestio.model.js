@@ -12,6 +12,19 @@ function model(sequelize) {
         motpasse: { type: DataTypes.STRING(100), allowNull: false },
         role: { type: DataTypes.STRING(10), allowNull: false }
     };
-    
-    return sequelize.define('Gestio', attributes);
+
+    // permet de ne pas returner l id mot de passe 
+    const scopesPra = {
+        //defaultScope: { where: { active: true } },
+        scopes: {
+            sansMotpasse: {
+                attributes: { exclude: ['motpasse'] },
+            },
+            sansIds: {
+                attributes: { exclude: ['id', 'motpasse', 'email'] },
+            }
+        }
+    };
+
+    return sequelize.define('Gestio', attributes, scopesPra);
 }

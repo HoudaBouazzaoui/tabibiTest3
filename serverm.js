@@ -21,12 +21,6 @@ app.use('/spe', require('./specialite/specialite.controller'));
 app.use('/adr', require('./praticien/adresse.controller'));
 //app.use('/rdvs', require('./rdvs/rdv.controller'));
 
-/*
-app.get('/codeTabibi/bo/lesRDV.html', function (request, response) {
-    response.sendFile('D:/projets/web/tabibi/rdvs/public/codeTabibi/bo/lesRDV.html');
-});
-*/
-
 // !!! NE PAS DEPLACER CETTE LIGNE, le statut de la reponse passe de 400 a 500
 //Important que ce soit declarer a la fin; car cela modifie la reponse du html a json
 // global error handler, par exemple la validation des forms Joi fct validateRequest qui revois le message JSON 

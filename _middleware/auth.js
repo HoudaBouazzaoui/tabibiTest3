@@ -47,7 +47,7 @@ const verifyToken = (req, res, next) => {
 
         if(originalUrl && originalUrl.includes('/gest/')){
             console.log('---TODO ---REDIRECT  ---TODO ---REDIRECT  ---TODO ---REDIRECT  ');
-            res.redirect(307, '/gest/esp');
+            res.redirect(307, '/gest/co');
         }
 
         return res.status(401).json({
