@@ -1017,7 +1017,7 @@ section {
 .testimonials .testimonial-item .testimonial-img {
   width: 90px;
   border-radius: 50%;
-  margin: 0px 0 0 40px;
+  margin: -40px 0 0 40px;
   position: relative;
   z-index: 2;
   border: 6px solid #fff;
@@ -1566,20 +1566,4 @@ section {
   padding-top: 10px;
   text-align: center;
   font-size: 13px;
-}
-
-
-
-
-
-
-
-
-
-
-.width30 {
-  width: 30%;
-}
-.width70 {
-  width: 70%;
 }
