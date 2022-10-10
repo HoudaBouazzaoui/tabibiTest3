@@ -27,6 +27,9 @@ function model(sequelize) {
             },
             sansIdMotpasse: {
                 attributes: { exclude: ['id', 'motpasse'] },
+            },
+            public: {
+                attributes: { exclude: ['id', 'motpasse', 'email', 'valide', 'cr', 'createdAt', 'updatedAt'] },
             }
         }
     };

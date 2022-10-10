@@ -3,6 +3,7 @@ const router = express.Router();
 const adresseService = require('./adresse.service');
 const verifyToken = require("_middleware/auth");
 const valForm = require('../_middleware/validate-form');
+let cst = require("_const/cst");
 
 //const Joi = require('joi');
 //const validateRequest = require('_middleware/validate-request');
@@ -21,10 +22,10 @@ module.exports = router;
 
 async function getListePraticienByAdresse(req, res, next) {
 
-    console.log('-----adresse.controller-----getPraticienByAdresse');
+    console.log('-----\praticien\adresse.controller -----getPraticienByAdresse');
     var criterRch = req.body;
     console.log('-----req.criterRch=' + JSON.stringify(criterRch));
-    adresseService.getListePraticienByAdresse(criterRch).then(praticiens => res.json(praticiens)).catch(next);
+    adresseService.getListePraticienByAdresse(criterRch, cst.user.Pa).then(praticiens => res.json(praticiens)).catch(next);
 /*
     const praticiens = await adresseService.getListePraticienByAdresse(criterRch);
 

@@ -13,6 +13,8 @@ module.exports = router;
 
 async function getListePraticienByAdresse(req, res, next) {
 
+    res.status(404).send('a fixe getListePraticienByAdresse');
+
     console.log('-----adresse.controller-----getPraticienByAdresse');
     var criterRch = req.body;
     console.log('-----req.criterRch=' + JSON.stringify(criterRch));

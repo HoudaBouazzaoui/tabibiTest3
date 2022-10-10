@@ -43,6 +43,8 @@ function construirePraticien() {
     var praticien = {
 
         id: $("#praId").val(),
+        ProfilId: $("#ProfilId").val(),
+        
         AdresseId: $("#AdresseId").val(),
         HorairePraticienId: $("#HorairePraticienId").val(),
 
@@ -91,8 +93,15 @@ function construirePraticien() {
 function peuplerFormPraticien(pra) {
 
     //image: $("#imgProfil").files;
+    const pro = pra.Profil;
+    if(pro != null) {
+        $("#imgProfilAffiche").attr({src: "data:" + pro.typeImg + ";base64," + pro.dataImg});
+     }else{
+    }
 
     $("#praId").val(pra.id);
+    $("#ProfilId").val(pra.ProfilId);
+    
     $("#AdresseId").val(pra.AdresseId);
     $("#HorairePraticienId").val(pra.HorairePraticienId);
 
@@ -162,3 +171,17 @@ function dateStrDDMMYYYY(laDat) {
     return dateFormate;
 }
 
+let imagesPreview = function (input, placeToInsertImagePreview) {
+    if (input.files) {
+        let filesAmount = input.files.length;
+        for (i = 0; i < filesAmount; i++) {
+            let reader = new FileReader();
+            reader.onload = function (event) {
+                $($.parseHTML("<img>"))
+                    .attr("src", event.target.result)
+                    .appendTo(placeToInsertImagePreview);
+            };
+            reader.readAsDataURL(input.files[i]);
+        }
+    }
+};

@@ -10,7 +10,9 @@ const verifyToken = require("_middleware/auth");
 const Role = require('./role');
 const gestioService = require('./gestio.service');
 let consAuth = require("_const/auth");
+let cst = require("_const/cst");
 const praticienService = require('../../praticien/praticien.service');
+const adresseService = require('../../praticien/adresse.service');
 
 var cookieParser = require('cookie-parser')
 const app = express();
@@ -66,10 +68,16 @@ function charg(req, res, next) {
 
 async function getListePraticienAValider(req, res, next) {
     console.log('cccccc-------gesyio.controller-----getListePraticienAValider');
-    var criterRch = req.body;
+    const criterRch = req.body;
+    const aValider = criterRch.aValider;
     console.log('cccccc-------req.criterRch=' + JSON.stringify(criterRch));
-
-    praticienService.getAllCompleteNonValide().then(praticiens => res.json(praticiens)).catch(next);
+    if(aValider == "true"){
+        console.log('cccccc-------gesyio.controller-----getListePraticienAValider ///// praticienService.getAllCompleteNonValide');
+        praticienService.getAllCompleteNonValide().then(praticiens => res.json(praticiens)).catch(next);
+    }else{
+        console.log('cccccc-------gesyio.controller-----getListePraticienAValider ///// adresseService.getListePraticienByAdresse');
+        adresseService.getListePraticienByAdresse(criterRch, cst.user.G).then(praticiens => res.json(praticiens)).catch(next);
+    }   
 }
 
 async function getPraticien(req, res, next) {

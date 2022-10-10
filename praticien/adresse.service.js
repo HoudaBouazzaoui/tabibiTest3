@@ -1,5 +1,6 @@
 const db = require('db/dbMysql2');
 let consAuth = require("_const/auth");
+let cst = require("_const/cst");
 const Sequelize = require("sequelize");
 const specialiteService = require('../specialite/specialite.service');
 
@@ -12,14 +13,21 @@ module.exports = {
     //,delete: _delete
 };
 
-async function getListePraticienByAdresse(criterRch) {
+async function getListePraticienByAdresse(criterRch, origi) {
 
     const id_speCatRch = criterRch.id_speCat;
     const specialite = criterRch.specialite;
     const villeRch = criterRch.ville;
+    var scopePrati = 'public';
 
-    console.log('----DEB SERVICE ADRESSE ECH PRA--------getPraticienByAdresse ville=' + villeRch.length);
-    console.log('----DEB SERVICE ADRESSE ECH PRA--------getPraticienByAdresse id_speCat=' + id_speCatRch.length);
+    if(origi && origi == cst.user.G){
+        scopePrati = 'sansMotpasse';
+    }else{
+        scopePrati = 'public';
+    }  
+
+    console.log('----DEB SERVICE ADRESSE ECH PRA---origi='+origi+'-----getPraticienByAdresse ville=' + villeRch.length);
+    console.log('----DEB SERVICE ADRESSE ECH PRA----origi='+origi+'----getPraticienByAdresse id_speCat=' + id_speCatRch.length);
     /*const praticiens = await db.Praticien.findAll({ include: [{
         model: db.Adresse, 
         as: 'Adresse',
@@ -32,7 +40,7 @@ async function getListePraticienByAdresse(criterRch) {
     var praticiens = null;
     if (villeRch.length && id_speCatRch.length) { // rch ville + specialite
         console.log('---- SERVICE ADRESSE ECH PRA-------CASSSS -------- ville et specialite');
-        praticiens = await db.Praticien.scope('sansIdMotpasse').findAll({ where: { valide: true },
+        praticiens = await db.Praticien.scope(scopePrati).findAll({ where: { valide: true },
             include: [{
                 model: db.Adresse,
                 as: 'Adresse',
@@ -46,7 +54,7 @@ async function getListePraticienByAdresse(criterRch) {
         });
     } else if (villeRch.length && !id_speCatRch.length) { // rch ville
         console.log('---- SERVICE ADRESSE ECH PRA-------CASSSS --------ville');
-        praticiens = await db.Praticien.scope('sansIdMotpasse').findAll({ where: { valide: true },
+        praticiens = await db.Praticien.scope(scopePrati).findAll({ where: { valide: true },
             include: [{
                 model: db.Adresse,
                 as: 'Adresse',
@@ -58,7 +66,7 @@ async function getListePraticienByAdresse(criterRch) {
         });
     } else if (!villeRch.length && id_speCatRch.length) { // rch specialite
         console.log('----  SERVICE ADRESSE ECH PRA-------CASSSS --------specialite');
-        praticiens = await db.Praticien.scope('sansIdMotpasse').findAll({ where: { valide: true },
+        praticiens = await db.Praticien.scope(scopePrati).findAll({ where: { valide: true },
             include: [{
                 model: db.Adresse,
                 as: 'Adresse',

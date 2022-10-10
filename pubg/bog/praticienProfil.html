@@ -8,6 +8,14 @@
     <script src="/pubg/jsG/utils.js"></script>
 
     <link href='/pubg/cssG/main.css' rel='stylesheet' />
+    <link href='/pubg/cssG/a.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+    <style>
+        div.preview-images>img {
+            width: 30%;
+        }
+    </style>
     <!---->
 
     <script src="/pubg/lib/jquery-3.6.0.min.js"></script>
@@ -36,6 +44,29 @@
                 recupererPraticien(praId);
                 $("#BTNcreerPraticien").hide();
             }
+
+            $("#fichierProfil").on("change", function () {
+                alert('fichierProfil.....');
+                imagesPreview(this, "div.preview-images");
+            });
+
+            $("#modifierImageProfil").submit(function (event) {
+                //stop submit the form, we will post it manually.
+                event.preventDefault();
+                alert('modifierImageProfil');
+                var praticien = construirePraticien();
+                // $("#successModal").modal('hide');
+                modifierImageProfil(praticien);
+                return false;
+            });
+
+            $("#BTNsuppImageProfil").click(function (event) {
+                alert('BTNsuppImageProfil');
+                var praticien = construirePraticien();
+                // $("#successModal").modal('hide');
+                supprimerImageProfil(praticien);
+                return false;
+            });
 
             $("#modifierPraticien").submit(function (event) {
                 alert('modifierPraticien');
@@ -91,6 +122,79 @@
                     console.log("Details0: " + desc + "\nError:" + err);
                 }
             });
+        }
+
+
+        function modifierImageProfil(praticien) {
+
+            const praid = praticien.id;
+            const ProfilId = praticien.ProfilId;
+            alert('praid = ' + praid + 'ProfilId = ' + ProfilId);
+
+            if (ProfilId) {
+                alert('ProfilId exist = ' + ProfilId);
+            } else {
+                alert('ProfilId NOOOO exist = ' + ProfilId);
+            }
+            const parmsUrl = (ProfilId) ? praid + "/" + ProfilId : praid + "/nan";
+            alert('parmsUrl = ' + parmsUrl);
+
+            const praData = JSON.stringify(praticien);
+            alert(praData);
+            console.log(praData);
+
+            var form = $('#modifierImageProfil')[0];
+            // Create an FormData object 
+            var data = new FormData(form);
+
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "/pro/upload/" + parmsUrl,
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text(iwa);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: function (xhr, desc, err) {
+                    gererErreur(xhr, desc, err);
+                }
+            });
+        }
+
+        function supprimerImageProfil(praticien) {
+
+            const praid = praticien.id;
+            const ProfilId = praticien.ProfilId;
+            alert('praid = ' + praid + 'ProfilId = ' + ProfilId);
+
+            if (ProfilId) {
+                const parmsUrl = praid + "/" + ProfilId;
+                alert('parmsUrl = ' + parmsUrl);
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json",
+                    dataType: 'json',
+                    url: "/pro/upload/" + parmsUrl,
+                    cache: true,
+                    success: function (data) {
+                        var iwa = JSON.stringify(data);
+                        $("#successModal .modal-body p").text(iwa);
+                        console.log("success     okkkk" + iwa);
+                    },
+                    error: function (xhr, desc, err) {
+                        gererErreur(xhr, desc, err);
+                    }
+                });
+            } else {
+                alert('ProfilId NOOOO exist = ' + ProfilId);
+            }
+
         }
 
         function modifierPraticien(praticien) {
@@ -251,11 +355,37 @@
                 </button>
                 <p></p>
 
+
+                <div class="container">
+                    <h4>image de profile</h4>
+                    <div class="row">
+                        <form id="modifierImageProfil" name="contact" role="form" enctype="multipart/form-data">
+                        <div class="col-sm-6 mt-3">
+                            <input type="file" name="file" id="fichierProfil" class="form-control-file border" />
+                        </div>
+                        <div class="col-sm-3 mt-3">
+                            <button type="submit" id="BTNmodifierImageProfil" class="btn btn-primary">Submit</button>
+                        </div>
+                        <div class="col-sm-3 mt-3">
+                            <button type="submit" id="BTNsuppImageProfil" class="btn btn-danger">Supp Image</button>
+                        </div>
+                        </form>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="preview-images">
+                                <img id="imgProfilAffiche" src="" alt="TODO">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <form id="modifierPraticien" name="contact" role="form">
 
                     <input id="praId" name="praId" type="hidden" value="">
-
-                    <input type="file" name="imgProfil" id="imgProfil" />
+                    <input id="ProfilId" name="praId" type="hidden" value="">
 
                     <div class="form-group">
                         <label for="id_speCat" class="col-form-label">Specialite:</label>
@@ -354,8 +484,7 @@
                                 </td>
                                 <td>
                                     <label for="matinFin" class="col-form-label">Mat heure fin:</label>
-                                    <input type="text" class="form-control" id="matinFin" name="matinFin"
-                                        value="12:00">
+                                    <input type="text" class="form-control" id="matinFin" name="matinFin" value="12:00">
                                 </td>
                                 <td rowspan="2">
                                     <label for="lun">Lun</label>
@@ -390,8 +519,7 @@
                                 </td>
                                 <td>
                                     <label for="soirFin" class="col-form-label">Soire heure fin:</label>
-                                    <input type="text" class="form-control" id="soirFin" name="soirFin"
-                                        value="18:00">
+                                    <input type="text" class="form-control" id="soirFin" name="soirFin" value="18:00">
                                 </td>
                             </tr>
                         </table>
@@ -401,8 +529,7 @@
                 </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <input id="BTNcreerPraticien" type="submit" class="btn btn-success success"
-                        value="Creer Praticien">
+                    <input id="BTNcreerPraticien" type="submit" class="btn btn-success success" value="Creer Praticien">
                 </div>
 
 

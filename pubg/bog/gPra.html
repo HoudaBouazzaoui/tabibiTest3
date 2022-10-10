@@ -26,10 +26,12 @@
 
             $("#listerPraAVal").submit(function (event) {
 
+                
                 var criterRch = {
                     id_speCat: $("#id_speCat").val(),
                     specialite: $("#specialite").val(),
-                    ville: $("#ville").val()
+                    ville: $("#ville").val(),
+                    aValider: $("#aValider").val()
                 };
 
                 var data = JSON.stringify(criterRch);
@@ -99,11 +101,14 @@
                     listItems += '<img src="data:' + pro.typeImg + ';base64, ' + pro.dataImg + '" alt="' + p.nom + '" />';
                 }
 
+                
 
                 listItems += '</div><span class="padding-left100">' + p.titre + ' ' + p.prenom + ' ' + p.nom + '</span></div>';
                 listItems += '</div><span class="padding-left100">' + p.id_speCat + '</span></div>';
-                listItems += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                listItems += '<a id="validerPra_' + p.id + '" href="#" onclick="validerPraticien(' + p.id + ');return false;">validerPra' + p.id + '</a>';
+                listItems += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';            
+                if (!p.valide) {
+                    listItems += '<a id="validerPra_' + p.id + '" href="#" onclick="validerPraticien(' + p.id + ');return false;">validerPra' + p.id + '</a>';
+                }              
                 listItems += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                 listItems += '<a id="detailPra_' + p.id + '" href="#" onclick="afficherDetailPra(' + p.id + ');return false;">Detail</a>';
 
@@ -212,6 +217,11 @@
 
                     <label for="ville" class="">ville</label>
                     <input type="text" class="" id="ville" name="ville">
+
+                    <label for="aValider">A Valider</label>
+                    <input type="checkbox" id="aValider" name="aValider" value="true" checked
+                                        onclick="if(this.checked)this.value=true;else this.value=false;">
+                    
                 </div>
 
                 <div class="">

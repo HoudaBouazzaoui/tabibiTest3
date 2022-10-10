@@ -29,6 +29,7 @@ app.use('/spe', require('./specialite/specialite.controller'));
 app.use('/pra', require('./gestio/praticien.controller'));
 app.use('/adr', require('./gestio/adresse.controller'));
 app.use('/hor', require('./gestio/horairePraticien.controller'));
+app.use('/pro', require('./gestio/profil.controller'));
 
 /*
 app.get('/codeTabibi/bo/lesRDV.html', function (request, response) {
