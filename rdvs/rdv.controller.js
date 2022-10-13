@@ -155,8 +155,9 @@ function getListeRdvById(req, res, next) {
 
 async function transformRdvsLibreHoraire(rdvs, req, idPraticien) {
     console.log('DEB---------rdv.controller-----  transformRdvsLibreHoraire');
+    const horairePraticienId = req.payload.praticien.HorairePraticienId;
     const horaireService = require('praticien/horairePraticien.service');
-    const horairePraticien = await horaireService.getHorairePraticien(req);
+    const horairePraticien = await horaireService.getHorairePraticien(horairePraticienId);
     //const horairePraticien = await horaireService.getById(idPraticien);
 
     console.log('-------------------------horairePraticien===' + JSON.stringify(horairePraticien));

@@ -7,7 +7,8 @@ const specialiteService = require('../specialite/specialite.service');
 module.exports = {
     getListePraticienByAdresse
     ,update
-    ,create 
+    ,create
+    ,getAdresse
     //,getAll
     //,getById 
     //,delete: _delete

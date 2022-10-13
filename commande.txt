@@ -102,4 +102,8 @@ http://localhost:4000/pra/co
 
 DROP TABLES praticiens, patients, adresses
 
+SHOW GLOBAL VARIABLES LIKE 'innodb_rollback_on_timeout';
+SHOW GLOBAL VARIABLES LIKE 'innodb_lock_wait_timeout';
+set innodb_rollback_on_timeout = 1;
+
 verifierbsi le rdv nest pas deja creer

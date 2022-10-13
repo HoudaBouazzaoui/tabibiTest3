@@ -3,6 +3,7 @@ const db = require('db/dbMysql2');
 const jwt = require('jsonwebtoken');
 let consAuth = require("_const/auth");
 const adresseService = require('./adresse.service');
+const horaireService = require('./horairePraticien.service');
 
 
 module.exports = {
@@ -17,37 +18,118 @@ module.exports = {
 
     , getAllCompleteNonValide
     , validerPraticien
+    ,_delete_Adr_Hor_Pra
 };
 
-
+// permet de creer 3 objets  adresse des horaire et praticien
 async function create(params) {
+    var praticien;
+    const t = await db.sequelize.transaction();
+    try {
+        // TODO peut etre mettre une transaction afin errors to rollback car 2 creation adresse et praticien
+        console.log('------------------DEB SERVICE PRATICIEN---------------  create params=' + JSON.stringify(params));
+        // validate
+        if (await db.Praticien.findOne({ where: { email: params.email } })) { //throw 'Validation error: "email" ' + params.email + ' is already registered';
+            throw ' "email" ' + params.email + ' is already registered';
+        }
+
+        const adresse = new db.Adresse(params.Adresse);
+        await adresse.save({ transaction: t });
+
+        const horairePraticien = new db.HorairePraticien(params.HorairePraticien);
+        await horairePraticien.save({ transaction: t });
+ 
+        praticien = new db.Praticien(params);
+
+        // hash password
+        praticien.motpasse = await bcrypt.hash(params.motpasse, 10);
+        praticien.AdresseId = adresse.id;
+        praticien.HorairePraticienId = horairePraticien.id;
+        praticien.ProfilId = null;
+        praticien.valide = false;
+
+        // save praticien
+        await praticien.save({ transaction: t });
+
+        await t.commit();
+        console.log('------------------FIN SERVICE PRATICIEN---------------  create');
+    
+    } catch (error) {
+        console.log('****---ERRRRRRR++RRRR*RRRRRR*RRRRR---OOOOOO+OOOOORRRRRRRRRRRRRRRRRRRRRRRR--RRR*RRR-RRR =' +error);
+        // If the execution reaches this line, an error was thrown.
+        // We rollback the transaction.
+        await t.rollback();
+        throw error;
+    }
+
+    console.log('-----FINFINFINFIN--FIN----FIN-------FIN SERVICE PRATICIEN---------------  create');
+    return praticien;
+}
+
+async function _delete_Adr_Hor_Pra(id) {
+    console.log('------------------DEB SERVICE PRATICIEN---  _delete_Adr_Hor_Pra id=' + id);
+    
+    const t = await db.sequelize.transaction();
+    try {
+        const praticien = await getPraticien(id);
+
+        const adresse = await adresseService.getAdresse(praticien.AdresseId);
+        console.log('------  _delete_Adr_Hor_Pra --------adresse.id=' + adresse.id +'/' + praticien.AdresseId);
+        await adresse.destroy({ transaction: t });
+        console.log('---------------------------------adresse.destroy');
+        
+        const horairePraticien = await horaireService.getHorairePraticien(praticien.HorairePraticienId);
+        console.log('------  _delete_Adr_Hor_Pra --------horairePraticien.id=' + horairePraticien.id+'/' + praticien.HorairePraticienId);
+        await horairePraticien.destroy({ transaction: t });
+        console.log('---------------------------------horairePraticien.destroy');
+
+        const profilService = require('./profil.service');
+        if(praticien.ProfilId){
+            const profil = await profilService.getProfil(praticien.ProfilId);
+            console.log('-----  _delete_Adr_Hor_Pra ------------profil.id=' + profil.id+'/' + praticien.ProfilId);
+            await profil.destroy({ transaction: t });
+            console.log('---------------------------------profil.destroy');
+        }
+
+        await praticien.destroy({ transaction: t });
+        console.log('---------------------------------praticien.destroy');
+
+        await t.commit();
+        console.log('------------------FIN SERVICE PRATICIEN---------------  _delete_Adr_Hor_Pra');
+    
+    } catch (error) {
+        console.log('errorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerrorerror');
+        console.log('**** _delete_Adr_Hor_Pra ---error------------------ =' +error);
+        await t.rollback();
+        throw error;
+    }
+    //return praticien;
+}
+
+async function createOld(params) {
     // TODO peut etre mettre une transaction afin errors to rollback car 2 creation adresse et praticien
     console.log('------------------DEB SERVICE PRATICIEN---------------  create params=' + params);
     // validate
-    if (await db.Praticien.findOne({ where: { email: params.email } })) {
-        //throw 'Validation error: "email" ' + params.email + ' is already registered';
+    if (await db.Praticien.findOne({ where: { email: params.email } })) { //throw 'Validation error: "email" ' + params.email + ' is already registered';
         throw ' "email" ' + params.email + ' is already registered';
     }
 
     const adresse = await adresseService.create(params.Adresse);
     console.log('------------------ SERVICE PRATICIEN 111 ---------------  adresse =' + adresse);
-
     const horaireService = require('./horairePraticien.service');
     const horairePraticien = await horaireService.create(params.HorairePraticien);
     console.log('------------------ SERVICE PRATICIEN 112 ---------------  horaire =' + JSON.stringify(horairePraticien));
 
     const praticien = new db.Praticien(params);
     console.log('------------------ SERVICE PRATICIEN 222---------------  praticien =' + praticien);
-
-
     // hash password
     praticien.motpasse = await bcrypt.hash(params.motpasse, 10);
-
     praticien.AdresseId = adresse.id;
     praticien.HorairePraticienId = horairePraticien.id;
+    praticien.ProfilId = null;
+    praticien.valide = false;
     console.log('------------------ SERVICE PRATICIEN 333---------------  praticien.passwordHash =' + praticien.passwordHash);
 
-    praticien.valide = false;
     // save praticien
     await praticien.save();
     console.log('------------------FIN SERVICE PRATICIEN---------------  create');
@@ -78,10 +160,10 @@ async function update(id, params, uniquementPra) {
     params.email = praticien.email;
     params.motpasse = praticien.motpasse;
 
-    if( ! uniquementPra){// MAJ de  l adresse et horaire egalement
+    if (!uniquementPra) {// MAJ de  l adresse et horaire egalement
         const idA = praticien.Adresse.id;// MAJ de l adresse obj Adresse
         const adresse = await adresseService.update(idA, params.adresse);
-    
+
         const idH = praticien.HorairePraticien.id;// MAJ des horaires obj HorairePraticien 
         const horaireService = require('./horairePraticien.service');
         const horairePraticien = await horaireService.update(idH, params.horairePraticien);

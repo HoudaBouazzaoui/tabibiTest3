@@ -5,9 +5,10 @@ const valForm = require('../_middleware/validate-form');
 const praticienService = require('../praticien/praticien.service');
 
 
-router.post('/cr', valForm.praCre, valForm.adrCre, valForm.horCre, create); // TODO verifyToken
+router.post('/cr',verifyToken.verifyToken, valForm.praCre, valForm.adrCre, valForm.horCre, create); // TODO verifyToken
 //router.post('/cr', valForm.praCre, create); // TODO verifyToken
 router.put('/mod/:id',verifyToken.verifyToken, valForm.praUp, update);// TODO verifyToken
+router.put('/supp/:id',verifyToken.verifyToken , _delete);
 
 module.exports = router;
 
@@ -35,9 +36,12 @@ function update(req, res, next) {
 
 
 function _delete(req, res, next) {
-    // TODO
+    const idPra = req.params.id;
     console.log('---------------------------------  _delete');
-    praticienService.delete(req.params.id)
-        .then(() => res.json({ message: 'User deleted' }))
-        .catch(next);
+    if(!idPra){
+        //res.json({ message: 'Il ya un probleme d identifiant' });
+        throw 'Il ya un probleme d identifiant';
+    }else{
+        praticienService._delete_Adr_Hor_Pra(idPra).then(() => res.json({ message: 'Supprime!!!' })).catch(next);
+    }
 }

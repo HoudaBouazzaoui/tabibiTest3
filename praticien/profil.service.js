@@ -36,7 +36,7 @@ async function uploadFiles(req, res, origi, idPra, idProfil) {
 
         var profil;
         if (idProfil) { // maj profil
-            profil = await getById(idProfil);
+            profil = await getProfil(idProfil);
             console.log('------- img DERV------  uploadFiles EXIste idProfil=' + idProfil + ' +++++  profil.id=' + profil.id);
             console.log('wiwiwiwiwiwiwiwiwiwiwiwi update profil====' + JSON.stringify(profil));
             profil.typeImg = req.file.mimetype;
@@ -91,7 +91,7 @@ async function supprimerProfil(req, res, origi, idPra, idProfil) {
     }
 
     if (idProfil) { // maj profil
-        const profil = await getById(idProfil);
+        const profil = await getProfil(idProfil);
         console.log('------- img DERV------  suppppp EXIste idProfil=' + idProfil + ' +++++  profil.id=' + profil.id);
         await _delete(idProfil);
         // TODO il faut gerer la modification lorsque le profil existe deja
@@ -108,18 +108,19 @@ async function supprimerProfil(req, res, origi, idPra, idProfil) {
 }
 
 module.exports = {
-    uploadFiles,
-    supprimerProfil
+    uploadFiles
+    ,supprimerProfil
+    ,getProfil
 };
 
-async function getById(id) {
+async function getProfil(id) {
     const profil = await db.Profil.findByPk(id);
-    if (!profil) throw 'HorairePraticien not found';
+    if (!profil) throw 'Profil not found';
     return profil;
 }
 
 async function _delete(id) {
-    const profil = await getById(id);
+    const profil = await getProfil(id);
     await profil.destroy();
 }
 

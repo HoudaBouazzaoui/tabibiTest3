@@ -9,15 +9,22 @@ module.exports = {
     //,delete: _delete
 };
 
-async function getHorairePraticien(req) {
+async function getHorairePraticien(id) {
+    console.log('-----horairePraticien.service-----getHorairePraticien horairePraticienId=' + id);
+    //return await getById(horairePraticienId);
+    const horairePraticien = await db.HorairePraticien.findByPk(id);
+    if (!horairePraticien) throw 'HorairePraticien not found!!';
+    return horairePraticien;
+}
 
+async function getHorairePraticienOLD(req) {
     var praticien = req.payload.praticien;
     let horairePraticienId = praticien.HorairePraticienId;
     console.log('-----horairePraticien.service-----getHorairePraticien horairePraticienId=' + horairePraticienId);
-
     return await getById(horairePraticienId);
 }
 
+// todo a supp
 async function create(params) {
     console.log('------------------DEB SERVICE horairePraticien---------------  create params=' + JSON.stringify(params));
     const horairePraticien = new db.HorairePraticien(params);
@@ -39,7 +46,7 @@ async function update(id, params) {
 
 async function getById(id) {
     const horairePraticien = await db.HorairePraticien.findByPk(id);
-    if (!horairePraticien) throw 'HorairePraticien not found';
+    if (!horairePraticien) throw 'HorairePraticien not found!';
     return horairePraticien;
 }
 

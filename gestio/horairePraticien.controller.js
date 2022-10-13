@@ -12,7 +12,8 @@ module.exports = router;
 
 function getByIdPraticien(req, res, next) {
     console.log('-----horairePraticien.controller-----getByIdPraticien');
-    horaireService.getHorairePraticien(req)
+    const horairePraticienId = req.payload.praticien.HorairePraticienId;
+    horaireService.getHorairePraticien(horairePraticienId)
         .then(horairePraticien => res.json(horairePraticien))
         .catch(next);
 }

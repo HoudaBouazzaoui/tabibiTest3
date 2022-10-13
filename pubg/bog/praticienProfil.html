@@ -313,12 +313,20 @@
             } else if (401 == xhr.status) {
                 // TODO page de connexion
                 alert('401 exipirationnnn ; TODO page de connexion');
+                closeThisWindow();
             }
 
 
             $("#successModal .modal-body p").text('errMessage1 = ' + errMessage1 + ' errMessage2 = ' + errMessage2);
             console.log(errMessage);
             console.log("Details0: " + desc + "\nError:" + err);
+        }
+
+        function closeThisWindow() {
+            let new_window = open(location, '_self');
+            // Close this window
+            new_window.close();
+            return false;
         }
 
         function creerPraticien(praticien) {
@@ -360,15 +368,16 @@
                     <h4>image de profile</h4>
                     <div class="row">
                         <form id="modifierImageProfil" name="contact" role="form" enctype="multipart/form-data">
-                        <div class="col-sm-6 mt-3">
-                            <input type="file" name="file" id="fichierProfil" class="form-control-file border" />
-                        </div>
-                        <div class="col-sm-3 mt-3">
-                            <button type="submit" id="BTNmodifierImageProfil" class="btn btn-primary">Submit</button>
-                        </div>
-                        <div class="col-sm-3 mt-3">
-                            <button type="submit" id="BTNsuppImageProfil" class="btn btn-danger">Supp Image</button>
-                        </div>
+                            <div class="col-sm-6 mt-3">
+                                <input type="file" name="file" id="fichierProfil" class="form-control-file border" />
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <button type="submit" id="BTNmodifierImageProfil"
+                                    class="btn btn-primary">Submit</button>
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <button type="submit" id="BTNsuppImageProfil" class="btn btn-danger">Supp Image</button>
+                            </div>
                         </form>
                     </div>
                     <hr />

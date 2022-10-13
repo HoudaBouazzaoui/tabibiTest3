@@ -118,7 +118,8 @@ async function transformRdvsLIBREToEvents(rdvs, idPraticien) {
 async function transformRdvsLibreHoraire(rdvs, idPraticien) {
     console.log('DEB---------rdv.controller-----  transformRdvsLibreHoraire');
     const horaireService = require('praticien/horairePraticien.service');
-    //const horairePraticien = await horaireService.getHorairePraticien(req);
+    //const horairePraticienId = req.payload.praticien.HorairePraticienId;
+    //const horairePraticien = await horaireService.getHorairePraticien(horairePraticienId);
     const horairePraticien = await horaireService.getById(idPraticien);
 
 

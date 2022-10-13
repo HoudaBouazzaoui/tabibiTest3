@@ -40,6 +40,7 @@ router.get('/', getAll);// TODO verifyToken
 //router.delete('/:id', _delete);// TODO verifyToken
 //router.get('/email/:email', getByEmail);
 
+
 module.exports = router;
 
 

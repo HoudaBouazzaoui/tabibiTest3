@@ -34,11 +34,9 @@ async function initialize() {
 
     db.Gestio = require('../gestio/gestio/gestio.model')(sequelize);
 
-    db.sequelize = sequelize;
-    db.Sequelize = Sequelize;
+
     //db.sequelize = sequelize;
 
     // sync all models with database
     await sequelize.sync({ alter: true });
-
 }

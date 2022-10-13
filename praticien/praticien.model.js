@@ -5,17 +5,17 @@ module.exports = model;
 function model(sequelize) {
 
     const attributes = {
-        id_speCat: { type: DataTypes.STRING(10), allowNull: false },
-        titre: { type: DataTypes.STRING(5), allowNull: false },
-        nom: { type: DataTypes.STRING(100), allowNull: false },
-        prenom: { type: DataTypes.STRING(100), allowNull: false },
-        dateNaissance: { type: DataTypes.DATE, allowNull: false },
-        email: { type: DataTypes.STRING(100), allowNull: false },
-        motpasse: { type: DataTypes.STRING(100), allowNull: false },
-        telephone: { type: DataTypes.STRING(20), allowNull: false },
-        fax: { type: DataTypes.STRING(20), allowNull: false },
-        valide: { type: DataTypes.BOOLEAN, allowNull: false },
-        cr: { type: DataTypes.STRING(3), allowNull: false }
+        id_speCat: { type: DataTypes.STRING(10), allowNull: true },
+        titre: { type: DataTypes.STRING(5), allowNull: true },
+        nom: { type: DataTypes.STRING(100), allowNull: true },
+        prenom: { type: DataTypes.STRING(100), allowNull: true },
+        dateNaissance: { type: DataTypes.DATE, allowNull: true },
+        email: { type: DataTypes.STRING(100), allowNull: true },
+        motpasse: { type: DataTypes.STRING(100), allowNull: true },
+        telephone: { type: DataTypes.STRING(20), allowNull: true },
+        fax: { type: DataTypes.STRING(20), allowNull: true },
+        valide: { type: DataTypes.BOOLEAN, allowNull: true },
+        cr: { type: DataTypes.STRING(3), allowNull: true }
     };
 
     // permet de ne pas returner l id mot de passe 

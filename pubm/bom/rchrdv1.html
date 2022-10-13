@@ -140,14 +140,14 @@
 
 
 
-        listItems += '<div class="row mt-2"><div class="col-sm-3"><h4>' + p.titre + ' ' + p.prenom + ' ' + p.nom + '</h4>';
+        listItems += '<div class="row mt-2"><div class="col-md-3"><h4>' + p.titre + ' ' + p.prenom + ' ' + p.nom + '</h4>';
                 
         if(pro != null) {
            listItems += '<img src="data:' + pro.typeImg + ';base64, ' + pro.dataImg + '" alt="'+ p.nom+'" class="testimonial-img"/>';
         }else{
           listItems += '<img src="../assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">';
         }
-        listItems += '</div><div class="col-sm-9"><p><i class="bx bxs-quote-alt-left quote-icon-left"></i>';
+        listItems += '</div><div class="col-md-8"><p><i class="bx bxs-quote-alt-left quote-icon-left"></i>';
         listItems += p.id_speCat;
         listItems += '<i class="bx bxs-quote-alt-right quote-icon-right"></i>';
         listItems += '<br>'+ard.numero+' '+ard.voie+'<br>'+ard.ville + '</p></div></div>';
@@ -232,14 +232,16 @@
 
         <form id="rechercheRdv" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
           <div class="row">
-            <div class="col-md-4 form-group">
-              <input type="text" name="ville" class="form-control" id="ville" placeholder="Ville" required>
-            </div>
-
-            <div class="col-md-8 form-group">
+            <div class="col-md-6 form-group">
               <select name="id_speCat" id="id_speCat" class="form-select">
                 <option value="">Select Specialite</option>
               </select>
+            </div>
+            <div class="col-md-4 form-group">
+              <input type="text" name="ville" class="form-control" id="ville" placeholder="Ville" required>
+            </div>
+            <div class="col-md-2 form-group">
+              <button type="submit" id="rechercheRdvBtn" >Rechercher</button>
             </div>
           </div>
 
@@ -248,7 +250,7 @@
             <div class="error-message"></div>
             <div class="sent-message">Your appointment request has been sent successfully. Thank you!</div>
           </div>
-          <div class="text-center"><button type="submit" id="rechercheRdvBtn" >Make an Appointment</button></div>
+          <div class="text-center">Voici le resultat de la recherche</div>
         </form>
 
       </div>
@@ -258,12 +260,12 @@
 
     <section id="testimonials" class="testimonials">
       <div class="container" data-aos="fade-up">
-
+        <!-- 
         <div class="section-title">
           <h2>Les praticiens</h2>
           <p>Voici le resultat de la recherche</p>
         </div>
-
+        -->
         <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
           <div class="swiper-wrapper">
 

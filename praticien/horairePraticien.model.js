@@ -5,17 +5,17 @@ module.exports = model;
 function model(sequelize) {
 
     const attributes = {
-        matinDebut: { type: DataTypes.TIME, allowNull: false },
-        matinFin: { type: DataTypes.TIME, allowNull: false },
-        soirDebut: { type: DataTypes.TIME, allowNull: false },
-        soirFin: { type: DataTypes.TIME, allowNull: false },
-        lun: { type: DataTypes.BOOLEAN, allowNull: false },
-        mar: { type: DataTypes.BOOLEAN, allowNull: false },
-        mer: { type: DataTypes.BOOLEAN, allowNull: false },
-        jeu: { type: DataTypes.BOOLEAN, allowNull: false },
-        ven: { type: DataTypes.BOOLEAN, allowNull: false },
-        sam: { type: DataTypes.BOOLEAN, allowNull: false },
-        dim: { type: DataTypes.BOOLEAN, allowNull: false }
+        matinDebut: { type: DataTypes.TIME},
+        matinFin: { type: DataTypes.TIME},
+        soirDebut: { type: DataTypes.TIME},
+        soirFin: { type: DataTypes.TIME},
+        lun: { type: DataTypes.BOOLEAN},
+        mar: { type: DataTypes.BOOLEAN},
+        mer: { type: DataTypes.BOOLEAN},
+        jeu: { type: DataTypes.BOOLEAN},
+        ven: { type: DataTypes.BOOLEAN},
+        sam: { type: DataTypes.BOOLEAN},
+        dim: { type: DataTypes.BOOLEAN}
     };
     return sequelize.define('HorairePraticien', attributes);
 }

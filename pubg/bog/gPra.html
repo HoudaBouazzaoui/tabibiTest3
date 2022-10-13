@@ -69,7 +69,6 @@
         }
 
         function recupererRendezVousErreur(jqXHR, textStatus, errorThrown) {
-
             var iwa = JSON.stringify(jqXHR.responseJSON);
             $("#resu").html(iwa);
             console.log("ORROR     KOOO=" + iwa);
@@ -82,12 +81,10 @@
             } else if (jqXHR.status == 404) {
                 //Not found
             }
-
             console.log("------------recupererRendezVousErreur");
             console.log("jqXHR.status: " + jqXHR.status);
             console.log(jqXHR.responseJSON);
             console.log("recupererRendezVousErreur Details0: " + textStatus + "\nError:" + errorThrown);
-
         }
 
         function afficherListePra(jsonData) {
@@ -96,12 +93,11 @@
                 const p = jsonData[i];
                 const adr = p.Adresse;
                 const pro = p.Profil;
-                listItems += '<div class="prat"><div class="prof"><div class="prof-image">';
+                listItems += '<div id="prat_' + p.id + '">';
+                listItems += '<div class="prat" ><div class="prof"><div class="prof-image">';
                 if (pro != null) {
                     listItems += '<img src="data:' + pro.typeImg + ';base64, ' + pro.dataImg + '" alt="' + p.nom + '" />';
                 }
-
-                
 
                 listItems += '</div><span class="padding-left100">' + p.titre + ' ' + p.prenom + ' ' + p.nom + '</span></div>';
                 listItems += '</div><span class="padding-left100">' + p.id_speCat + '</span></div>';
@@ -111,14 +107,17 @@
                 }              
                 listItems += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                 listItems += '<a id="detailPra_' + p.id + '" href="#" onclick="afficherDetailPra(' + p.id + ');return false;">Detail</a>';
+                listItems += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                listItems += '<a id="supprimerPra_' + p.id + '" href="#" onclick="supprimerPra(' + p.id + ');return false;">Supp ' + p.id + '</a>';
 
                 listItems += '<div class="adr padding-left100">' + adr.numero + '<br>' + adr.voie + '<br>' + adr.ville + '</div></div>';
+                listItems += '</div>';
             }
             $("#resu").html(listItems);
         }
 
         function validerPraticien(praId) {
-            alert('praId = ' + praId);
+            alert(' validerPraticien praId = ' + praId);
             const praData = null;
             $.ajax({
                 type: "PUT",
@@ -145,6 +144,26 @@
             //window.location.href = url;
             var praWindow = window.open(url, "pra");// ouverture d une nouvelle fenetre avec detail pra
             praWindow.idPra = praId;// passage de id pra a la nouvelle fenetre
+        }
+
+        function supprimerPra(praId) {
+            alert('supprimerPra praId = ' + praId);
+            const praData = null;
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json",
+                dataType: 'json',
+                url: "/pra/supp/" + praId,
+                cache: false,
+                data: praData,
+                success: function (data) {
+                    $("#prat_" + praId).remove();// suppression de la ligne
+                    var iwa = JSON.stringify(data);
+                    $("#successModal .modal-body p").text(iwa);
+                    console.log("success     okkkk" + iwa);
+                },
+                error: recupererRendezVousErreur
+            });
         }
 
         function logOut() {
