@@ -133,20 +133,21 @@
 
     function afficherResultat(jsonData) {
       var listItems = '';
-      for (var i = 0; i < jsonData.length; i++) {
+      const nbPra = jsonData.length;
+      $("#nbPraticiens-h").html('Il y a ' + nbPra + ' professionnels de santé');
+      for (var i = 0; i < nbPra; i++) {
         const p = jsonData[i];
         const ard = p.Adresse;
         const pro = p.Profil;
-
-
 
         listItems += '<div class="row mt-2"><div class="col-md-3"><h4>' + p.titre + ' ' + p.prenom + ' ' + p.nom + '</h4>';
                 
         if(pro != null) {
            listItems += '<img src="data:' + pro.typeImg + ';base64, ' + pro.dataImg + '" alt="'+ p.nom+'" class="testimonial-img"/>';
         }else{
-          listItems += '<img src="../assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">';
+          listItems += '<img src="../assets/img/testimonials/profil.png" class="testimonial-img" alt="">';
         }
+        
         listItems += '</div><div class="col-md-8"><p><i class="bx bxs-quote-alt-left quote-icon-left"></i>';
         listItems += p.id_speCat;
         listItems += '<i class="bx bxs-quote-alt-right quote-icon-right"></i>';
@@ -266,6 +267,8 @@
           <p>Voici le resultat de la recherche</p>
         </div>
         -->
+        <h5 id="nbPraticiens-h">Les praticiens</h5>
+        
         <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
           <div class="swiper-wrapper">
 

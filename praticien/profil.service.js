@@ -32,7 +32,10 @@ async function uploadFiles(req, res, origi, idPra, idProfil) {
         var dataImg = fs.readFileSync(pathImgUpload + req.file.filename);
 
         // const bufferOut = await sharp(dataImg).resize({ width: 250, height: 250 }).toBuffer();
-        const bufferOut = await sharp(dataImg).resize({ width: 250 }).toBuffer();
+
+        // l ajout de withMetadata() ou rotate() permet de corriger le bug de la rotation de qq image
+        //const bufferOut = await sharp(dataImg).resize({ width: 250 }).withMetadata().toBuffer();
+        const bufferOut = await sharp(dataImg).rotate().resize({ width: 250 }).toBuffer();
 
         var profil;
         if (idProfil) { // maj profil

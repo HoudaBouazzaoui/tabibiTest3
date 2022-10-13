@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 //const homeController = require("../controllers/home");
-const uploadService = require("../praticien/profil.service");
+const profilService = require("../praticien/profil.service");
 const uploadMiddleware = require("../praticien/profil.middleware");
 let cst = require("_const/cst");
 
@@ -13,7 +13,7 @@ router.get("/upload/:idPra/:idProfil", verifyToken.verifyToken, supprimerProfil)
 //router.put('/mod/:id',verifyToken.verifyToken, valForm.horUp, update);// TODO verifyToken
 
 
-
+/* a supp
 function getByIdPraticien(req, res, next) {
     console.log('-----horairePraticien.controller-----getByIdPraticien');
     const horairePraticienId = req.payload.praticien.HorairePraticienId;
@@ -21,6 +21,7 @@ function getByIdPraticien(req, res, next) {
         .then(horairePraticien => res.json(horairePraticien))
         .catch(next);
 }
+*/
 
 function uploadImageProfil(req, res, next) {
     // TODO si y a deja profil faut faire maj en lieu de creation
@@ -42,7 +43,7 @@ function uploadImageProfil(req, res, next) {
         //res.json({ message: 'Il ya un probleme d identifiant' });
         throw 'Il ya un probleme d identifiant';
     }else{
-        uploadService.uploadFiles(req, res, cst.user.G, idPra, idProfil);
+        profilService.uploadFiles(req, res, cst.user.G, idPra, idProfil);
     }
 }
 
@@ -66,7 +67,7 @@ function supprimerProfil(req, res, next) {
         //res.json({ message: 'Il ya un probleme d identifiant' });
         throw 'Il ya un probleme d identifiant';
     }else{
-        uploadService.supprimerProfil(req, res, cst.user.G, idPra, idProfil);
+        profilService.supprimerProfil(req, res, cst.user.G, idPra, idProfil);
     }
 }
 

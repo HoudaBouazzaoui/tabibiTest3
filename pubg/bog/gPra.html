@@ -24,21 +24,16 @@
                 alert($this.val());
             });
 
-            $("#listerPraAVal").submit(function (event) {
-
-                
-                var criterRch = {
+            $("#listerPraAVal").submit(function (event) {            
+                const criterRch = {
                     id_speCat: $("#id_speCat").val(),
                     specialite: $("#specialite").val(),
                     ville: $("#ville").val(),
                     aValider: $("#aValider").val()
                 };
-
-                var data = JSON.stringify(criterRch);
-
+                const data = JSON.stringify(criterRch);
                 listerPraAVal(data);
                 return false;
-
                 //event.preventDefault();
             });
 
@@ -101,7 +96,7 @@
 
                 listItems += '</div><span class="padding-left100">' + p.titre + ' ' + p.prenom + ' ' + p.nom + '</span></div>';
                 listItems += '</div><span class="padding-left100">' + p.id_speCat + '</span></div>';
-                listItems += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';            
+                listItems += '<span class="padding-left100">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';            
                 if (!p.valide) {
                     listItems += '<a id="validerPra_' + p.id + '" href="#" onclick="validerPraticien(' + p.id + ');return false;">validerPra' + p.id + '</a>';
                 }              
@@ -109,7 +104,7 @@
                 listItems += '<a id="detailPra_' + p.id + '" href="#" onclick="afficherDetailPra(' + p.id + ');return false;">Detail</a>';
                 listItems += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                 listItems += '<a id="supprimerPra_' + p.id + '" href="#" onclick="supprimerPra(' + p.id + ');return false;">Supp ' + p.id + '</a>';
-
+                listItems += '</div>';
                 listItems += '<div class="adr padding-left100">' + adr.numero + '<br>' + adr.voie + '<br>' + adr.ville + '</div></div>';
                 listItems += '</div>';
             }
