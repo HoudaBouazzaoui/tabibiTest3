@@ -22,7 +22,7 @@ function recupererSpecialite(cache, idSelect) {
 
 function selectSpecialite(jsonData, idSelect) {
 
-    var listItems = '<option value>Select one...</option>';
+    var listItems = '<option value>Spécialité ...</option>';
     //var listItems = '<option selected="selected" value="">- Select -</option>';
     /*
     for (var i = 0; i < jsonData.length; i++) {

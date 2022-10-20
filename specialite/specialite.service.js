@@ -1,60 +1,45 @@
 const mysqlConnection = require('../db/connect');
 
 let cacheProvider = require('../cache-provider');
-const CACHE_KEY = 'CACHE_KEY';
+const CACHE_KEY_SPE = 'CACHE_KEY_SPE';
 const CACHE_DURATION = 6000;
 
 module.exports = {
-    getAllCache,
-    getAll,
-    getByCat
+    getAllSpecialiteCache,
+    getAllSpecialite,
+    getSpecialiteByCat
 };
 
-function kawkaw (err) {
-    console.log('---------KAWKAW KAW KAW cacheProvider.start');
-
+function fctStart (err) {
+    console.log('------------------------cacheProvider.start  fctStart');
     if (err){ 
-        console.log('---------KAWKAW KAW KAW ERRRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOO');
+        console.log('ERREUR------------------------cacheProvider.start');
         console.log(err)
     }
 }
 
-async function getAllCache() {
-    console.log('--------------------service DEBB CACHE-------------  getListeSpecialite');
-    /*
-    cacheProvider.start(function (err) {
-        console.log('---------KAWKAW KAW KAW cacheProvider.start');
-        if (err) console.log(err)
-    })
-*/
+async function getAllSpecialiteCache() {
+    console.log('--------------------getAllSpecialiteCache()');
 
-cacheProvider.start(kawkaw);
+    cacheProvider.start(fctStart);
 
-    var listSpe = cacheProvider.instance().get(CACHE_KEY);
+    var listSpe = cacheProvider.instance().get(CACHE_KEY_SPE);
     if (listSpe == undefined) {
-        console.log('----CACHE---NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
-        listSpe = await getListeSpecialite();
-        success = cacheProvider.instance().set(CACHE_KEY, listSpe, CACHE_DURATION);
+        console.log('--------------------getAllSpecialiteCache() NO NO NO cacheProvider');
+        listSpe = await getAllSpecialite();
+        success = cacheProvider.instance().set(CACHE_KEY_SPE, listSpe, CACHE_DURATION);
         if (success) {
-            console.log('----CACHE---2222 OKKKK success=' + success);
+            console.log('--------------------getAllSpecialiteCache() mise en cache success=' + success);
         }
     } else {
-        console.log('----CACHE---DEJAAAA !!!!!!!!!!!!!! ');
+        console.log('--------------------getAllSpecialiteCache() cache OK , la liste vient du cache');
     }
     return listSpe;
 }
 
-async function getAll() {
-    return await getListeSpecialite();
-}
-
-async function getByCat(id) {
-    return await getSpecialiteByCat(id);
-}
-
-async function getListeSpecialite() {
+async function getAllSpecialite() {
     return new Promise((resolve, reject) => {
-        console.log('--------------------service DEBB-------------  getListeSpecialite');
+        console.log('--------------------service DEBB-------------  getAllSpecialite');
         mysqlConnection.query("SELECT * FROM `praticienSpecialite`", (error, elements) => {
             if (error) {
                 return reject(error);
@@ -78,14 +63,44 @@ async function getListeSpecialite() {
                 listeSpecialite[spe.id_speCat] = spe.titre;
             });
 
-            console.log('--------------------service FIN-------------  getListeSpecialite');
+            console.log('--------------------service FIN-------------  getAllSpecialite');
             return resolve(listeSpecialite);
         });
     });
 }
 
 async function getSpecialiteByCat(id) {
-    const listeSpe = await getAllCache();
+    const listeSpe = await getAllSpecialiteCache();
     const titre = listeSpe[id];
     return titre;
 }
+
+/*
+function kawkaw (err) {
+    console.log('---------KAWKAW KAW KAW cacheProvider.start');
+
+    if (err){ 
+        console.log('---------KAWKAW KAW KAW ERRRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOO');
+        console.log(err)
+    }
+}
+
+async function getAllSpecialiteCache() {
+    console.log('--------------------service DEBB CACHE-------------  getAllSpecialite');
+
+    cacheProvider.start(kawkaw);
+
+    var listSpe = cacheProvider.instance().get(CACHE_KEY_SPE);
+    if (listSpe == undefined) {
+        console.log('----CACHE---NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+        listSpe = await getAllSpecialite();
+        success = cacheProvider.instance().set(CACHE_KEY_SPE, listSpe, CACHE_DURATION);
+        if (success) {
+            console.log('----CACHE---2222 OKKKK success=' + success);
+        }
+    } else {
+        console.log('----CACHE---DEJAAAA !!!!!!!!!!!!!! ');
+    }
+    return listSpe;
+}
+*/

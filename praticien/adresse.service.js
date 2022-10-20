@@ -83,11 +83,11 @@ async function getListePraticienByAdresse(criterRch, origi) {
 
     if (!praticiens) throw 'Aucun praticien, reformuler recherche';
 
-    const listeSpe = await specialiteService.getAllCache();
+    const listeSpe = await specialiteService.getAllSpecialiteCache();
     // Recuperation et formatage libelle specialite, transform Image 
     for (var i = 0; i < praticiens.length; i++) {
         const pra = praticiens[i];
-        var speTitre = await specialiteService.getByCat(pra.id_speCat);
+        var speTitre = await specialiteService.getSpecialiteByCat(pra.id_speCat);
         var speTitre = listeSpe[pra.id_speCat];
         pra.id_speCat = speTitre;
 

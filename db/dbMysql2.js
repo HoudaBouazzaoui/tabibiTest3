@@ -33,6 +33,7 @@ async function initialize() {
     db.Praticien.belongsTo(db.Profil);
 
     db.Gestio = require('../gestio/gestio/gestio.model')(sequelize);
+    db.Ville = require('../referentiels/ville.model')(sequelize);
 
     db.sequelize = sequelize;
     db.Sequelize = Sequelize;

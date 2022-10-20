@@ -7,8 +7,11 @@ const errorHandler = require('_middleware/error-handler');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('pubm'));
 
+
 //app.use('/pubm', express.static('pubm'));
 
+//app.use(express.static('public'));
+app.use('/public', express.static('public'));
 
 
 app.use(express.json());
@@ -19,6 +22,9 @@ app.use(cors());
 // dans les 3 serveurs
 app.use('/spe', require('./specialite/specialite.controller'));
 app.use('/adr', require('./praticien/adresse.controller'));
+app.use('/vil', require('./referentiels/ville.controller'));
+
+app.use('/contact', require('./contact/contact.controller'));
 //app.use('/rdvs', require('./rdvs/rdv.controller'));
 
 // !!! NE PAS DEPLACER CETTE LIGNE, le statut de la reponse passe de 400 a 500

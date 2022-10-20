@@ -19,6 +19,7 @@ npm install nodejslogger
 npm install multer
 npm install sharp
 npm install node-cache 
+npm install nodemailer
 
 
 cd/d  D:\projets\web\tabibi\utilisa
@@ -84,6 +85,9 @@ http://localhost:5000/gest/esp                     geston des praticien CRUD
 ------------------------------------------------
 
 http://localhost:3000/bom/rchrdv.html
+http://localhost:3000/bom/rchrdv1.html
+localhost:3000/vil/
+http://localhost:3000/vil/cache
 
 http://localhost:5000/bog/nvGestio.html
 http://localhost:5000/gest/charg/gPra
