@@ -9,8 +9,6 @@ module.exports = router;
 
 function envoyerMessage(req, res, next) {
 
-  
-
     logger.info('-----contact.controller-----envoyerMessage');
     var contact = req.body;
     logger.info('-----req.message=' + JSON.stringify(contact));
