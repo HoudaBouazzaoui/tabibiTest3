@@ -1,4 +1,3 @@
-//const config = require('utilisa/config.json');
 const config = require('_const/db.json');
 const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
@@ -9,7 +8,14 @@ initialize();
 
 async function initialize() {
     // create db if it doesn't already exist
-    const { host, port, user, password, database } = config.database;
+    //const { host, port, user, password, database } = config.database;
+
+    const host = process.env.DB_HOST;
+    const port = process.env.DB_PORT;
+    const user = process.env.DB_USER;
+    const password = process.env.DB_PASSWORD;
+    const database = process.env.DB_DATABASE;
+
     const connection = await mysql.createConnection({ host, port, user, password });
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
 

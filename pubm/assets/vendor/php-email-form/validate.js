@@ -120,7 +120,11 @@
           console.log("success---ok=" + dataFmt);  
           return resolve(dataC);
         },
-        error: function (dataC) {   
+        error: function (dataC , textStatus, errorThrown) { 
+          console.log("ERREUR---KO=" + dataC);  
+          console.log("ERREUR---KOc=" + dataC.responseJSON);  
+          console.log("ERREUR---textStatus=" + textStatus);  
+          console.log("ERREUR---errorThrown=" + errorThrown);  
           return reject(`${dataC.status} ${dataC.statusText} ${dataC.url} ${dataC.responseText}`);
           var err = JSON.stringify(data.responseJSON);
           console.log("ERREUR---KO=" + err);

@@ -21,6 +21,15 @@ npm install sharp
 npm install node-cache 
 npm install nodemailer
 
+pour logger 
+npm install winston
+npm install morgan
+
+ pour varialble d environnement
+npm install dotenv --save
+
+pour llancer des commande simple pour charger les fichier de variable d environnement
+>npm install env-cmd
 
 cd/d  D:\projets\web\tabibi\utilisa
 
@@ -104,6 +113,10 @@ http://localhost:4000/bo/lesRDV.html
 http://localhost:4000/pra/co
 -----------------------------------------------
 
+.ta1bi2bi
+01/01/1980
+tabibi.service
+
 DROP TABLES praticiens, patients, adresses
 
 SHOW GLOBAL VARIABLES LIKE 'innodb_rollback_on_timeout';
@@ -111,3 +124,6 @@ SHOW GLOBAL VARIABLES LIKE 'innodb_lock_wait_timeout';
 set innodb_rollback_on_timeout = 1;
 
 verifierbsi le rdv nest pas deja creer
+
+	excludesfile = D:/projets/web/tabibi/env/.env.dev
+	excludesfile = D:/projets/web/tabibi/env/.env.prod
