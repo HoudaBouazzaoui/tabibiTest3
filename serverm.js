@@ -8,10 +8,10 @@ const logger = require('_utils/logger');
 console.log('*************************************************process.env.NODE_ENV:', process.env.NODE_ENV);
 // test de l environnement, mais si on decide de mettre en prod avec un fichier .env on supp ce test
 // car on peut mettre les vars en prod autrement que le fichier
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {}
     require('dotenv').config();
     console.log(process.env);
-}
+
 
 // log des Http
 const fs = require('fs');

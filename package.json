@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "env-cmd -f ./env/.env.dev node serverm.js",
+    "dev": "env-cmd -f ./env/.env node serverm.js",
     "prod": "env-cmd -f ./env/.env.prod node serverm.js"
   },
 
