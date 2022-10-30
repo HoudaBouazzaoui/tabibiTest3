@@ -1,41 +1,11 @@
-info: 10-25-2022 15:48:15: 	Server started and running on http://localhost:3000
-info: 10-25-2022 15:56:30: 	Server started and running on http://localhost:3000
-info: 10-25-2022 15:56:57: 	-----contact.controller-----envoyerMessage
-info: 10-25-2022 15:56:57: 	-----req.message={"nom":"contactNom","email":"alberkani3000@yahoo.fr","sujet":"le sujet du contact","message":"ouuuuuuuuuuuu"}
-info: 10-25-2022 19:23:50: 	Server started and running on http://localhost:3000
-error: 10-25-2022 19:23:52: 	Error: connect ECONNREFUSED 212.27.63.202:3306
-    at Object.createConnection (D:\projets\web\tabibi\node_modules\mysql2\promise.js:242:31)
-    at initialize (D:\projets\web\tabibi\db\dbMysql2.js:19:36)
-    at Object.<anonymous> (D:\projets\web\tabibi\db\dbMysql2.js:7:1)
-    at Module._compile (node:internal/modules/cjs/loader:1097:14)
-    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1149:10)
-    at Module.load (node:internal/modules/cjs/loader:975:32)
-    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
-    at Module.require (node:internal/modules/cjs/loader:999:19)
-    at require (node:internal/modules/cjs/helpers:102:18)
-    at Object.<anonymous> (D:\projets\web\tabibi\praticien\adresse.service.js:1:12)
-info: 10-25-2022 19:26:49: 	Server started and running on http://localhost:3000
-info: 10-25-2022 19:27:42: 	Server started and running on http://localhost:3000
-error: 10-25-2022 19:27:44: 	Error: connect ECONNREFUSED 212.27.63.202:3306
-    at Object.createConnection (D:\projets\web\tabibi\node_modules\mysql2\promise.js:242:31)
-    at initialize (D:\projets\web\tabibi\db\dbMysql2.js:19:36)
-    at Object.<anonymous> (D:\projets\web\tabibi\db\dbMysql2.js:7:1)
-    at Module._compile (node:internal/modules/cjs/loader:1097:14)
-    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1149:10)
-    at Module.load (node:internal/modules/cjs/loader:975:32)
-    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
-    at Module.require (node:internal/modules/cjs/loader:999:19)
-    at require (node:internal/modules/cjs/helpers:102:18)
-    at Object.<anonymous> (D:\projets\web\tabibi\praticien\adresse.service.js:1:12)
-info: 10-25-2022 19:30:04: 	Server started and running on http://localhost:3000
-error: 10-25-2022 19:30:06: 	Error: connect ECONNREFUSED 212.27.63.202:3306
-    at Object.createConnection (D:\projets\web\tabibi\node_modules\mysql2\promise.js:242:31)
-    at initialize (D:\projets\web\tabibi\db\dbMysql2.js:19:36)
-    at Object.<anonymous> (D:\projets\web\tabibi\db\dbMysql2.js:7:1)
-    at Module._compile (node:internal/modules/cjs/loader:1097:14)
-    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1149:10)
-    at Module.load (node:internal/modules/cjs/loader:975:32)
-    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
-    at Module.require (node:internal/modules/cjs/loader:999:19)
-    at require (node:internal/modules/cjs/helpers:102:18)
-    at Object.<anonymous> (D:\projets\web\tabibi\praticien\adresse.service.js:1:12)
+2022-10-29T08:53:10.243Z [32minfo[39m: Server started and running on http://localhost:3000
+2022-10-29T08:53:39.750Z [32minfo[39m: -----contact.controller-----envoyerMessage
+2022-10-29T08:53:39.750Z [32minfo[39m: -----req.message={"nom":"contactNom","email":"alberkani3000@yahoo.fr","sujet":"le sujet du contact","message":"fdq"}
+2022-10-30T11:00:00.230Z [31merror[39m: Error: Connection lost: The server closed the connection.
+    at Protocol.end (D:\projets\web\tabibi\node_modules\mysql\lib\protocol\Protocol.js:112:13)
+    at Socket.<anonymous> (D:\projets\web\tabibi\node_modules\mysql\lib\Connection.js:94:28)
+    at Socket.<anonymous> (D:\projets\web\tabibi\node_modules\mysql\lib\Connection.js:526:10)
+    at Socket.emit (node:events:402:35)
+    at endReadableNT (node:internal/streams/readable:1343:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21)
+2022-10-30T11:02:28.795Z [32minfo[39m: Server started and running on http://localhost:3000

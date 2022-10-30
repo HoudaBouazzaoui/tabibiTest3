@@ -13,7 +13,7 @@ function envoyerMessage(req, res, next) {
     var contact = req.body;
     logger.info('-----req.message=' + JSON.stringify(contact));
      
-    const nom = contact.nom;
+    //const nom = contact.nom;
     const email = contact.email;
     const sujet = contact.sujet;
     const message = contact.message;
